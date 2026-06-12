@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>IAAPS - CESFAM Tongoy - Mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+@page { size: letter; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #fff; font-family: 'Inter', sans-serif; color: #1a1a1a; }
+.page {
+  width: 8.5in;
+  height: 11in;
+  padding: 0.28in 0.32in 0.22in 0.32in;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  border-bottom: 5px solid #0a0a0a;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #555;
+  margin-bottom: 2px;
+}
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 0.95;
+  color: #0a0a0a;
+  letter-spacing: -1px;
+}
+.title-aux {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.3px;
+  color: #555;
+  text-align: right;
+  line-height: 1.4;
+}
+.subtitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #2a2a2a;
+  margin-top: 3px;
+}
+
+/* ===== HERO BAND ===== */
+.hero-band {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.hero-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #aaa;
+  margin-bottom: 3px;
+}
+.hero-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+.hero-num.sm { font-size: 22px; }
+.hero-cap {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+.hero-divider { border-left: 1px solid #444; padding-left: 11px; }
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13.5px;
+  letter-spacing: 2.7px;
+  color: #fff;
+  margin: 0 0 6px 0;
+  padding: 3.5px 9px;
+  background: #0a0a0a;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ===== FOCUS GRID 6 cards ===== */
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.focus-card {
+  border: 1.3px solid #0a0a0a;
+  padding: 7px 8px;
+  background: #fff;
+  position: relative;
+  min-height: 92px;
+}
+.focus-card.crit { background: #1a1a1a; color: #fff; }
+.focus-card.crit .focus-name { color: #fff; }
+.focus-card.crit .focus-num { color: #aaa; }
+.focus-card.crit .focus-meta { color: #ccc; }
+.focus-card.sob { background: #e8e8e8; }
+.focus-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: #777;
+  margin-bottom: 1px;
+}
+.focus-name {
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  color: #0a0a0a;
+  margin-bottom: 4px;
+  min-height: 30px;
+}
+.pct-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  line-height: 0.85;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.pct-bar {
+  height: 7px;
+  background: #d8d8d8;
+  border: 0.5px solid #0a0a0a;
+  margin-top: 4px;
+}
+.focus-card.crit .pct-bar { background: #444; border-color: #fff; }
+.pct-fill { height: 100%; background: #0a0a0a; }
+.focus-card.crit .pct-fill { background: #fff; }
+.focus-meta {
+  font-size: 8.5px;
+  color: #666;
+  margin-top: 3px;
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+}
+.focus-trend {
+  position: absolute;
+  bottom: 4px;
+  right: 7px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.6px;
+  color: #0a0a0a;
+  font-weight: 700;
+}
+.focus-card.crit .focus-trend { color: #fff; }
+.status-badge {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.6px;
+  padding: 1.5px 4px;
+  background: #0a0a0a;
+  color: #fff;
+}
+.focus-card.crit .status-badge { background: #fff; color: #0a0a0a; }
+.focus-card.sob .status-badge { background: #fff; color: #0a0a0a; border: 1px solid #0a0a0a; }
+
+/* ===== COMPACT SECTION ===== */
+.compact-section {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 7px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.compact-table {
+  border: 1.3px solid #0a0a0a;
+  padding: 8px 10px;
+}
+.compact-table-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2.2px;
+  margin-bottom: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1.2px solid #0a0a0a;
+}
+.ctable { width: 100%; border-collapse: collapse; font-size: 10px; }
+.ctable th {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 3.5px 5px;
+  text-align: left;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.9px;
+  font-weight: 400;
+  font-size: 10.5px;
+}
+.ctable td {
+  padding: 3px 5px;
+  border-bottom: 0.5px solid #ccc;
+}
+.ctable td.lbl { font-weight: 700; font-size: 9.5px; }
+.ctable td.pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12.5px;
+  letter-spacing: 0.8px;
+}
+.ctable tr.sob { background: #e8e8e8; }
+.ctable tr.pend { background: #f9f9f9; color: #666; font-style: italic; }
+
+.panel.dark {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 9px 11px;
+  border: 1.3px solid #0a0a0a;
+}
+.panel-title-dark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2.2px;
+  margin-bottom: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #fff;
+}
+.paradox-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  line-height: 1.32;
+  font-style: italic;
+  font-weight: 700;
+}
+.paradox-text strong {
+  font-style: normal;
+  background: #fff;
+  color: #0a0a0a;
+  padding: 1px 4px;
+}
+.stat-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  padding-top: 5px;
+  border-top: 1px solid #444;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: #ccc;
+  margin-top: 3px;
+}
+
+/* ===== EVOLUTION STRIP ===== */
+.evo-strip {
+  background: #f4f4f4;
+  border: 1.3px solid #0a0a0a;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  gap: 9px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.evo-strip-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11.5px;
+  letter-spacing: 1.6px;
+  color: #0a0a0a;
+  padding-right: 7px;
+  border-right: 1px solid #888;
+  line-height: 1.15;
+}
+.evo-mini { text-align: center; }
+.evo-mini-lbl {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 9px;
+  line-height: 1.1;
+}
+.evo-mini-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+  color: #0a0a0a;
+}
+.evo-mini-delta {
+  font-size: 8.5px;
+  font-weight: 700;
+  margin-top: 1px;
+  color: #0a0a0a;
+}
+
+/* ===== INITIATIVES ===== */
+.initiatives {
+  border: 3px solid #0a0a0a;
+  padding: 9px 11px;
+  background: #f4f4f4;
+  flex-shrink: 0;
+}
+.initiatives-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.init-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.init-card {
+  background: #fff;
+  border-left: 4px solid #0a0a0a;
+  padding: 7px 9px;
+  position: relative;
+}
+.init-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  line-height: 0.8;
+  color: #0a0a0a;
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  opacity: 0.13;
+  font-weight: 700;
+}
+.init-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  margin-bottom: 2px;
+}
+.init-target {
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #555;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.init-when {
+  font-size: 8.5px;
+  font-weight: 700;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 1.5px 5px;
+  display: inline-block;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+.init-desc {
+  font-size: 9.5px;
+  line-height: 1.28;
+  color: #2a2a2a;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 2.5px solid #0a0a0a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  color: #444;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.footer-mark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #0a0a0a;
+}
+.legend { display: flex; gap: 9px; font-size: 8.5px; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 3px; }
+.legend-box { width: 10px; height: 10px; border: 1px solid #0a0a0a; }
+@media print { .page { margin: 0; box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Mural técnico · Mayo 2026 · DIVAP–MINSAL</div>
+    <div class="title-row">
+      <div>
+        <div class="title">IAAPS 2026</div>
+        <div class="subtitle">CENTRO DE SALUD FAMILIAR TONGOY · CORTE 3</div>
+      </div>
+      <div class="title-aux">
+        Índice de Actividad APS<br>
+        COMGES N° 1.12<br>
+        Modelo MAIS · RISS
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-band">
+    <div>
+      <div class="hero-tag">Cumplimiento global proyectado</div>
+      <div class="hero-num">88 – 92%</div>
+      <div class="hero-cap">Umbral COMGES ≥ 90% · Mejora vs corte 2 (83–87%)</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Cumplen</div>
+      <div class="hero-num sm">11/12</div>
+      <div class="hero-cap">+0 vs abril</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Crítico</div>
+      <div class="hero-num sm">1/12</div>
+      <div class="hero-cap">Solo M9.3 Egresos</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Semestrales</div>
+      <div class="hero-num sm">5/17</div>
+      <div class="hero-cap">Esperando junio</div>
+    </div>
+  </div>
+
+  <div class="section-header">Indicadores en foco · Movimiento abril → mayo</div>
+  <div class="focus-grid">
+
+    <div class="focus-card sob">
+      <span class="status-badge">★ Líder</span>
+      <div class="focus-num">M9.1 · SM</div>
+      <div class="focus-name">Cobertura Salud Mental</div>
+      <div class="pct-num">168%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:100%"></div></div>
+      <div class="focus-meta">35,7% · meta 21,2%</div>
+      <span class="focus-trend">→ estable</span>
+    </div>
+
+    <div class="focus-card sob">
+      <span class="status-badge">Cumple</span>
+      <div class="focus-num">M6.1B · EMP H</div>
+      <div class="focus-name">EMP Hombres 20–64</div>
+      <div class="pct-num">99,4%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:99%"></div></div>
+      <div class="focus-meta">Era 80,9% · brecha 2</div>
+      <span class="focus-trend">↗ +18,5 pts</span>
+    </div>
+
+    <div class="focus-card sob">
+      <span class="status-badge">Cumple</span>
+      <div class="focus-num">M3 · Morbilidad</div>
+      <div class="focus-name">Tasa consulta médica</div>
+      <div class="pct-num">90,4%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:90%"></div></div>
+      <div class="focus-meta">Era 83,7% · meta 0,80</div>
+      <span class="focus-trend">↗ +6,7 pts</span>
+    </div>
+
+    <div class="focus-card sob">
+      <span class="status-badge">Cumple</span>
+      <div class="focus-num">M9.2 · SM</div>
+      <div class="focus-name">Tasa controles SM</div>
+      <div class="pct-num">100%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:100%"></div></div>
+      <div class="focus-meta">Era 96,2% · meta 6,14</div>
+      <span class="focus-trend">↗ +3,8 pts</span>
+    </div>
+
+    <div class="focus-card">
+      <span class="status-badge">Cumple</span>
+      <div class="focus-num">M12 · Gestantes</div>
+      <div class="focus-name">Ingreso precoz embarazo</div>
+      <div class="pct-num">84,8%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:85%"></div></div>
+      <div class="focus-meta">Era 79,5% · brecha 4</div>
+      <span class="focus-trend">↗ +5,3 pts</span>
+    </div>
+
+    <div class="focus-card crit">
+      <span class="status-badge">Crítico</span>
+      <div class="focus-num">M9.3 · Altas SM</div>
+      <div class="focus-name">Egresos alta clínica</div>
+      <div class="pct-num">40,7%</div>
+      <div class="pct-bar"><div class="pct-fill" style="width:41%"></div></div>
+      <div class="focus-meta">Era 39,8% · brecha 26</div>
+      <span class="focus-trend">↗ +0,9 pts</span>
+    </div>
+
+  </div>
+
+  <div class="compact-section">
+    <div class="compact-table">
+      <div class="compact-table-title">Resto de indicadores · cumplimiento al corte mayo</div>
+      <table class="ctable">
+        <tr><th>Cód</th><th>Indicador</th><th>%</th><th>Estado</th></tr>
+        <tr class="sob"><td class="lbl">M4</td><td>Resolutividad APS (≤10%)</td><td class="pct">5,10%</td><td>★ Cumple</td></tr>
+        <tr class="sob"><td class="lbl">M5</td><td>Visita Domiciliaria Integral</td><td class="pct">92,9%</td><td>Cumple ↓</td></tr>
+        <tr class="sob"><td class="lbl">M6.1A</td><td>EMP Mujeres 20–64</td><td class="pct">100%</td><td>Cumple</td></tr>
+        <tr class="sob"><td class="lbl">M6.2</td><td>EMP 65 años y más</td><td class="pct">100%</td><td>Cumple</td></tr>
+        <tr class="sob"><td class="lbl">M7</td><td>Evaluación DSM 12–23m</td><td class="pct">100%</td><td>Cumple</td></tr>
+        <tr class="sob"><td class="lbl">M8</td><td>Control Adolescente</td><td class="pct">100%</td><td>Cumple</td></tr>
+        <tr class="sob"><td class="lbl">M17a</td><td>Menores 3a libres caries</td><td class="pct">100%</td><td>Cumple</td></tr>
+        <tr class="pend"><td class="lbl">M13</td><td>Anticoncepción 15–19</td><td class="pct">—</td><td>Junio</td></tr>
+        <tr class="pend"><td class="lbl">M14</td><td>Cobertura DM2</td><td class="pct">—</td><td>Junio</td></tr>
+        <tr class="pend"><td class="lbl">M15</td><td>Cobertura HTA</td><td class="pct">—</td><td>Junio</td></tr>
+        <tr class="pend"><td class="lbl">M17b</td><td>Nutricional &lt;2a</td><td class="pct">—</td><td>Junio</td></tr>
+      </table>
+    </div>
+
+    <div class="panel dark">
+      <div class="panel-title-dark">Lectura del corte mayo</div>
+      <div class="paradox-text">
+        El equipo está <strong>cosechando</strong>: 4 indicadores con avances de +5 a +18 puntos. Hombres EMP es la sorpresa del mes. Sólo egresos SM resiste — la cohorte clínica se descomprime con lentitud.
+      </div>
+      <div class="stat-block">
+        <div class="stat-item">
+          <div class="stat-num">+18,5</div>
+          <div class="stat-lbl">EMP Hombres</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">18</div>
+          <div class="stat-lbl">Altas SM Q1+mayo</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">90%+</div>
+          <div class="stat-lbl">Proyección COMGES</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="evo-strip">
+    <div class="evo-strip-title">Progresión<br>mar → may</div>
+    <div class="evo-mini">
+      <div class="evo-mini-lbl">Ingreso PreG</div>
+      <div class="evo-mini-num">68,6 → 84,8%</div>
+      <div class="evo-mini-delta">↗ +16 pts</div>
+    </div>
+    <div class="evo-mini">
+      <div class="evo-mini-lbl">EMP Hombres</div>
+      <div class="evo-mini-num">74,3 → 99,4%</div>
+      <div class="evo-mini-delta">↗ +25 pts</div>
+    </div>
+    <div class="evo-mini">
+      <div class="evo-mini-lbl">Tasa morbilidad</div>
+      <div class="evo-mini-num">78,2 → 90,4%</div>
+      <div class="evo-mini-delta">↗ +12 pts</div>
+    </div>
+    <div class="evo-mini">
+      <div class="evo-mini-lbl">Controles SM</div>
+      <div class="evo-mini-num">89,2 → 100%</div>
+      <div class="evo-mini-delta">↗ +11 pts</div>
+    </div>
+    <div class="evo-mini">
+      <div class="evo-mini-lbl">Egresos SM</div>
+      <div class="evo-mini-num">33,7 → 40,7%</div>
+      <div class="evo-mini-delta">↗ +7 pts</div>
+    </div>
+  </div>
+
+  <div class="initiatives">
+    <div class="initiatives-title">4 estrategias para junio – diciembre 2026</div>
+    <div class="init-grid">
+
+      <div class="init-card">
+        <div class="init-num">01</div>
+        <div class="init-name">Blitz Altas SM</div>
+        <div class="init-target">M9.3 Egresos · sept</div>
+        <div class="init-when">SEPTIEMBRE</div>
+        <div class="init-desc">Mes intensivo de revisión nominal de cohorte SM. Doble agenda clínica + reasignación de profesionales. Meta: cerrar brecha de 26 a 10 altas pendientes.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">02</div>
+        <div class="init-name">EMP en Veda</div>
+        <div class="init-target">M6.1B · M3 · sostener</div>
+        <div class="init-when">JUL – AGO</div>
+        <div class="init-desc">Aprovechar veda de macha en caleta Tongoy + Puerto Velero. Examen Hombres + control crónicos en jornadas matutinas. Pesquisa cardiovascular laboral.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">03</div>
+        <div class="init-name">Embarazo Captado</div>
+        <div class="init-target">M12 · cerrar brecha 4</div>
+        <div class="init-when">JUN – DIC</div>
+        <div class="init-desc">Test gratuito SAPU + P.S.R. Guanaqueros ampliado a farmacia comunitaria. Derivación 72h con matrona móvil. Meta: ingreso precoz ≥ 94% al cierre.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">04</div>
+        <div class="init-name">Tongoy Conectado 2.0</div>
+        <div class="init-target">Gestión · IAAPS 2027</div>
+        <div class="init-when">OCT – DIC</div>
+        <div class="init-desc">Dashboard RAYEN/SIDRA en producción. Solicitud de revisión prevalencia SM por sobre-cobertura sistemática. Cierre con base 2027 estructurada.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-mark">CESFAM TONGOY · 2026</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-box" style="background:#1a1a1a"></div>Crítico</div>
+      <div class="legend-item"><div class="legend-box" style="background:#fff"></div>Bajo meta</div>
+      <div class="legend-item"><div class="legend-box" style="background:#e8e8e8"></div>Cumple</div>
+      <div class="legend-item">★ Líder comunal</div>
+    </div>
+    <div>IAAPS 2026 · DIVAP MINSAL</div>
+  </div>
+
+</div>
+</body>
+</html>

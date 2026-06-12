@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Metas Sanitarias - CESFAM Tongoy - Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+@page { size: letter; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #fff; font-family: 'Inter', sans-serif; color: #1a1a1a; }
+.page {
+  width: 8.5in;
+  height: 11in;
+  padding: 0.28in 0.32in 0.22in 0.32in;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  border-bottom: 4px solid #0a0a0a;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #555;
+  margin-bottom: 2px;
+}
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 0.95;
+  color: #0a0a0a;
+  letter-spacing: -1px;
+}
+.subtitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: #2a2a2a;
+  margin-top: 3px;
+}
+.meta-strip {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: #444;
+  margin-top: 5px;
+  padding-top: 4px;
+  border-top: 0.5px solid #888;
+}
+
+/* ===== HERO BAND ===== */
+.hero-band {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 8px 12px;
+  margin-bottom: 7px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.hero-tag {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #aaa;
+  margin-bottom: 2px;
+}
+.hero-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+.hero-num.sm { font-size: 19px; }
+.hero-cap {
+  font-size: 9px;
+  font-weight: 500;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+.hero-divider { border-left: 1px solid #444; padding-left: 10px; }
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  color: #fff;
+  margin: 0 0 5px 0;
+  padding: 3px 8px;
+  background: #0a0a0a;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ===== INDICATORS GRID 4x2 ===== */
+.indicators {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 7px;
+  flex-shrink: 0;
+}
+.ind-card {
+  border: 1.3px solid #0a0a0a;
+  padding: 7px 8px;
+  background: #fff;
+  position: relative;
+  min-height: 98px;
+}
+.ind-card.crit { background: #1a1a1a; color: #fff; }
+.ind-card.crit .ind-name, .ind-card.crit .ind-comuna { color: #ddd; }
+.ind-card.crit .ind-num { color: #aaa; }
+.ind-card.sob { background: #e8e8e8; }
+.ind-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  color: #777;
+  margin-bottom: 1px;
+}
+.ind-name {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #0a0a0a;
+  margin-bottom: 4px;
+  min-height: 28px;
+}
+.ind-card.crit .ind-name { color: #fff; }
+.bars { display: flex; flex-direction: column; gap: 2.5px; }
+.bar-row { display: flex; align-items: center; gap: 4px; }
+.bar-label {
+  font-size: 9px;
+  font-weight: 700;
+  width: 24px;
+  letter-spacing: 0.3px;
+}
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background: #d8d8d8;
+  position: relative;
+  border: 0.5px solid #0a0a0a;
+}
+.ind-card.crit .bar-track { background: #444; border-color: #fff; }
+.bar-fill { height: 100%; background: #0a0a0a; }
+.ind-card.crit .bar-fill { background: #fff; }
+.bar-fill.gray { background: #777; }
+.ind-card.crit .bar-fill.gray { background: #999; }
+.bar-fill.strip {
+  background: repeating-linear-gradient(45deg, #0a0a0a 0, #0a0a0a 3px, #fff 3px, #fff 6px);
+}
+.bar-val {
+  font-size: 9px;
+  font-weight: 700;
+  width: 38px;
+  text-align: right;
+}
+.ind-comuna {
+  font-size: 8.5px;
+  color: #666;
+  margin-top: 3px;
+  font-style: italic;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.status-badge {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.9px;
+  padding: 1.5px 5px;
+  background: #0a0a0a;
+  color: #fff;
+}
+.ind-card.crit .status-badge { background: #fff; color: #0a0a0a; }
+.ind-card.sob .status-badge { background: #fff; color: #0a0a0a; border: 1px solid #0a0a0a; }
+.trend-tag {
+  position: absolute;
+  bottom: 4px;
+  right: 7px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.7px;
+  color: #0a0a0a;
+  font-weight: 700;
+}
+.ind-card.crit .trend-tag { color: #fff; }
+
+/* ===== TWO COLUMNS ===== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 7px;
+  margin-bottom: 7px;
+  flex-shrink: 0;
+}
+.panel {
+  border: 1.3px solid #0a0a0a;
+  padding: 7px 10px;
+}
+.panel.dark { background: #0a0a0a; color: #fff; }
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12.5px;
+  letter-spacing: 2.3px;
+  margin-bottom: 5px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid currentColor;
+}
+.paradox-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 11.5px;
+  line-height: 1.32;
+  font-style: italic;
+  font-weight: 700;
+}
+.paradox-text strong {
+  font-style: normal;
+  background: #fff;
+  color: #0a0a0a;
+  padding: 1px 4px;
+}
+.paradox-sub {
+  margin-top: 5px;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #ccc;
+  line-height: 1.25;
+}
+.matrix { width: 100%; border-collapse: collapse; font-size: 10px; }
+.matrix th {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 3px 5px;
+  text-align: left;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-size: 10.5px;
+}
+.matrix td {
+  padding: 2.5px 5px;
+  border-bottom: 0.5px solid #bbb;
+  font-weight: 500;
+}
+.matrix td.lbl { font-weight: 700; font-size: 9.5px; }
+.matrix tr.crit { background: #1a1a1a; color: #fff; }
+.matrix tr.sob { background: #d8d8d8; }
+
+/* ===== INITIATIVES ===== */
+.initiatives {
+  border: 2.5px solid #0a0a0a;
+  padding: 7px 10px;
+  background: #f4f4f4;
+  flex-shrink: 0;
+}
+.initiatives-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.init-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.init-card {
+  background: #fff;
+  border-left: 4px solid #0a0a0a;
+  padding: 6px 8px;
+  position: relative;
+}
+.init-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  line-height: 0.8;
+  color: #0a0a0a;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  opacity: 0.13;
+  font-weight: 700;
+}
+.init-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12.5px;
+  letter-spacing: 1.1px;
+  margin-bottom: 2px;
+  color: #0a0a0a;
+}
+.init-target {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #555;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.init-progress {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #0a0a0a;
+  background: #e8e8e8;
+  padding: 1.5px 5px;
+  display: inline-block;
+  margin-bottom: 3px;
+  border: 0.5px solid #888;
+  letter-spacing: 0.2px;
+}
+.init-progress.good { background: #0a0a0a; color: #fff; }
+.init-progress.stuck { background: #fff; border: 1px solid #0a0a0a; }
+.init-desc {
+  font-size: 8.5px;
+  line-height: 1.28;
+  color: #2a2a2a;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 2px solid #0a0a0a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  color: #444;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.footer-mark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #0a0a0a;
+}
+.legend { display: flex; gap: 9px; font-size: 8.5px; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 3px; }
+.legend-box { width: 10px; height: 10px; border: 1px solid #0a0a0a; }
+@media print { .page { margin: 0; box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Departamento de salud · Reunión técnica · Abril 2026</div>
+    <div class="title">Metas Sanitarias 2026</div>
+    <div class="subtitle">CENTRO DE SALUD FAMILIAR TONGOY · CORTE 2</div>
+    <div class="meta-strip">
+      <span>Ley 19.813 · Marco MAIS</span>
+      <span>Rural Costa · Coquimbo</span>
+      <span>CESFAM Tongoy + P.S.R. Guanaqueros</span>
+    </div>
+  </div>
+
+  <div class="hero-band">
+    <div>
+      <div class="hero-tag">Balance al 2° corte</div>
+      <div class="hero-num">5 de 8</div>
+      <div class="hero-cap">Metas en cumplimiento o liderazgo</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Avances</div>
+      <div class="hero-num sm">DSM ×2</div>
+      <div class="hero-cap">12% → 25%</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Estables</div>
+      <div class="hero-num sm">LME 32%</div>
+      <div class="hero-cap">Sin movimiento</div>
+    </div>
+    <div class="hero-divider">
+      <div class="hero-tag">Pendiente</div>
+      <div class="hero-num sm">Asma+EPOC</div>
+      <div class="hero-cap">Semestral · junio</div>
+    </div>
+  </div>
+
+  <div class="section-header">8 metas sanitarias · cumplimiento global al corte</div>
+  <div class="indicators">
+
+    <div class="ind-card crit">
+      <span class="status-badge">Crítico</span>
+      <div class="ind-num">Meta I</div>
+      <div class="ind-name">Recuperación DSM 12–23 m</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><span class="bar-val">24,7%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-val">S/D</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><span class="bar-val">24,7%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 37,0% · Meta 90%</div>
+      <span class="trend-tag">↗ ×2 vs marzo</span>
+    </div>
+
+    <div class="ind-card sob">
+      <span class="status-badge">Cumple</span>
+      <div class="ind-num">Meta III.A</div>
+      <div class="ind-name">Control odont. 0–9 años</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">100%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill strip" style="width:100%"></div></div><span class="bar-val">→CES</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">100%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 100% · Meta 48%</div>
+      <span class="trend-tag">→ estable</span>
+    </div>
+
+    <div class="ind-card sob">
+      <span class="status-badge">Cumple</span>
+      <div class="ind-num">Meta III.B</div>
+      <div class="ind-name">6 años libres de caries</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">100%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill strip" style="width:100%"></div></div><span class="bar-val">→CES</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">100%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 100% · Meta 22%</div>
+      <span class="trend-tag">→ estable</span>
+    </div>
+
+    <div class="ind-card sob">
+      <span class="status-badge">★ Líder</span>
+      <div class="ind-num">Meta IV.A</div>
+      <div class="ind-name">Cobertura efectiva DM2</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">133%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill strip" style="width:100%"></div></div><span class="bar-val">→CES</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">133%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 90,5% · Meta 27%</div>
+      <span class="trend-tag">→ semestral</span>
+    </div>
+
+    <div class="ind-card">
+      <span class="status-badge">Mixto</span>
+      <div class="ind-num">Meta IV.B</div>
+      <div class="ind-name">Evaluación pies DM2</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:84%"></div></div><span class="bar-val">84,5%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill gray" style="width:76%"></div></div><span class="bar-val">75,9%</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="bar-val">82,2%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 80,9% · Meta 80%</div>
+      <span class="trend-tag">→ semestral</span>
+    </div>
+
+    <div class="ind-card sob">
+      <span class="status-badge">★ Líder</span>
+      <div class="ind-num">Meta V</div>
+      <div class="ind-name">Cobertura efectiva HTA</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">114%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill strip" style="width:100%"></div></div><span class="bar-val">→CES</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">114%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 71,1% · Meta 36%</div>
+      <span class="trend-tag">→ semestral</span>
+    </div>
+
+    <div class="ind-card crit">
+      <span class="status-badge">Crítico</span>
+      <div class="ind-num">Meta VI</div>
+      <div class="ind-name">LME al 6° mes</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:53%"></div></div><span class="bar-val">53,3%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill gray" style="width:83%"></div></div><span class="bar-val">83,3%</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-val">55,0%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 80,3% · Meta 60%</div>
+      <span class="trend-tag">↑ PSR recuperó</span>
+    </div>
+
+    <div class="ind-card crit">
+      <span class="status-badge">Crítico</span>
+      <div class="ind-num">Meta VII</div>
+      <div class="ind-name">Cobertura Asma + EPOC</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">CES</span><div class="bar-track"><div class="bar-fill" style="width:48%"></div></div><span class="bar-val">48,2%</span></div>
+        <div class="bar-row"><span class="bar-label">PSR</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-val">S/D</span></div>
+        <div class="bar-row"><span class="bar-label">TOT</span><div class="bar-track"><div class="bar-fill" style="width:48%"></div></div><span class="bar-val">48,2%</span></div>
+      </div>
+      <div class="ind-comuna">Comuna 63,5% · Meta 20,3%</div>
+      <span class="trend-tag">→ semestral</span>
+    </div>
+
+  </div>
+
+  <div class="two-col">
+    <div class="panel dark">
+      <div class="panel-title">Hallazgo actualizado</div>
+      <div class="paradox-text">
+        La paradoja persiste pero <strong>cede en la niñez</strong>: la recuperación DSM se duplicó (12 → 25%) gracias al Plan 1000 Días Costa. La LME sigue estancada, brecha de 6 a 7 lactantes.
+      </div>
+      <div class="paradox-sub">
+        LME requiere intensificación · Asma/EPOC define cierre en junio
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Comparativo comunal</div>
+      <table class="matrix">
+        <tr><th>Meta</th><th>Tongoy</th><th>Comuna</th><th>Rank</th></tr>
+        <tr class="sob"><td class="lbl">DM2</td><td>133%</td><td>90,5%</td><td>1°/8</td></tr>
+        <tr class="sob"><td class="lbl">HTA</td><td>114%</td><td>71,1%</td><td>1°/8</td></tr>
+        <tr><td class="lbl">Pies DM2</td><td>106%</td><td>80,9%</td><td>2°/8</td></tr>
+        <tr><td class="lbl">LME</td><td>53%</td><td>80,3%</td><td>7°/8</td></tr>
+        <tr class="crit"><td class="lbl">Asma+EPOC</td><td>48%</td><td>63,5%</td><td>8°/8</td></tr>
+        <tr class="crit"><td class="lbl">DSM</td><td>25%</td><td>37,0%</td><td>7°/8</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="initiatives">
+    <div class="initiatives-title">4 iniciativas de mejora · Avance al 2° corte</div>
+    <div class="init-grid">
+
+      <div class="init-card">
+        <div class="init-num">01</div>
+        <div class="init-name">Costa Respira</div>
+        <div class="init-target">Asma · EPOC · Meta VII</div>
+        <div class="init-progress stuck">Sin datos · junio</div>
+        <div class="init-desc">Circuito itinerante con espirometría portátil + telemedicina HD. Pesquisa en VDI con pauta GOLD-2.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">02</div>
+        <div class="init-name">Mar de Leche</div>
+        <div class="init-target">Lactancia · Meta VI</div>
+        <div class="init-progress stuck">32% · reforzar</div>
+        <div class="init-desc">Consejería pareada con pareja y abuelas. Círculos de Madres Costa. PSR recuperó 1 caso.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">03</div>
+        <div class="init-name">1000 Días Costa</div>
+        <div class="init-target">DSM · Meta I</div>
+        <div class="init-progress good">×2 · 12 → 25%</div>
+        <div class="init-desc">Microcohorte de 9 niños con PEDI 2×/sem y TEPSI trimestral. Abril: 2 recuperaciones vs 1 en marzo.</div>
+      </div>
+
+      <div class="init-card">
+        <div class="init-num">04</div>
+        <div class="init-name">Tongoy Conectado</div>
+        <div class="init-target">Gestión · 8 metas</div>
+        <div class="init-progress">En desarrollo</div>
+        <div class="init-desc">Dashboard Power BI desde RAYEN/SIDRA. Semáforo en tiempo real. Piloto previsto Q3.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-mark">CESFAM TONGOY · 2026</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-box" style="background:#1a1a1a"></div>Crítico</div>
+      <div class="legend-item"><div class="legend-box" style="background:#fff"></div>Atención</div>
+      <div class="legend-item"><div class="legend-box" style="background:#e8e8e8"></div>Cumple</div>
+    </div>
+    <div>REM A/P · Abril 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
