@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard CESFAM Tongoy · MMSS + IAAPS</title>
+<style>
+:root{--bg:#f4f6f6;--card:#ffffff;--txt:#173033;--muted:#607378;--pri:#0b6b70;--pri2:#1fa39a;--ok:#2e7d32;--warn:#a36a00;--bad:#b23b5f;--border:rgba(23,48,51,.12);--shadow:0 16px 40px rgba(16,28,34,.08);--r:22px}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,#f7fafb,var(--bg));color:var(--txt)} a{text-decoration:none;color:inherit}
+.wrap{max-width:1400px;margin:0 auto;padding:22px}
+.top{display:grid;grid-template-columns:1.3fr .9fr;gap:18px;align-items:stretch;margin-bottom:18px}
+.hero,.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.hero{padding:24px;overflow:hidden;position:relative}
+.hero:after{content:"";position:absolute;inset:auto -80px -70px auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(31,163,154,.18),transparent 65%)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(11,107,112,.08);color:var(--pri);font-weight:800;font-size:.88rem}
+h1{margin:14px 0 8px;font-size:clamp(2rem,4vw,4.2rem);line-height:1.02;max-width:12ch}
+.lead{font-size:1.04rem;color:var(--muted);max-width:70ch}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}
+.btn.active{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(11,107,112,.10)}
+.btn:focus-visible{outline:3px solid rgba(31,163,154,.25);outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{padding:16px;background:linear-gradient(180deg,#fff,#f7fbfb);border:1px solid var(--border);border-radius:18px}
+.stat strong{display:block;font-size:1.7rem}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.panel{padding:18px}
+.mmss{grid-column:span 7}.iaaps{grid-column:span 5}.full{grid-column:1/-1}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 12px}
+.section-title h2{margin:0;font-size:1.35rem}.section-title small{color:var(--muted)}
+.row{display:grid;grid-template-columns:92px 1fr 76px;gap:10px;align-items:center;margin:12px 0}
+.bar{height:14px;background:#e7ecec;border-radius:999px;overflow:hidden}.fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--pri),var(--pri2));transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+.pct{text-align:right;font-weight:900}.tag{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:.8rem;font-weight:800}
+.ok{background:rgba(46,125,50,.12);color:var(--ok)}.warn{background:rgba(163,106,0,.12);color:var(--warn)}.bad{background:rgba(178,59,95,.12);color:var(--bad)}
+.table-wrap{overflow:auto;border-radius:16px;border:1px solid var(--border)} table{width:100%;border-collapse:collapse;background:#fff} th,td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top} th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 11px;border-radius:999px;background:#eef5f4;font-weight:800;font-size:.86rem}
+.note{color:var(--muted);font-size:.94rem}
+.hidden{display:none}
+@media (max-width:1100px){.top,.stats,.grid{grid-template-columns:1fr}.mmss,.iaaps{grid-column:1/-1}.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.wrap{padding:14px}.stats{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="top">
+    <div class="hero">
+      <span class="eyebrow">CESFAM Tongoy · dashboard mensual</span>
+      <h1>Avance dinámico de MMSS e IAAPS</h1>
+      <p class="lead">Una sola pantalla para ir incorporando nuevos cortes mes a mes. El dashboard separa metas sanitarias y IAAPS, destaca tendencias y deja una hoja operativa para actualización continua.</p>
+      <div class="filters" id="filters">
+        <a class="btn" href="index.html" aria-label="Volver al sitio principal">← Volver al sitio principal</a>
+        <button class="btn active" data-view="abril">Abril</button>
+        <button class="btn" data-view="mayo">Mayo</button>
+        <button class="btn" data-view="comparativo">Comparativo</button>
+        <button class="btn" data-view="plantilla">Plantilla mensual</button>
+      </div>
+    </div>
+    <div class="card panel">
+      <div class="stats">
+        <div class="stat"><span>MMSS abril</span><strong>5/8</strong><small class="note">Cumplen o lideran</small></div>
+        <div class="stat"><span>MMSS mayo</span><strong>3/4</strong><small class="note">Con datos activos</small></div>
+        <div class="stat"><span>IAAPS abril</span><strong>11/12</strong><small class="note">Datos comparables</small></div>
+        <div class="stat"><span>IAAPS mayo</span><strong>8/12</strong><small class="note">Corte parcial</small></div>
+      </div>
+      <div style="margin-top:14px" class="chips">
+        <span class="chip">GitHub Pages</span><span class="chip">Responsive</span><span class="chip">Editable</span><span class="chip">Mes a mes</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card panel mmss" data-card="mmss">
+      <div class="section-title"><h2>Metas Sanitarias MMSS</h2><small>abril vs mayo</small></div>
+      <div class="row"><strong>I DSM</strong><div class="bar"><div class="fill" data-abril="24.7" data-mayo="22" data-comp="23.3"></div></div><div class="pct">24.7 → 22.0</div></div>
+      <div class="row"><strong>III.A</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>III.B</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>IV.A</strong><div class="bar"><div class="fill" data-abril="133" data-mayo="133" data-comp="133"></div></div><div class="pct">133 → 133</div></div>
+      <div class="row"><strong>IV.B</strong><div class="bar"><div class="fill" data-abril="82.2" data-mayo="84.5" data-comp="83.3"></div></div><div class="pct">82.2 → 84.5</div></div>
+      <div class="row"><strong>V HTA</strong><div class="bar"><div class="fill" data-abril="114" data-mayo="114" data-comp="114"></div></div><div class="pct">114 → 114</div></div>
+      <div class="row"><strong>VI LME</strong><div class="bar"><div class="fill" data-abril="55" data-mayo="59.5" data-comp="57.25"></div></div><div class="pct">55.0 → 59.5</div></div>
+      <div class="row"><strong>VII A+E</strong><div class="bar"><div class="fill" data-abril="48.2" data-mayo="48.2" data-comp="48.2"></div></div><div class="pct">48.2 → 48.2</div></div>
+    </article>
+
+    <article class="card panel iaaps" data-card="iaaps">
+      <div class="section-title"><h2>IAAPS</h2><small>abril vs mayo</small></div>
+      <div class="row"><strong>M4</strong><div class="bar"><div class="fill" data-abril="5.12" data-mayo="5.10" data-comp="5.11"></div></div><div class="pct">5.12 → 5.10</div></div>
+      <div class="row"><strong>M5</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="92.9" data-comp="96.45"></div></div><div class="pct">100 → 92.9</div></div>
+      <div class="row"><strong>M6.1A</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>M6.2</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>M7</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>M8</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>M17a</strong><div class="bar"><div class="fill" data-abril="100" data-mayo="100" data-comp="100"></div></div><div class="pct">100 → 100</div></div>
+      <div class="row"><strong>M13</strong><div class="bar"><div class="fill" data-abril="98.8" data-mayo="null" data-comp="98.8"></div></div><div class="pct">98.8 → junio</div></div>
+    </article>
+
+    <article class="card panel full" data-card="comparativo">
+      <div class="section-title"><h2>Comparativo y lectura estratégica</h2><small>disponible en todos los cortes</small></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Bloque</th><th>Hallazgo abril</th><th>Hallazgo mayo</th><th>Lectura</th></tr></thead>
+          <tbody>
+            <tr><td>MMSS infantil</td><td>DSM 24.7% y LME 55%</td><td>DSM 22% y LME 59.5%</td><td>La lactancia mejora; DSM se contrae por nuevos casos y requiere rescate activo.</td></tr>
+            <tr><td>Crónicas</td><td>DM2 y HTA por sobre meta</td><td>Se mantienen como fortaleza</td><td>Consolidar buena práctica y sostener seguimiento nominal.</td></tr>
+            <tr><td>Respiratorio</td><td>Asma/EPOC en brecha</td><td>Sin dato mensual activo</td><td>Debe entrar a auditoría y búsqueda activa.</td></tr>
+            <tr><td>IAAPS</td><td>Mayoría en cumplimiento</td><td>VDI cae a 92.9%</td><td>La continuidad es buena, pero hay que sostener el trabajo territorial.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="card panel full hidden" data-card="plantilla">
+      <div class="section-title"><h2>Plantilla mensual editable</h2><small>lista para copiar y duplicar</small></div>
+      <div class="table-wrap" contenteditable="true">
+        <table>
+          <thead><tr><th>Corte</th><th>Meta/IAAPS</th><th>Valor</th><th>Tendencia</th><th>Observación</th></tr></thead>
+          <tbody>
+            <tr><td>Junio</td><td>MMSS I DSM</td><td>__%</td><td>↑ / ↓ / =</td><td>Actualizar tras cierre mensual.</td></tr>
+            <tr><td>Junio</td><td>MMSS VI LME</td><td>__%</td><td>↑ / ↓ / =</td><td>Agregar comentario técnico.</td></tr>
+            <tr><td>Junio</td><td>IAAPS M5 VDI</td><td>__%</td><td>↑ / ↓ / =</td><td>Comparar con abril y mayo.</td></tr>
+            <tr><td>Junio</td><td>IAAPS M13</td><td>__%</td><td>↑ / ↓ / =</td><td>Ingresar datos del nuevo corte.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</div>
+<script>
+const panels=[...document.querySelectorAll('[data-card]')];
+const buttons=[...document.querySelectorAll('.btn')];
+function apply(view){
+  buttons.forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+  panels.forEach(p=>p.classList.toggle('hidden', view==='plantilla' ? p.dataset.card!=='plantilla' : (p.dataset.card==='plantilla')));
+  document.querySelectorAll('.fill').forEach(el=>{
+    let v = view==='abril' ? el.dataset.abril : view==='mayo' ? el.dataset.mayo : el.dataset.comp;
+    if(v===undefined || v==='null' || v===null){ el.style.width='0%'; el.parentElement.nextElementSibling.textContent='—'; return; }
+    const n=parseFloat(v); el.style.width=Math.min(n,100)+'%';
+    const pct = el.parentElement.nextElementSibling; pct.textContent = view==='comparativo' ? n.toFixed(2) : (Math.round(n*10)/10).toFixed(1);
+  });
+}
+buttons.forEach(b=>b.addEventListener('click',()=>apply(b.dataset.view)));
+apply('abril');
+</script>
+</body>
+</html>
