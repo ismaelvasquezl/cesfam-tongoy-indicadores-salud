@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CESFAM Tongoy · Indicadores de Salud</title>
+  <meta name="description" content="Portal centralizado de indicadores, infografías, recursos institucionales y canales comunitarios del CESFAM Tongoy." />
+  <meta name="theme-color" content="#0b6a70" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="CESFAM Tongoy · Indicadores de Salud" />
+  <meta property="og:description" content="Acceso centralizado a indicadores sanitarios, infografías, recursos oficiales y plataformas comunitarias del CESFAM Tongoy." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_CL" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=zodiak@500,700&display=swap" />
+
+  <style>
+    /*
+      ACTUALIZACIÓN DEL INDEX
+      -----------------------------------------------------------------
+      Esta versión amplía la portada original agregando nuevas secciones
+      de acceso directo a recursos oficiales, plataformas institucionales
+      y redes de promoción comunitaria.
+
+      Criterios de diseño aplicados:
+      - HTML5 semántico para mejor accesibilidad y lectura del código.
+      - CSS Grid y Flexbox para lograr una interfaz responsiva.
+      - JavaScript moderno y discreto para animaciones, filtros y tema.
+      - Comentarios claros para facilitar futuras actualizaciones.
+      - Enlaces externos abiertos en nueva pestaña para no sacar al usuario
+        del portal principal.
+    */
+
+    :root,
+    [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+
+      --color-bg: #f6f5f1;
+      --color-surface: #fbfaf7;
+      --color-surface-2: #ffffff;
+      --color-surface-offset: #ece8e1;
+      --color-border: rgba(40, 37, 29, 0.12);
+      --color-divider: rgba(40, 37, 29, 0.08);
+      --color-text: #24211c;
+      --color-text-muted: #615f58;
+      --color-text-faint: #8d8b84;
+      --color-text-inverse: #f9f8f4;
+      --color-primary: #0b6a70;
+      --color-primary-hover: #084f54;
+      --color-primary-soft: rgba(11, 106, 112, 0.12);
+      --color-success: #447c2b;
+      --color-warning: #9a5f00;
+      --color-accent-rose: #a84562;
+      --radius-sm: 0.45rem;
+      --radius-md: 0.8rem;
+      --radius-lg: 1.1rem;
+      --radius-xl: 1.5rem;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(22, 26, 29, 0.06);
+      --shadow-md: 0 12px 30px rgba(22, 26, 29, 0.08);
+      --shadow-lg: 0 24px 60px rgba(11, 106, 112, 0.12);
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --font-display: 'Zodiak', Georgia, serif;
+      --font-body: 'Satoshi', 'Inter', sans-serif;
+      --content-default: 1180px;
+      --content-narrow: 760px;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #151513;
+      --color-surface: #1c1b18;
+      --color-surface-2: #23211f;
+      --color-surface-offset: #2b2825;
+      --color-border: rgba(238, 233, 224, 0.12);
+      --color-divider: rgba(238, 233, 224, 0.08);
+      --color-text: #eee7de;
+      --color-text-muted: #c0b8ae;
+      --color-text-faint: #938d84;
+      --color-text-inverse: #121212;
+      --color-primary: #67aeb4;
+      --color-primary-hover: #86c9cf;
+      --color-primary-soft: rgba(103, 174, 180, 0.18);
+      --color-accent-rose: #de7f98;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 14px 34px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.45);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --color-bg: #151513;
+        --color-surface: #1c1b18;
+        --color-surface-2: #23211f;
+        --color-surface-offset: #2b2825;
+        --color-border: rgba(238, 233, 224, 0.12);
+        --color-divider: rgba(238, 233, 224, 0.08);
+        --color-text: #eee7de;
+        --color-text-muted: #c0b8ae;
+        --color-text-faint: #938d84;
+        --color-text-inverse: #121212;
+        --color-primary: #67aeb4;
+        --color-primary-hover: #86c9cf;
+        --color-primary-soft: rgba(103, 174, 180, 0.18);
+        --color-accent-rose: #de7f98;
+      }
+    }
+
+    * , *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at top left, var(--color-primary-soft), transparent 32%),
+        linear-gradient(180deg, var(--color-bg), var(--color-surface));
+    }
+
+    img, svg { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -3rem;
+      z-index: 1000;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      transition: top var(--transition-interactive);
+    }
+
+    .skip-link:focus { top: var(--space-4); }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--content-default));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--color-bg) 84%, transparent);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .topbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      min-height: 4.75rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 44px;
+    }
+
+    .brand__mark {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 0.95rem;
+      padding: 0.5rem;
+      background: linear-gradient(135deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 68%, white));
+      color: white;
+      box-shadow: var(--shadow-sm);
+      flex: none;
+    }
+
+    .brand__copy strong {
+      display: block;
+      font-size: var(--text-sm);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .brand__copy span {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .quick-link,
+    .theme-toggle {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .quick-link {
+      padding-inline: var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .hero {
+      padding: clamp(var(--space-12), 8vw, var(--space-20)) 0 var(--space-10);
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      margin-bottom: var(--space-4);
+      border-radius: var(--radius-full);
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 12ch;
+    }
+
+    .hero p {
+      margin: var(--space-4) 0 0;
+      max-width: 62ch;
+      color: var(--color-text-muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: 0.95rem 1.15rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid transparent;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      transition: transform var(--transition-interactive), background var(--transition-interactive), border-color var(--transition-interactive), color var(--transition-interactive), box-shadow var(--transition-interactive);
+    }
+
+    .btn:hover,
+    .btn:focus-visible { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible { background: var(--color-primary-hover); }
+
+    .btn-secondary {
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      border-color: var(--color-border);
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, color-mix(in srgb, var(--color-surface-2) 86%, transparent), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      content-visibility: auto;
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      right: -2rem;
+      bottom: -2rem;
+      width: 8rem;
+      height: 8rem;
+      background: radial-gradient(circle, var(--color-primary-soft), transparent 72%);
+      pointer-events: none;
+    }
+
+    .panel-title { font-size: var(--text-lg); margin: 0 0 var(--space-3); }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .mini-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-surface-2) 92%, transparent);
+    }
+
+    .mini-card strong {
+      display: block;
+      color: var(--color-primary);
+      font-size: var(--text-lg);
+      line-height: 1.1;
+    }
+
+    .mini-card span {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .section {
+      padding: 0 0 var(--space-16);
+    }
+
+    .section-heading {
+      margin-bottom: var(--space-6);
+      max-width: var(--content-narrow);
+    }
+
+    .section-heading h2 {
+      margin: 0 0 var(--space-3);
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      line-height: 1.04;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    /*
+      GRID PRINCIPAL DE TARJETAS
+      Se usa auto-fit para adaptarse automáticamente a distintos anchos.
+    */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+      gap: var(--space-4);
+    }
+
+    .card {
+      display: grid;
+      gap: var(--space-5);
+      align-content: space-between;
+      min-height: 250px;
+      padding: var(--space-6);
+      background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-interactive), box-shadow var(--transition-interactive), border-color var(--transition-interactive), opacity var(--transition-interactive);
+      content-visibility: auto;
+    }
+
+    .card:hover,
+    .card:focus-within {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+    }
+
+    .card[hidden] { display: none; }
+
+    .card__top { display: grid; gap: var(--space-4); }
+    .card__meta { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      font-weight: 700;
+    }
+
+    .pill-secondary {
+      background: color-mix(in srgb, var(--color-accent-rose) 12%, var(--color-surface-2));
+      color: var(--color-accent-rose);
+    }
+
+    .status-ok {
+      background: color-mix(in srgb, var(--color-success) 14%, var(--color-surface-2));
+      color: var(--color-success);
+    }
+
+    .status-warn {
+      background: color-mix(in srgb, var(--color-warning) 14%, var(--color-surface-2));
+      color: var(--color-warning);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: var(--text-lg);
+      line-height: 1.15;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--color-text-muted);
+      max-width: 44ch;
+    }
+
+    .card__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .card__link,
+    .card__secondary {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.9rem 1.05rem;
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .card__link {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card__link:hover,
+    .card__link:focus-visible { background: var(--color-primary-hover); }
+
+    .card__secondary {
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+
+    .filter-btn {
+      min-height: 44px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .filter-btn.is-active {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: transparent;
+    }
+
+    .diagnostics {
+      display: grid;
+      gap: var(--space-4);
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    }
+
+    .diag {
+      padding: var(--space-5);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-surface) 84%, transparent);
+      content-visibility: auto;
+    }
+
+    .diag h3 { margin: 0 0 var(--space-2); font-size: var(--text-base); }
+    .diag p, .diag li, .diag code { color: var(--color-text-muted); font-size: var(--text-sm); }
+    .diag ul { margin: 0; padding-left: 1rem; }
+
+    .footer {
+      padding: var(--space-8) 0 var(--space-12);
+      border-top: 1px solid var(--color-divider);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (min-width: 760px) {
+      .hero-grid { grid-template-columns: 1.2fr 0.95fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+
+  <!--
+    Analítica opcional.
+    Reemplaza el ID si usarás GA4 real.
+  -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      anonymize_ip: true,
+      transport_type: 'beacon',
+      page_title: document.title,
+      page_path: window.location.pathname
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio de CESFAM Tongoy Indicadores de Salud">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v18" />
+            <path d="M3 12h18" />
+            <path d="M6.5 8.2c1.5.9 3.3 1.4 5.5 1.4s4-.5 5.5-1.4" />
+            <path d="M6.5 15.8c1.5-.9 3.3-1.4 5.5-1.4s4 .5 5.5 1.4" />
+          </svg>
+        </span>
+        <span class="brand__copy">
+          <strong>CESFAM Tongoy</strong>
+          <span>Indicadores de Salud · acceso centralizado</span>
+        </span>
+      </a>
+
+      <div class="toolbar">
+        <a class="quick-link" href="#infografias">Infografías</a>
+        <a class="quick-link" href="#recursos-externos">Recursos</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambiar tema">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero container" id="inicio">
+      <div class="hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Portal institucional · APS · móvil primero</span>
+          <h1>Un solo punto de entrada para indicadores, recursos oficiales y promoción en salud.</h1>
+          <p>
+            Esta actualización amplía la portada original del CESFAM Tongoy con nuevas secciones de acceso a plataformas oficiales, formatos REM y canales de difusión comunitaria, manteniendo un diseño claro, adaptable y fácil de administrar.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary track-click" href="#infografias" data-analytics-label="ir_a_infografias">Ver infografías</a>
+            <a class="btn btn-secondary track-click" href="#recursos-externos" data-analytics-label="ir_a_recursos_externos">Explorar recursos</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel reveal" aria-label="Resumen del portal">
+          <h2 class="panel-title">Actualización del portal principal</h2>
+          <p style="margin:0; color:var(--color-text-muted); max-width:40ch;">
+            Se incorporan accesos externos útiles para gestión, estadística, promoción comunitaria y difusión institucional, con enfoque de navegación simple para equipo interno y comunidad.
+          </p>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <strong>5+</strong>
+              <span>nuevos accesos integrados</span>
+            </div>
+            <div class="mini-card">
+              <strong>Web</strong>
+              <span>recursos oficiales enlazados</span>
+            </div>
+            <div class="mini-card">
+              <strong>Social</strong>
+              <span>promoción y comunidad</span>
+            </div>
+            <div class="mini-card">
+              <strong>REM</strong>
+              <span>formato actual disponible</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section container" id="infografias" aria-labelledby="infografias-title">
+      <div class="section-heading reveal">
+        <h2 id="infografias-title">Infografías y comparativos</h2>
+        <p>
+          Se mantiene la navegación original a archivos HTML del repositorio para metas sanitarias, IAAPS y progresión entre periodos, de forma directa y compatible con GitHub Pages.
+        </p>
+      </div>
+
+      <div class="cards">
+        <article class="card reveal" data-category="infografias">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill">Entrada principal</span>
+              <span class="pill status-ok">Repositorio interno</span>
+            </div>
+            <h3>Metas sanitarias</h3>
+            <p>Acceso a las infografías mensuales MMSS para consulta rápida desde la portada institucional.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="./mmss-abril.html" data-analytics-label="mmss_abril">Abrir MMSS abril</a>
+            <a class="card__secondary track-click" href="./mmss-mayo.html" data-analytics-label="mmss_mayo">Abrir MMSS mayo</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="infografias">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill">IAAPS</span>
+              <span class="pill status-ok">HTML directo</span>
+            </div>
+            <h3>IAAPS por corte mensual</h3>
+            <p>Acceso a vistas mensuales separadas para facilitar mantención, revisión y seguimiento del indicador.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="./iaaps-abril.html" data-analytics-label="iaaps_abril">Abrir IAAPS abril</a>
+            <a class="card__secondary track-click" href="./iaaps-mayo.html" data-analytics-label="iaaps_mayo">Abrir IAAPS mayo</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="infografias">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill">Comparativo</span>
+              <span class="pill status-warn">Actualizar según corte</span>
+            </div>
+            <h3>Progresión abril a mayo</h3>
+            <p>Espacio comparativo para mostrar evolución entre periodos con lectura simple y útil para equipos de salud y gestión.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="./progresion-abril-mayo.html" data-analytics-label="progresion_abril_mayo">Abrir comparativo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container" id="recursos-externos" aria-labelledby="recursos-title">
+      <div class="section-heading reveal">
+        <h2 id="recursos-title">Recursos externos y difusión</h2>
+        <p>
+          Esta nueva área incorpora accesos a plataformas oficiales, repositorios comunales y redes sociales vinculadas a promoción en salud y trabajo territorial. Los filtros permiten ordenar rápidamente la vista según el tipo de recurso.
+        </p>
+      </div>
+
+      <div class="filters reveal" aria-label="Filtros de recursos">
+        <button class="filter-btn is-active" type="button" data-filter="all">Todos</button>
+        <button class="filter-btn" type="button" data-filter="oficial">Oficiales</button>
+        <button class="filter-btn" type="button" data-filter="formatos">Formatos</button>
+        <button class="filter-btn" type="button" data-filter="comunidad">Comunidad</button>
+      </div>
+
+      <div class="cards" id="resource-grid">
+        <article class="card reveal" data-category="oficial">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill">Oficial</span>
+              <span class="pill status-ok">Departamento de Salud Coquimbo</span>
+            </div>
+            <h3>Datasalud Coquimbo</h3>
+            <p>Repositorio comunal oficial del Departamento de Salud de Coquimbo con estadísticas, información sanitaria y recursos de consulta institucional.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://datasalud.apscoquimbo.cl/" target="_blank" rel="noopener noreferrer" data-analytics-label="datasalud_coquimbo">Abrir Datasalud</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="formatos oficial">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill">Formatos</span>
+              <span class="pill status-ok">REM actual</span>
+            </div>
+            <h3>Formatos actuales REM</h3>
+            <p>Acceso directo al enlace compartido para revisión y descarga de formatos vigentes vinculados al ecosistema de Data Salud Coquimbo.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://cloud.municoquimbo.cl/index.php/s/VrQ6BUAPiplm8xQ" target="_blank" rel="noopener noreferrer" data-analytics-label="formatos_actuales_rem">Abrir formatos REM</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="comunidad">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill pill-secondary">Instagram</span>
+              <span class="pill">Promoción en salud</span>
+            </div>
+            <h3>Promoción Salud Tongoy · Instagram</h3>
+            <p>Perfil con actividades realizadas, creadas y financiadas por funcionarios del CESFAM Tongoy para promoción y participación en salud.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://www.instagram.com/promosaludtongoy/" target="_blank" rel="noopener noreferrer" data-analytics-label="instagram_promosaludtongoy">Abrir Instagram</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="comunidad">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill pill-secondary">YouTube</span>
+              <span class="pill">Promoción en salud</span>
+            </div>
+            <h3>Promoción Salud Tongoy · YouTube</h3>
+            <p>Canal de videos con actividades creadas y ejecutadas por funcionarios del CESFAM Tongoy para educación y difusión comunitaria.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://www.youtube.com/@promocionsaludtongoy9954" target="_blank" rel="noopener noreferrer" data-analytics-label="youtube_promosaludtongoy">Abrir canal</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="comunidad">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill pill-secondary">Varios</span>
+              <span class="pill">Territorio</span>
+            </div>
+            <h3>Posta Salud Rural Guanaqueros</h3>
+            <p>Perfil territorial de la Posta de Salud Rural Guanaqueros, útil para seguimiento de actividades, difusión local y presencia comunitaria.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://www.instagram.com/posta_guanaqueros/" target="_blank" rel="noopener noreferrer" data-analytics-label="instagram_posta_guanaqueros">Abrir perfil</a>
+          </div>
+        </article>
+
+        <article class="card reveal" data-category="comunidad">
+          <div class="card__top">
+            <div class="card__meta">
+              <span class="pill pill-secondary">Varios</span>
+              <span class="pill">Territorio</span>
+            </div>
+            <h3>Sector Azul Tongoy</h3>
+            <p>Perfil de Instagram del Sector Azul Tongoy para visibilizar actividades, comunicación local y vínculo con la comunidad usuaria.</p>
+          </div>
+          <div class="card__actions">
+            <a class="card__link track-click" href="https://www.instagram.com/sectorazultongoy/" target="_blank" rel="noopener noreferrer" data-analytics-label="instagram_sector_azul_tongoy">Abrir perfil</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container" id="uso" aria-labelledby="uso-title">
+      <div class="section-heading reveal">
+        <h2 id="uso-title">Uso del portal actualizado</h2>
+        <p>
+          La portada ahora no solo funciona como índice de infografías, sino también como hub institucional de acceso rápido a herramientas externas, difusión comunitaria y recursos territoriales.
+        </p>
+      </div>
+
+      <div class="diagnostics">
+        <article class="diag reveal">
+          <h3>Consulta interna</h3>
+          <p>Ideal para equipos APS, referentes técnicos y coordinación administrativa que necesiten entrar rápido a indicadores y repositorios de apoyo.</p>
+        </article>
+        <article class="diag reveal">
+          <h3>Difusión móvil</h3>
+          <p>El diseño mantiene lectura cómoda, botones amplios y enlaces claros para compartir vía WhatsApp, QR o redes institucionales.</p>
+        </article>
+        <article class="diag reveal">
+          <h3>Actualización sencilla</h3>
+          <p>Las nuevas tarjetas están comentadas y separadas por categorías para que agregar o editar enlaces en el futuro sea más simple.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>CESFAM Tongoy · Indicadores, recursos oficiales y promoción en salud en un solo punto de acceso.</p>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      TEMA CLARO/OSCURO
+      -----------------------------------------------------------------
+      Sin localStorage para evitar problemas en entornos restringidos.
+    */
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      let currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      function icon(theme) {
+        return theme === 'dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+      }
+
+      function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        toggle.innerHTML = icon(theme);
+        toggle.setAttribute('aria-label', theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+      }
+
+      applyTheme(currentTheme);
+      toggle.addEventListener('click', function () {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(currentTheme);
+      });
+    })();
+
+    /*
+      ANIMACIÓN DE ENTRADA PROGRESIVA
+      -----------------------------------------------------------------
+      IntersectionObserver permite una experiencia ligera y elegante.
+    */
+    (function () {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        reveals.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+      reveals.forEach(el => observer.observe(el));
+    })();
+
+    /*
+      FILTRO DE TARJETAS
+      -----------------------------------------------------------------
+      Permite a la persona usuaria mostrar solo recursos oficiales,
+      formatos o comunidad sin recargar la página.
+    */
+    (function () {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('#resource-grid .card');
+
+      buttons.forEach(button => {
+        button.addEventListener('click', function () {
+          const filter = this.dataset.filter;
+
+          buttons.forEach(btn => btn.classList.remove('is-active'));
+          this.classList.add('is-active');
+
+          cards.forEach(card => {
+            const categories = card.dataset.category.split(' ');
+            const visible = filter === 'all' || categories.includes(filter);
+            card.hidden = !visible;
+          });
+        });
+      });
+    })();
+
+    /*
+      ANALÍTICA DE NAVEGACIÓN
+      -----------------------------------------------------------------
+      Se protegen los eventos con validación de gtag para evitar errores.
+    */
+    (function () {
+      const trackedItems = document.querySelectorAll('.track-click');
+      trackedItems.forEach(item => {
+        item.addEventListener('click', function () {
+          if (typeof gtag === 'function') {
+            gtag('event', 'select_content', {
+              content_type: 'navigation_entry',
+              item_id: this.dataset.analyticsLabel || this.textContent.trim(),
+              link_url: this.getAttribute('href')
+            });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
