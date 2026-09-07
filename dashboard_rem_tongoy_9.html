@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard REM — CESFAM Tongoy</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{color-scheme:light;
+    --page:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+    --grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,0.10);
+    --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#4a3aa7;--s8:#e34948;
+    --good:#0ca30c;--warning:#fab219;--serious:#ec835a;--critical:#d03b3b;--good-ink:#006300;}
+  :root[data-theme="dark"]{color-scheme:dark;
+    --page:#0d0d0d;--surface:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--muted:#898781;
+    --grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,0.10);
+    --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;
+    --good-ink:#0ca30c;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 20px 60px}
+  header{padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  h1{font-size:1.3rem;margin:0 0 3px}.sub{color:var(--ink2);font-size:.88rem;margin:0}
+  .filters{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:14px 0 4px;
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+  .filters label{font-size:.82rem;color:var(--ink2);margin-right:4px}
+  select,button{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 11px;cursor:pointer}
+  .badge{display:inline-block;background:var(--warning);color:#3a2b00;font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:999px}
+  .qc{background:rgba(250,178,25,.14);border:1px solid rgba(250,178,25,.4);border-radius:10px;
+    padding:10px 14px;margin:12px 0;font-size:.84rem;color:var(--ink2)}
+  h2{font-size:1.02rem;margin:26px 0 4px}.hint{color:var(--muted);font-size:.82rem;margin:0 0 12px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px 13px}
+  .kpi .lbl{color:var(--ink2);font-size:.8rem;margin:0 0 6px}
+  .kpi .val{font-size:1.75rem;font-weight:650;letter-spacing:-.5px}
+  .kpi .delta{font-size:.84rem;font-weight:600;margin-top:2px}
+  .up{color:var(--good-ink)}.down{color:var(--critical)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:14px}
+  .chart-box{position:relative;height:300px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .semaforos{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:6px}
+  .sem{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;border-left:6px solid var(--axis)}
+  .sem.good{border-left-color:var(--good)}.sem.warning{border-left-color:var(--warning)}.sem.critical{border-left-color:var(--critical)}
+  .sem.nodata{border-left-color:var(--muted);opacity:.7}
+  .sem .name{font-size:.8rem;color:var(--ink2);margin:0 0 6px;min-height:2.2em}
+  .sem .n{font-size:1.35rem;font-weight:650}
+  .sem .tag{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 7px;border-radius:999px;margin-top:6px}
+  .tag.good{background:rgba(12,163,12,.14);color:var(--good-ink)}
+  .tag.warning{background:rgba(250,178,25,.18);color:#7a5600}
+  .tag.critical{background:rgba(208,59,59,.15);color:var(--critical)}
+  .tag.nodata{background:var(--grid);color:var(--muted)}
+  :root[data-theme="dark"] .tag.warning{color:var(--warning)}
+  .sem .um{color:var(--muted);font-size:.74rem;margin-top:5px}
+  .segbtns{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 12px}
+  .segbtns button{padding:5px 10px;font-size:.82rem}
+  .segbtns button[aria-pressed="true"]{background:var(--s1);color:#fff;border-color:var(--s1)}
+  .sechead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:26px 0 4px}
+  .sechead h2{margin:0}
+  .modeseg{display:inline-flex;gap:0;margin:0 0 0 auto}
+  .modeseg button{padding:4px 12px;font-size:.78rem;border-radius:0}
+  .modeseg button:first-child{border-radius:8px 0 0 8px}.modeseg button:last-child{border-radius:0 8px 8px 0;border-left:none}
+  .modeseg button[aria-pressed="true"]{background:var(--s7);color:#fff;border-color:var(--s7)}
+  .modeseg .secmes{margin-left:8px;padding:4px 8px;font-size:.78rem;border-radius:8px}
+  #sexoseg button[aria-pressed="true"]{background:var(--s1);color:#fff;border-color:var(--s1)}
+  #edadseg button[aria-pressed="true"]{background:var(--s3);color:#fff;border-color:var(--s3)}
+  .grouphead{display:flex;align-items:center;gap:10px;margin:34px 0 2px;padding:10px 14px;
+    background:linear-gradient(90deg,rgba(74,58,167,.10),transparent);border-left:4px solid var(--s7);
+    border-radius:10px;font-size:1.05rem;font-weight:650}
+  :root[data-theme="dark"] .grouphead{background:linear-gradient(90deg,rgba(144,133,233,.16),transparent)}
+  .grouphead .gsub{font-size:.8rem;font-weight:400;color:var(--ink2)}
+  .cov .row{display:grid;grid-template-columns:230px 1fr 150px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+  .cov .row:last-child{border-bottom:none}.cov .cname{font-size:.9rem}
+  .bar{position:relative;height:14px;background:var(--grid);border-radius:8px;overflow:hidden}
+  .bar .fill{position:absolute;top:0;left:0;bottom:0;border-radius:8px;background:var(--s1)}
+  .bar .meta{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
+  .insight{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--s7);
+    border-radius:12px;padding:13px 16px;margin:6px 0 14px;font-size:.9rem;line-height:1.5}
+  .insight b{color:var(--ink)} .insight .crit{color:var(--critical);font-weight:600}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:6px}
+  .tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+  .tile .l{color:var(--ink2);font-size:.78rem;margin:0 0 5px}.tile .n{font-size:1.5rem;font-weight:650}
+  @media(max-width:860px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  .cov .fig{text-align:right;font-size:.88rem;font-variant-numeric:tabular-nums}.cov .fig small{color:var(--muted)}
+  .hide{display:none!important}
+  footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--border);color:var(--ink2);font-size:.83rem}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}
+    .semaforos{grid-template-columns:repeat(2,1fr)}.cov .row{grid-template-columns:1fr;gap:6px}.cov .fig{text-align:left}}
+</style></head>
+<body><div class="wrap">
+  <header>
+    <h1>Dashboard REM — CESFAM Tongoy</h1>
+    <p class="sub">Serie A · Producción, vigilancia epidemiológica y coberturas · <span class="badge" id="periodo"></span></p>
+  </header>
+
+  <div class="filters">
+    <div><label for="disp">Dispositivo</label><select id="disp"></select></div>
+    <div><label for="mes">Mes (maestro)</label><select id="mes"></select></div>
+    <div><label>Sexo</label>
+      <span class="modeseg" id="sexoseg">
+        <button data-s="t" aria-pressed="true">Ambos</button>
+        <button data-s="h">Hombres</button>
+        <button data-s="m">Mujeres</button>
+      </span></div>
+    <div><label>Tramo etario</label>
+      <span class="modeseg" id="edadseg">
+        <button data-e="all" aria-pressed="true">Todas</button>
+        <button data-e="0-9">0–9</button>
+        <button data-e="10-19">10–19</button>
+        <button data-e="20-64">20–64</button>
+        <button data-e="65+">65+</button>
+      </span></div>
+    <div style="font-size:.78rem;color:var(--muted);max-width:220px">Cada sección tiene su propio <b>mes</b> y <b>Mes/Ciclo</b> ↘</div>
+    <button id="theme" style="margin-left:auto">🌓 Tema</button>
+  </div>
+  <div class="qc" id="qc"></div>
+
+  <div class="sechead"><h2>Resumen del mes</h2><span id="tg-resumen"></span></div>
+  <p class="hint" id="mesHint"></p>
+  <div class="kpis" id="kpis"></div>
+
+  <h2 id="t-prod">Producción — tendencia</h2>
+  <p class="hint" id="h-prod"></p>
+  <div class="grid2">
+    <div class="card"><div class="chart-box"><canvas id="chTotal"></canvas></div></div>
+    <div class="card"><div class="chart-box"><canvas id="chEst"></canvas></div></div>
+  </div>
+  <div class="card" id="prodSexCard"><div class="chart-box"><canvas id="chProdSex"></canvas></div></div>
+  <div class="card" id="prodEdadCard"><p class="hint" id="h-edad" style="margin:0 0 8px"></p><div class="chart-box"><canvas id="chEdad"></canvas></div></div>
+
+  <section id="sec-epi">
+    <div class="sechead"><h2>Vigilancia epidemiológica respiratoria — alertas por umbral</h2><span id="tg-epi"></span></div>
+    <p class="hint" id="h-epi"></p>
+    <div class="semaforos" id="semaforos"></div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="card">
+        <div class="segbtns" id="epiBtns"></div>
+        <div class="chart-box"><canvas id="chEpi"></canvas></div>
+      </div>
+      <div class="card"><div class="chart-box"><canvas id="chEpiSex"></canvas></div></div>
+    </div>
+  </section>
+
+  <section id="sec-prev">
+    <h2>Prevención — actividad mensual</h2>
+    <p class="hint">PAP tomados y EMP realizados por mes.</p>
+    <div class="card"><div class="chart-box"><canvas id="chPrev"></canvas></div></div>
+  </section>
+
+  <section id="sec-pscv">
+    <h2>Programa Cardiovascular (PSCV) — compensación</h2>
+    <p class="hint" id="h-pscv"></p>
+    <div class="tiles" id="pscvTiles"></div>
+    <div class="card cov" id="pscvBars"></div>
+  </section>
+
+  <section id="sec-cob">
+    <div class="sechead"><h2>Coberturas — avance acumulado (solo consolidado)</h2><span id="tg-cob"></span></div>
+    <p class="hint" id="h-cob"></p>
+    <div class="card cov" id="cov"></div>
+  </section>
+
+  <div class="grouphead" id="mh-group">🧠 Salud Mental <span class="gsub">— foco de alerta poblacional · ingresos/egresos, actividad del programa, PASMI y PACOM</span></div>
+
+  <section id="sec-sm">
+    <div class="sechead"><h2>Ingresos, egresos y actividad (A05 · A06)</h2><span id="tg-sm"></span></div>
+    <p class="hint" id="h-sm"></p>
+    <div class="insight" id="smInsight"></div>
+    <div class="tiles" id="smTiles"></div>
+    <div class="grid2">
+      <div class="card"><div class="chart-box"><canvas id="chSM"></canvas></div></div>
+      <div class="card"><div class="chart-box"><canvas id="chSMact"></canvas></div></div>
+    </div>
+    <div class="card"><div class="chart-box"><canvas id="chSMSex"></canvas></div></div>
+    <div class="grid2">
+      <div class="card">
+        <div style="font-size:.9rem;font-weight:600;margin-bottom:8px" id="smDiagTitle">Diagnósticos registrados en ingresos</div>
+        <div class="cov" id="smDiag"></div>
+        <div style="margin-top:10px;font-size:.82rem;color:var(--ink2)" id="smRiesgo"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:.9rem;font-weight:600;margin-bottom:8px">Otras actividades del programa (A06)</div>
+        <div class="tiles" id="smA06Tiles" style="grid-template-columns:repeat(2,1fr)"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-prog">
+    <div class="sechead"><h2 id="t-prog">PASMI — Salud Mental Infantil</h2><span id="tg-prog"></span></div>
+    <p class="hint" id="h-prog"></p>
+    <div class="segbtns" id="progBtns"></div>
+    <div class="tiles" id="progTiles"></div>
+    <div class="card"><div class="chart-box"><canvas id="chProg"></canvas></div></div>
+  </section>
+
+  <section id="sec-pacom">
+    <div class="sechead"><h2>PACOM — Acompañamiento Psicosocial en APS</h2><span id="tg-pacom"></span></div>
+    <p class="hint" id="h-pacom"></p>
+    <div class="tiles" id="pacomTiles"></div>
+    <div class="grid2">
+      <div class="card"><div class="chart-box"><canvas id="chPacom"></canvas></div></div>
+      <div class="card"><div class="chart-box"><canvas id="chPacomAct"></canvas></div></div>
+    </div>
+  </section>
+
+  <div class="grouphead" id="rehab-group" style="border-left-color:var(--s3);background:linear-gradient(90deg,rgba(27,175,122,.12),transparent)">♿ Rehabilitación <span class="gsub">— CCR (Centro Comunitario de Rehabilitación), foco de monitoreo</span></div>
+
+  <section id="sec-ccr">
+    <div class="sechead"><h2>CCR — Rehabilitación integral en APS (A28)</h2><span id="tg-ccr"></span></div>
+    <p class="hint" id="h-ccr"></p>
+    <div class="insight" id="ccrInsight" style="border-left-color:var(--s3)"></div>
+    <div class="tiles" id="ccrTiles"></div>
+    <div class="grid2">
+      <div class="card"><div class="chart-box"><canvas id="chCCR"></canvas></div></div>
+      <div class="card"><div class="chart-box"><canvas id="chCCRses"></canvas></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="chart-box"><canvas id="chCCRSex"></canvas></div></div>
+      <div class="card">
+        <div style="font-size:.9rem;font-weight:600;margin-bottom:8px" id="ccrCondTitle">Ingresos por condición de salud</div>
+        <div class="cov" id="ccrCond"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grouphead" id="dsm-group" style="border-left-color:var(--s4);background:linear-gradient(90deg,rgba(237,161,0,.12),transparent)">🧒 Chile Crece Contigo <span class="gsub">— desarrollo infantil 0–9: pesquisa (EEDP/TEPSI) y Sala de Estimulación</span></div>
+
+  <section id="sec-dsm">
+    <div class="sechead"><h2>Pesquisa del desarrollo y Sala de Estimulación (A03 · A05-F)</h2><span id="tg-dsm"></span></div>
+    <p class="hint" id="h-dsm"></p>
+    <div class="insight" id="dsmInsight" style="border-left-color:var(--s4)"></div>
+    <div class="tiles" id="dsmTiles"></div>
+    <div class="grid2">
+      <div class="card"><div class="chart-box"><canvas id="chDSMres"></canvas></div></div>
+      <div class="card"><div class="chart-box"><canvas id="chDSMflujo"></canvas></div></div>
+    </div>
+    <div class="card"><div class="chart-box"><canvas id="chDSMsex"></canvas></div></div>
+  </section>
+
+  <div class="grouphead" id="proy-group" style="border-left-color:var(--s6);background:linear-gradient(90deg,rgba(124,92,196,.12),transparent)">📈 Proyección y comparación interanual <span class="gsub">— 2025 vs 2026 y estimación estacional de septiembre a diciembre 2026</span></div>
+
+  <section id="sec-proy">
+    <div class="sechead"><h2>Proyección estacional 2026 (base 2025)</h2></div>
+    <p class="hint" id="h-proy"></p>
+    <div class="insight" id="proyInsight" style="border-left-color:var(--s6)"></div>
+    <div id="proyBtns" class="segbtns" style="margin:.6rem 0"></div>
+    <div class="tiles" id="proyTiles"></div>
+    <div class="card"><div class="chart-box" style="height:340px"><canvas id="chProy"></canvas></div></div>
+    <p class="hint" style="margin-top:.5rem">Método: proyección estacional ingenua ajustada por nivel — se toma la forma mensual de 2025 y se reescala por la razón media 2026/2025 de los meses ya observados. La banda sombreada es un intervalo de incertidumbre derivado de la variabilidad de esa razón. <strong>Es una estimación provisional</strong>, no una meta ni un compromiso; se afina cada mes al cargar nuevos REM. Requiere un año base completo (2025): disponible para CESFAM Tongoy, PSR Guanaqueros y el Consolidado. SUR Tongoy aún sin base 2025.</p>
+  </section>
+
+  <section id="sec-cat">
+    <h2>Urgencia — categorización de pacientes (triage C1–C5)</h2>
+    <p class="hint">Distribución de severidad por mes. C1–C2 alta complejidad; C4–C5 baja complejidad.</p>
+    <div class="card"><div class="chart-box"><canvas id="chCat"></canvas></div></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+<script>
+const DATA = {"meses": [1, 2, 3, 4, 5, 6, 7, 8], "labels": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago"], "dispositivos": {"105321": {"nombre": "CESFAM Tongoy", "tipo": "aps", "estamentos": {"Médico": [473.0, 378.0, 446.0, 498.0, 656.0, 361.0, 383.0, 388.0], "Enfermería": [159.0, 55.0, 263.0, 83.0, 59.0, 56.0, 268.0, 139.0], "Kinesiología": [223.0, 176.0, 435.0, 8.0, 198.0, 17.0, 468.0, 422.0], "Psicología": [156.0, 156.0, 300.0, 171.0, 188.0, 1.0, 6.0, 180.0], "Trabajo Social": [287.0, 35.0, 74.0, 58.0, 47.0, 38.0, 37.0, 53.0], "Nutrición": [87.0, 68.0, 134.0, 65.0, 74.0, 31.0, 58.0, 81.0], "Odontología": [392.0, 385.0, 445.0, 416.0, 415.0, 376.0, 287.0, 479.0], "Otros": [97.0, 113.0, 283.0, 105.0, 127.0, 111.0, 53.0, 146.0]}, "estamentos_h": {"Médico": [181.0, 149.0, 186.0, 177.0, 254.0, 157.0, 163.0, 155.0], "Enfermería": [95.0, 32.0, 119.0, 56.0, 31.0, 22.0, 120.0, 99.0], "Kinesiología": [87.0, 63.0, 134.0, 3.0, 72.0, 8.0, 166.0, 165.0], "Psicología": [51.0, 53.0, 84.0, 56.0, 58.0, 1.0, 4.0, 49.0], "Trabajo Social": [128.0, 18.0, 36.0, 20.0, 22.0, 18.0, 16.0, 18.0], "Nutrición": [35.0, 34.0, 45.0, 21.0, 30.0, 14.0, 28.0, 33.0], "Odontología": [146.0, 156.0, 168.0, 162.0, 168.0, 146.0, 129.0, 185.0], "Otros": [32.0, 36.0, 83.0, 53.0, 59.0, 56.0, 19.0, 67.0]}, "estamentos_m": {"Médico": [292.0, 229.0, 260.0, 321.0, 402.0, 204.0, 220.0, 233.0], "Enfermería": [64.0, 23.0, 144.0, 27.0, 28.0, 34.0, 148.0, 40.0], "Kinesiología": [136.0, 113.0, 301.0, 5.0, 126.0, 9.0, 302.0, 257.0], "Psicología": [105.0, 103.0, 216.0, 115.0, 130.0, 0.0, 2.0, 131.0], "Trabajo Social": [159.0, 17.0, 38.0, 38.0, 25.0, 20.0, 21.0, 35.0], "Nutrición": [52.0, 34.0, 89.0, 44.0, 44.0, 17.0, 30.0, 48.0], "Odontología": [246.0, 229.0, 277.0, 254.0, 247.0, 230.0, 158.0, 294.0], "Otros": [65.0, 77.0, 200.0, 52.0, 68.0, 55.0, 34.0, 79.0]}, "epi": {"IRA Alta": [10.0, 17.0, 53.0, 66.0, 69.0, 12.0, 60.0, 62.0], "Neumonía": [8.0, 0.0, 1.0, 2.0, 1.0, 6.0, 1.0, 6.0], "SBO": [1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 4.0, 5.0], "Asma": [4.0, 0.0, 2.0, 0.0, 6.0, 6.0, 1.0, 1.0], "EPOC": [3.0, 3.0, 11.0, 0.0, 1.0, 1.0, 9.0, 1.0]}, "epi_h": {"IRA Alta": [3.0, 11.0, 24.0, 22.0, 31.0, 7.0, 32.0, 22.0], "Neumonía": [0.0, 0.0, 1.0, 1.0, 0.0, 3.0, 0.0, 1.0], "SBO": [0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 3.0, 1.0], "Asma": [2.0, 0.0, 1.0, 0.0, 1.0, 3.0, 0.0, 1.0], "EPOC": [2.0, 0.0, 3.0, 0.0, 1.0, 0.0, 3.0, 0.0]}, "epi_m": {"IRA Alta": [7.0, 6.0, 29.0, 44.0, 38.0, 5.0, 28.0, 40.0], "Neumonía": [8.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0, 5.0], "SBO": [1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 4.0], "Asma": [2.0, 0.0, 1.0, 0.0, 5.0, 3.0, 1.0, 0.0], "EPOC": [1.0, 3.0, 8.0, 0.0, 0.0, 1.0, 6.0, 1.0]}, "extra": {"PAP tomados": [43.0, 28.0, 10.0, 56.0, 50.0, 60.0, 46.0, 30.0], "EMP realizados": [86.0, 138.0, 170.0, 173.0, 245.0, 143.0, 137.0, 108.0]}, "prod_total": [1874.0, 1366.0, 2380.0, 1404.0, 1764.0, 991.0, 1560.0, 1888.0], "programas": {"PASMI": {"EDI (evaluaciones)": [3.0, 0.0, 0.0, 1.0, 2.0, 0.0, 1.0, 4.0], "Visitas a establecimiento": [2.0, 0, 5.0, 6.0, 1.0, 0, 5.0, 1.0], "Niños/as visitados": [2.0, 0, 3.0, 6.0, 1.0, 0, 5.0, 1.0], "Padres/madres en talleres": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0], "Talleres": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0], "Sesiones": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0]}}, "salud_mental": {"Ingresos": [13.0, 24.0, 29.0, 13.0, 21.0, 3.0, 17.0, 19.0], "Egresos": [9.0, 0.0, 0.0, 3.0, 3.0, 11.0, 2.0, 6.0], "Ingresos_h": [4.0, 11.0, 11.0, 3.0, 11.0, 0.0, 7.0, 4.0], "Ingresos_m": [9.0, 13.0, 18.0, 10.0, 10.0, 3.0, 10.0, 15.0], "Egresos_h": [6.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0, 3.0], "Egresos_m": [3.0, 0.0, 0.0, 2.0, 2.0, 9.0, 2.0, 3.0], "diag": {"Ánimo/depresión": [2.0, 2.0, 4.0, 1.0, 0.0, 2.0, 3.0, 3.0], "Consumo sustancias": [0.0, 2.0, 2.0, 0.0, 1.0, 3.0, 4.0, 2.0], "Comportamiento": [1.0, 4.0, 4.0, 4.0, 2.0, 3.0, 0.0, 2.0], "Ansiedad": [2.0, 5.0, 1.0, 1.0, 3.0, 2.0, 1.0, 2.0], "TGD/Autismo": [1.0, 1.0, 3.0, 0.0, 1.0, 0.0, 0.0, 0.0], "Adaptativo": [2.0, 4.0, 9.0, 2.0, 5.0, 5.0, 8.0, 2.0], "Otros": [5.0, 5.0, 6.0, 5.0, 7.0, 4.0, 0.0, 4.0]}, "riesgo": {"Ideación suicida": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Intento de suicidio": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Violencia (víctima)": [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]}, "a06": {"Controles SM": [258.0, 282.0, 363.0, 388.0, 429.0, 365.0, 297.0, 423.0], "Rescate de pacientes": [29.0, 0.0, 48.0, 15.0, 52.0, 0.0, 49.0, 16.0], "Psicoterapia individual": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Consultorías (A.2)": [1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], "Coordinación comunitaria (part.)": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0], "Emergencia/desastre (part.)": [0, 0, 0.0, 0.0, 0, 0, 20.0, 0]}}, "pacom": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 7.0], "Egresos": [2.0, 0.0, 0.0, 3.0, 2.0, 1.0, 1.0, 6.0], "Visitas domiciliarias": [12.0, 10.0, 0.0, 3.0, 8.0, 11.0, 0.0, 18.0], "Apoyo telefónico (acciones)": [58.0, 0.0, 17.0, 27.0, 48.0, 36.0, 0.0, 49.0], "Planes de acompañamiento": [0.0, 2.0, 1.0, 0.0, 1.0, 2.0, 0.0, 6.0], "Evaluaciones participativas": [1.0, 0.0, 0.0, 3.0, 2.0, 0.0, 0.0, 6.0], "Pauta ingreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 6.0], "Pauta egreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.0], "Coordinación comunitaria": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0]}, "ccr": {"Ingresos": [17.0, 35.0, 16.0, 38.0, 28.0, 15.0, 16.0, 37.0], "Reingresos": [2.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [26.0, 14.0, 16.0, 18.0, 17.0, 1.0, 11.0, 14.0], "Ingresos_h": [8.0, 11.0, 4.0, 23.0, 7.0, 1.0, 5.0, 15.0], "Ingresos_m": [9.0, 24.0, 12.0, 15.0, 21.0, 14.0, 11.0, 22.0], "Egresos_h": [9.0, 5.0, 5.0, 7.0, 10.0, 0.0, 2.0, 5.0], "Egresos_m": [17.0, 9.0, 11.0, 11.0, 7.0, 1.0, 9.0, 9.0], "Egresos por alta": [23.0, 10.0, 14.0, 17.0, 10.0, 1.0, 11.0, 13.0], "Abandono": [3.0, 4.0, 2.0, 1.0, 7.0, 0.0, 0.0, 1.0], "Sesiones": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0], "Participación comunidad": [13.0, 10.0, 13.0, 7.0, 0.0, 0.0, 0.0, 0.0], "ses": {"Kinesiología": [130.0, 208.0, 129.0, 168.0, 161.0, 80.0, 99.0, 242.0], "Terapia Ocupacional": [43.0, 55.0, 47.0, 64.0, 54.0, 69.0, 39.0, 39.0], "Fonoaudiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "cond": {"Musculoesquelético": [15.0, 17.0, 15.0, 28.0, 20.0, 9.0, 17.0, 21.0], "Neurológico": [2.0, 3.0, 1.0, 6.0, 1.0, 0.0, 2.0, 8.0], "Otros": [0.0, 15.0, 0.0, 4.0, 7.0, 6.0, 3.0, 8.0], "Sensorial": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "dsm": {"test_aplic": [21.0, 30.0, 19.0, 23.0, 25.0, 21.0, 8.0, 30.0], "test_aplic_h": [11.0, 15.0, 10.0, 11.0, 21.0, 10.0, 6.0, 17.0], "test_aplic_m": [10.0, 15.0, 9.0, 12.0, 4.0, 11.0, 2.0, 13.0], "pb_aplic": [12.0, 17.0, 19.0, 7.0, 15.0, 16.0, 13.0, 19.0], "pb_normal": [11.0, 16.0, 11.0, 6.0, 14.0, 14.0, 13.0, 16.0], "pb_alterado": [1.0, 1.0, 8.0, 1.0, 1.0, 2.0, 0.0, 3.0], "reeval_norm": [0.0, 3.0, 0.0, 1.0, 0.0, 1.0, 3.0, 4.0], "sala_reing": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0], "res": {"Normal": [11.0, 23.0, 13.0, 19.0, 17.0, 15.0, 9.0, 20.0], "Rezago": [3.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Riesgo": [2.0, 1.0, 4.0, 1.0, 1.0, 4.0, 4.0, 2.0], "Retraso": [2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0]}, "detect": {"Rezago": [3.0, 2.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Riesgo": [2.0, 2.0, 4.0, 1.0, 1.0, 4.0, 5.0, 2.0], "Retraso": [2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0], "Riesgo BPS": [0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 0.0]}, "sala": {"Rezago": [0.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 2.0], "Riesgo": [2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 3.0, 1.0], "Retraso": [0.0, 3.0, 0.0, 1.0, 2.0, 0.0, 0.0, 0.0], "Riesgo BPS": [0.0, 0.0, 0.0, 2.0, 1.0, 1.0, 0.0, 1.0]}}, "edad": {"0-9": [309.0, 154.0, 290.0, 211.0, 274.0, 139.0, 259.0, 294.0], "10-19": [160.0, 71.0, 179.0, 108.0, 166.0, 65.0, 74.0, 121.0], "20-64": [649.0, 478.0, 793.0, 436.0, 610.0, 263.0, 540.0, 617.0], "65+": [364.0, 278.0, 673.0, 233.0, 299.0, 148.0, 400.0, 377.0]}, "yoy": {"Producción total": {"y_prev": [944.0, 1185.0, 1163.0, 1536.0, 1588.0, 1169.0, 1583.0, 1428.0, 1170.0, 1241.0, 1356.0, 1042.0], "y_cur": [1874.0, 1366.0, 2380.0, 1404.0, 1764.0, 991.0, 1560.0, 1888.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 1516, 1608, 1757, 1350], "lo": [null, null, null, null, null, null, null, null, 1003, 1064, 1162, 893], "hi": [null, null, null, null, null, null, null, null, 2029, 2152, 2351, 1807]}, "IRA alta (respiratorio)": {"y_prev": [0.0, 0.0, 32.0, 40.0, 42.0, 18.0, 26.0, 21.0, 29.0, 20.0, 21.0, 14.0], "y_cur": [10.0, 17.0, 53.0, 66.0, 69.0, 12.0, 60.0, 62.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 53, 36, 38, 25], "lo": [null, null, null, null, null, null, null, null, 32, 22, 23, 16], "hi": [null, null, null, null, null, null, null, null, 73, 50, 53, 35]}, "Controles salud mental": {"y_prev": [180.0, 186.0, 212.0, 244.0, 190.0, 94.0, 333.0, 302.0, 267.0, 278.0, 298.0, 299.0], "y_cur": [258.0, 282.0, 363.0, 388.0, 429.0, 365.0, 297.0, 423.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 490, 510, 547, 549], "lo": [null, null, null, null, null, null, null, null, 294, 306, 328, 329], "hi": [null, null, null, null, null, null, null, null, 686, 714, 766, 768]}, "PAP tomados": {"y_prev": [34.0, 31.0, 0.0, 39.0, 53.0, 0.0, 45.0, 24.0, 53.0, 49.0, 61.0, 49.0], "y_cur": [43.0, 28.0, 10.0, 56.0, 50.0, 60.0, 46.0, 30.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 60, 56, 69, 56], "lo": [null, null, null, null, null, null, null, null, 50, 46, 58, 46], "hi": [null, null, null, null, null, null, null, null, 70, 65, 81, 65]}, "EMP realizados": {"y_prev": [83.0, 154.0, 66.0, 166.0, 150.0, 84.0, 178.0, 156.0, 220.0, 128.0, 171.0, 67.0], "y_cur": [86.0, 138.0, 170.0, 173.0, 245.0, 143.0, 137.0, 108.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 285, 166, 221, 87], "lo": [null, null, null, null, null, null, null, null, 171, 99, 133, 52], "hi": [null, null, null, null, null, null, null, null, 398, 232, 310, 121]}, "Sesiones CCR (rehab)": {"y_prev": [6.0, 217.0, 98.0, 9.0, 5.0, 58.0, 228.0, 183.0, 252.0, 236.0, 284.0, 399.0], "y_cur": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 3318, 3107, 3739, 5253], "lo": [null, null, null, null, null, null, null, null, 1991, 1864, 2244, 3152], "hi": [null, null, null, null, null, null, null, null, 4645, 4350, 5235, 7355]}, "EEDP/TEPSI aplicados": {"y_prev": [8.0, 13.0, 8.0, 12.0, 4.0, 11.0, 17.0, 21.0, 19.0, 15.0, 16.0, 24.0], "y_cur": [21.0, 30.0, 19.0, 23.0, 25.0, 21.0, 8.0, 30.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 46, 36, 39, 58], "lo": [null, null, null, null, null, null, null, null, 27, 22, 23, 35], "hi": [null, null, null, null, null, null, null, null, 64, 51, 54, 81]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 1335, "rcv_alto": 722, "hta_bc": 1127, "hta_comp": 582, "dm_bc": 639, "dm_comp": 211}}, "105405": {"nombre": "PSR Guanaqueros", "tipo": "aps", "estamentos": {"Médico": [173.0, 103.0, 167.0, 246.0, 210.0, 235.0, 206.0, 224.0], "Enfermería": [102.0, 113.0, 155.0, 131.0, 119.0, 82.0, 121.0, 135.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 21.0, 13.0, 0.0], "Psicología": [3.0, 26.0, 0.0, 0.0, 0.0, 53.0, 49.0, 0.0], "Trabajo Social": [30.0, 14.0, 13.0, 20.0, 23.0, 35.0, 15.0, 14.0], "Nutrición": [18.0, 24.0, 12.0, 20.0, 14.0, 32.0, 49.0, 20.0], "Odontología": [207.0, 163.0, 205.0, 170.0, 141.0, 169.0, 172.0, 177.0], "Otros": [21.0, 9.0, 28.0, 23.0, 28.0, 11.0, 17.0, 18.0]}, "estamentos_h": {"Médico": [70.0, 48.0, 63.0, 88.0, 70.0, 126.0, 100.0, 88.0], "Enfermería": [40.0, 55.0, 78.0, 68.0, 71.0, 46.0, 65.0, 76.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 11.0, 9.0, 0.0], "Psicología": [1.0, 8.0, 0.0, 0.0, 0.0, 15.0, 15.0, 0.0], "Trabajo Social": [8.0, 6.0, 5.0, 10.0, 11.0, 10.0, 5.0, 6.0], "Nutrición": [3.0, 8.0, 7.0, 5.0, 4.0, 16.0, 17.0, 7.0], "Odontología": [68.0, 72.0, 75.0, 74.0, 52.0, 76.0, 73.0, 65.0], "Otros": [1.0, 0.0, 2.0, 0.0, 0.0, 2.0, 0.0, 0.0]}, "estamentos_m": {"Médico": [103.0, 55.0, 104.0, 158.0, 140.0, 109.0, 106.0, 136.0], "Enfermería": [62.0, 58.0, 77.0, 63.0, 48.0, 36.0, 56.0, 59.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 4.0, 0.0], "Psicología": [2.0, 18.0, 0.0, 0.0, 0.0, 38.0, 34.0, 0.0], "Trabajo Social": [22.0, 8.0, 8.0, 10.0, 12.0, 25.0, 10.0, 8.0], "Nutrición": [15.0, 16.0, 5.0, 15.0, 10.0, 16.0, 32.0, 13.0], "Odontología": [139.0, 91.0, 130.0, 96.0, 89.0, 93.0, 99.0, 112.0], "Otros": [20.0, 9.0, 26.0, 23.0, 28.0, 9.0, 17.0, 18.0]}, "epi": {"IRA Alta": [0.0, 1.0, 1.0, 6.0, 8.0, 40.0, 8.0, 4.0], "Neumonía": [0.0, 3.0, 0.0, 3.0, 4.0, 1.0, 2.0, 0.0], "SBO": [0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0], "EPOC": [0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]}, "epi_h": {"IRA Alta": [0.0, 0.0, 0.0, 1.0, 3.0, 24.0, 3.0, 3.0], "Neumonía": [0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0], "SBO": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], "EPOC": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]}, "epi_m": {"IRA Alta": [0.0, 1.0, 1.0, 5.0, 5.0, 16.0, 5.0, 1.0], "Neumonía": [0.0, 1.0, 0.0, 2.0, 3.0, 0.0, 2.0, 0.0], "SBO": [0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], "EPOC": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "extra": {"PAP tomados": [0.0, 18.0, 12.0, 41.0, 15.0, 13.0, 15.0, 16.0], "EMP realizados": [62.0, 61.0, 75.0, 81.0, 61.0, 50.0, 71.0, 69.0]}, "prod_total": [554.0, 452.0, 580.0, 610.0, 535.0, 638.0, 642.0, 588.0], "programas": {"PASMI": {"EDI (evaluaciones)": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Visitas a establecimiento": [0.0, 0.0, 0, 0, 0, 0, 12.0, 0.0], "Niños/as visitados": [0.0, 0.0, 0, 0, 0, 0, 12.0, 0.0], "Padres/madres en talleres": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0], "Talleres": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0], "Sesiones": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0]}}, "salud_mental": {"Ingresos": [10.0, 9.0, 2.0, 13.0, 9.0, 7.0, 7.0, 6.0], "Egresos": [0.0, 0.0, 0.0, 2.0, 1.0, 0.0, 2.0, 2.0], "Ingresos_h": [6.0, 2.0, 1.0, 6.0, 5.0, 2.0, 2.0, 1.0], "Ingresos_m": [4.0, 7.0, 1.0, 7.0, 4.0, 5.0, 5.0, 5.0], "Egresos_h": [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Egresos_m": [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0], "diag": {"Ánimo/depresión": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0], "Consumo sustancias": [3.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0], "Comportamiento": [2.0, 1.0, 1.0, 7.0, 0.0, 1.0, 0.0, 0.0], "Ansiedad": [3.0, 0.0, 0.0, 1.0, 2.0, 2.0, 0.0, 4.0], "TGD/Autismo": [0.0, 1.0, 0.0, 4.0, 2.0, 0.0, 1.0, 1.0], "Adaptativo": [2.0, 5.0, 1.0, 1.0, 2.0, 2.0, 5.0, 1.0], "Otros": [5.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0]}, "riesgo": {"Ideación suicida": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Intento de suicidio": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Violencia (víctima)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]}, "a06": {"Controles SM": [76.0, 73.0, 30.0, 60.0, 160.0, 104.0, 116.0, 144.0], "Rescate de pacientes": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicoterapia individual": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Consultorías (A.2)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Coordinación comunitaria (part.)": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0], "Emergencia/desastre (part.)": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0]}}, "pacom": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Visitas domiciliarias": [0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.0, 0.0], "Apoyo telefónico (acciones)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Planes de acompañamiento": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Evaluaciones participativas": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Pauta ingreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 24.0, 0.0, 0.0, 0.0], "Pauta egreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Coordinación comunitaria": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0]}, "ccr": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Reingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Ingresos_h": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Ingresos_m": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos_h": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos_m": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos por alta": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Abandono": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Sesiones": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Participación comunidad": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "ses": {"Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Terapia Ocupacional": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Fonoaudiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "cond": {"Musculoesquelético": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Neurológico": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Otros": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Sensorial": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "dsm": {"test_aplic": [8.0, 7.0, 1.0, 5.0, 9.0, 8.0, 10.0, 5.0], "test_aplic_h": [5.0, 3.0, 0.0, 4.0, 7.0, 4.0, 4.0, 1.0], "test_aplic_m": [3.0, 4.0, 1.0, 1.0, 2.0, 4.0, 6.0, 4.0], "pb_aplic": [6.0, 6.0, 5.0, 4.0, 3.0, 6.0, 4.0, 1.0], "pb_normal": [3.0, 4.0, 4.0, 4.0, 3.0, 6.0, 4.0, 1.0], "pb_alterado": [2.0, 2.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0], "reeval_norm": [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0], "sala_reing": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "res": {"Normal": [8.0, 4.0, 1.0, 5.0, 8.0, 5.0, 9.0, 4.0], "Rezago": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 2.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0]}, "detect": {"Rezago": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 2.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0], "Riesgo BPS": [0.0, 2.0, 4.0, 2.0, 0.0, 1.0, 2.0, 3.0]}, "sala": {"Rezago": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Riesgo BPS": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "edad": {"0-9": [43.0, 45.0, 49.0, 65.0, 52.0, 108.0, 69.0, 59.0], "10-19": [37.0, 24.0, 27.0, 30.0, 32.0, 54.0, 39.0, 43.0], "20-64": [132.0, 124.0, 149.0, 171.0, 150.0, 172.0, 194.0, 163.0], "65+": [135.0, 96.0, 150.0, 174.0, 160.0, 135.0, 168.0, 146.0]}, "yoy": {"Producción total": {"y_prev": [357.0, 495.0, 464.0, 616.0, 561.0, 385.0, 604.0, 447.0, 518.0, 521.0, 607.0, 444.0], "y_cur": [554.0, 452.0, 580.0, 610.0, 535.0, 638.0, 642.0, 588.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 628, 631, 736, 538], "lo": [null, null, null, null, null, null, null, null, 491, 494, 576, 421], "hi": [null, null, null, null, null, null, null, null, 764, 768, 895, 655]}, "IRA alta (respiratorio)": {"y_prev": [0.0, 0.0, 14.0, 0.0, 13.0, 12.0, 14.0, 8.0, 0.0, 5.0, 0.0, 8.0], "y_cur": [0.0, 1.0, 1.0, 6.0, 8.0, 40.0, 8.0, 4.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 0, 5, 0, 8], "lo": [null, null, null, null, null, null, null, null, 0, 3, 0, 5], "hi": [null, null, null, null, null, null, null, null, 0, 7, 0, 11]}, "Controles salud mental": {"y_prev": [65.0, 73.0, 54.0, 84.0, 93.0, 67.0, 83.0, 96.0, 60.0, 69.0, 74.0, 55.0], "y_cur": [76.0, 73.0, 30.0, 60.0, 160.0, 104.0, 116.0, 144.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 72, 83, 89, 66], "lo": [null, null, null, null, null, null, null, null, 49, 56, 60, 45], "hi": [null, null, null, null, null, null, null, null, 95, 110, 118, 88]}, "PAP tomados": {"y_prev": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "y_cur": [0.0, 18.0, 12.0, 41.0, 15.0, 13.0, 15.0, 16.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, null, null, null, null], "lo": [null, null, null, null, null, null, null, null, null, null, null, null], "hi": [null, null, null, null, null, null, null, null, null, null, null, null]}, "EMP realizados": {"y_prev": [40.0, 54.0, 35.0, 26.0, 59.0, 64.0, 22.0, 38.0, 220.0, 36.0, 59.0, 67.0], "y_cur": [62.0, 61.0, 75.0, 81.0, 61.0, 50.0, 71.0, 69.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 407, 67, 109, 124], "lo": [null, null, null, null, null, null, null, null, 244, 40, 65, 74], "hi": [null, null, null, null, null, null, null, null, 570, 93, 153, 173]}, "Sesiones CCR (rehab)": {"y_prev": [0.0, 0.0, 116.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "y_cur": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 0, 0, 0, 0], "lo": [null, null, null, null, null, null, null, null, 0, 0, 0, 0], "hi": [null, null, null, null, null, null, null, null, 0, 0, 0, 0]}, "EEDP/TEPSI aplicados": {"y_prev": [3.0, 3.0, 5.0, 3.0, 2.0, 2.0, 7.0, 2.0, 19.0, 5.0, 5.0, 4.0], "y_cur": [8.0, 7.0, 1.0, 5.0, 9.0, 8.0, 10.0, 5.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 46, 12, 12, 10], "lo": [null, null, null, null, null, null, null, null, 27, 7, 7, 6], "hi": [null, null, null, null, null, null, null, null, 64, 17, 17, 14]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 571, "rcv_alto": 282, "hta_bc": 476, "hta_comp": 266, "dm_bc": 211, "dm_comp": 62}}, "consolidado": {"nombre": "Consolidado (CESFAM + PSR)", "tipo": "aps", "estamentos": {"Médico": [646.0, 481.0, 613.0, 744.0, 866.0, 596.0, 589.0, 612.0], "Enfermería": [261.0, 168.0, 418.0, 214.0, 178.0, 138.0, 389.0, 274.0], "Kinesiología": [223.0, 176.0, 435.0, 8.0, 198.0, 38.0, 481.0, 422.0], "Psicología": [159.0, 182.0, 300.0, 171.0, 188.0, 54.0, 55.0, 180.0], "Trabajo Social": [317.0, 49.0, 87.0, 78.0, 70.0, 73.0, 52.0, 67.0], "Nutrición": [105.0, 92.0, 146.0, 85.0, 88.0, 63.0, 107.0, 101.0], "Odontología": [599.0, 548.0, 650.0, 586.0, 556.0, 545.0, 459.0, 656.0], "Otros": [118.0, 122.0, 311.0, 128.0, 155.0, 122.0, 70.0, 164.0]}, "estamentos_h": {"Médico": [251.0, 197.0, 249.0, 265.0, 324.0, 283.0, 263.0, 243.0], "Enfermería": [135.0, 87.0, 197.0, 124.0, 102.0, 68.0, 185.0, 175.0], "Kinesiología": [87.0, 63.0, 134.0, 3.0, 72.0, 19.0, 175.0, 165.0], "Psicología": [52.0, 61.0, 84.0, 56.0, 58.0, 16.0, 19.0, 49.0], "Trabajo Social": [136.0, 24.0, 41.0, 30.0, 33.0, 28.0, 21.0, 24.0], "Nutrición": [38.0, 42.0, 52.0, 26.0, 34.0, 30.0, 45.0, 40.0], "Odontología": [214.0, 228.0, 243.0, 236.0, 220.0, 222.0, 202.0, 250.0], "Otros": [33.0, 36.0, 85.0, 53.0, 59.0, 58.0, 19.0, 67.0]}, "estamentos_m": {"Médico": [395.0, 284.0, 364.0, 479.0, 542.0, 313.0, 326.0, 369.0], "Enfermería": [126.0, 81.0, 221.0, 90.0, 76.0, 70.0, 204.0, 99.0], "Kinesiología": [136.0, 113.0, 301.0, 5.0, 126.0, 19.0, 306.0, 257.0], "Psicología": [107.0, 121.0, 216.0, 115.0, 130.0, 38.0, 36.0, 131.0], "Trabajo Social": [181.0, 25.0, 46.0, 48.0, 37.0, 45.0, 31.0, 43.0], "Nutrición": [67.0, 50.0, 94.0, 59.0, 54.0, 33.0, 62.0, 61.0], "Odontología": [385.0, 320.0, 407.0, 350.0, 336.0, 323.0, 257.0, 406.0], "Otros": [85.0, 86.0, 226.0, 75.0, 96.0, 64.0, 51.0, 97.0]}, "epi": {"IRA Alta": [10.0, 18.0, 54.0, 72.0, 77.0, 52.0, 68.0, 66.0], "Neumonía": [8.0, 3.0, 1.0, 5.0, 5.0, 7.0, 3.0, 6.0], "SBO": [1.0, 3.0, 0, 1.0, 2.0, 1.0, 5.0, 5.0], "Asma": [4.0, 0, 2.0, 0, 6.0, 8.0, 1.0, 1.0], "EPOC": [3.0, 4.0, 11.0, 0, 1.0, 2.0, 9.0, 1.0]}, "epi_h": {"IRA Alta": [3.0, 11.0, 24.0, 23.0, 34.0, 31.0, 35.0, 25.0], "Neumonía": [0, 2.0, 1.0, 2.0, 1.0, 4.0, 0, 1.0], "SBO": [0, 0, 0, 0, 2.0, 1.0, 4.0, 1.0], "Asma": [2.0, 0, 1.0, 0, 1.0, 4.0, 0, 1.0], "EPOC": [2.0, 0, 3.0, 0, 1.0, 1.0, 3.0, 0]}, "epi_m": {"IRA Alta": [7.0, 7.0, 30.0, 49.0, 43.0, 21.0, 33.0, 41.0], "Neumonía": [8.0, 1.0, 0, 3.0, 4.0, 3.0, 3.0, 5.0], "SBO": [1.0, 3.0, 0, 1.0, 0, 0, 1.0, 4.0], "Asma": [2.0, 0, 1.0, 0, 5.0, 4.0, 1.0, 0], "EPOC": [1.0, 4.0, 8.0, 0, 0, 1.0, 6.0, 1.0]}, "extra": {"PAP tomados": [43.0, 46.0, 22.0, 97.0, 65.0, 73.0, 61.0, 46.0], "EMP realizados": [148.0, 199.0, 245.0, 254.0, 306.0, 193.0, 208.0, 177.0]}, "prod_total": [2428.0, 1818.0, 2960.0, 2014.0, 2299.0, 1629.0, 2202.0, 2476.0], "programas": {"PASMI": {"EDI (evaluaciones)": [3.0, 0, 0, 1.0, 3.0, 1.0, 1.0, 4.0], "Visitas a establecimiento": [2.0, 0, 5.0, 6.0, 1.0, 0, 17.0, 1.0], "Niños/as visitados": [2.0, 0, 3.0, 6.0, 1.0, 0, 17.0, 1.0], "Padres/madres en talleres": [0, 0, 0, 0, 0, 0, 0, 0], "Talleres": [0, 0, 0, 0, 0, 0, 0, 0], "Sesiones": [0, 0, 0, 0, 0, 0, 0, 0]}}, "salud_mental": {"Ingresos": [23.0, 33.0, 31.0, 26.0, 30.0, 10.0, 24.0, 25.0], "Egresos": [9.0, 0, 0, 5.0, 4.0, 11.0, 4.0, 8.0], "Ingresos_h": [10.0, 13.0, 12.0, 9.0, 16.0, 2.0, 9.0, 5.0], "Ingresos_m": [13.0, 20.0, 19.0, 17.0, 14.0, 8.0, 15.0, 20.0], "Egresos_h": [6.0, 0, 0, 2.0, 2.0, 2.0, 0, 5.0], "Egresos_m": [3.0, 0, 0, 3.0, 2.0, 9.0, 4.0, 3.0], "diag": {"Ánimo/depresión": [2.0, 2.0, 4.0, 1.0, 0, 3.0, 4.0, 3.0], "Consumo sustancias": [3.0, 2.0, 2.0, 0, 2.0, 4.0, 5.0, 2.0], "Comportamiento": [3.0, 5.0, 5.0, 11.0, 2.0, 4.0, 0, 2.0], "Ansiedad": [5.0, 5.0, 1.0, 2.0, 5.0, 4.0, 1.0, 6.0], "TGD/Autismo": [1.0, 2.0, 3.0, 4.0, 3.0, 0, 1.0, 1.0], "Adaptativo": [4.0, 9.0, 10.0, 3.0, 7.0, 7.0, 13.0, 3.0], "Otros": [10.0, 5.0, 6.0, 5.0, 9.0, 4.0, 0, 5.0]}, "riesgo": {"Ideación suicida": [0, 1.0, 0, 0, 0, 0, 0, 0], "Intento de suicidio": [0, 0, 0, 0, 1.0, 1.0, 0, 0], "Violencia (víctima)": [0, 0, 1.0, 0, 1.0, 0, 0, 2.0]}, "a06": {"Controles SM": [334.0, 355.0, 393.0, 448.0, 589.0, 469.0, 413.0, 567.0], "Rescate de pacientes": [29.0, 0, 48.0, 15.0, 52.0, 0, 49.0, 16.0], "Psicoterapia individual": [0, 0, 0, 0, 0, 0, 0, 0], "Consultorías (A.2)": [1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], "Coordinación comunitaria (part.)": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0], "Emergencia/desastre (part.)": [0, 0, 0, 0, 0, 0, 20.0, 0]}}, "pacom": {"Ingresos": [0, 0, 0, 0, 2.0, 2.0, 1.0, 7.0], "Egresos": [2.0, 0, 0, 3.0, 2.0, 1.0, 1.0, 6.0], "Visitas domiciliarias": [12.0, 10.0, 0, 3.0, 8.0, 11.0, 0, 18.0], "Apoyo telefónico (acciones)": [58.0, 0, 17.0, 27.0, 48.0, 36.0, 0, 49.0], "Planes de acompañamiento": [0, 2.0, 1.0, 0, 1.0, 2.0, 0, 6.0], "Evaluaciones participativas": [1.0, 0, 0, 3.0, 2.0, 0, 0, 6.0], "Pauta ingreso (aplicadas)": [0, 0, 0, 0, 24.0, 1.0, 0, 6.0], "Pauta egreso (aplicadas)": [0, 0, 0, 0, 0, 0, 0, 6.0], "Coordinación comunitaria": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0]}, "ccr": {"Ingresos": [17.0, 35.0, 16.0, 38.0, 28.0, 15.0, 16.0, 37.0], "Reingresos": [2.0, 0, 2.0, 0, 0, 0, 0, 0], "Egresos": [26.0, 14.0, 16.0, 18.0, 17.0, 1.0, 11.0, 14.0], "Ingresos_h": [8.0, 11.0, 4.0, 23.0, 7.0, 1.0, 5.0, 15.0], "Ingresos_m": [9.0, 24.0, 12.0, 15.0, 21.0, 14.0, 11.0, 22.0], "Egresos_h": [9.0, 5.0, 5.0, 7.0, 10.0, 0, 2.0, 5.0], "Egresos_m": [17.0, 9.0, 11.0, 11.0, 7.0, 1.0, 9.0, 9.0], "Egresos por alta": [23.0, 10.0, 14.0, 17.0, 10.0, 1.0, 11.0, 13.0], "Abandono": [3.0, 4.0, 2.0, 1.0, 7.0, 0, 0, 1.0], "Sesiones": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0], "Participación comunidad": [13.0, 10.0, 13.0, 7.0, 0, 0, 0, 0], "ses": {"Kinesiología": [130.0, 208.0, 129.0, 168.0, 161.0, 80.0, 99.0, 242.0], "Terapia Ocupacional": [43.0, 55.0, 47.0, 64.0, 54.0, 69.0, 39.0, 39.0], "Fonoaudiología": [0, 0, 0, 0, 0, 0, 0, 0], "Psicología": [0, 0, 0, 0, 0, 0, 0, 0]}, "cond": {"Musculoesquelético": [15.0, 17.0, 15.0, 28.0, 20.0, 9.0, 17.0, 21.0], "Neurológico": [2.0, 3.0, 1.0, 6.0, 1.0, 0, 2.0, 8.0], "Otros": [0, 15.0, 0, 4.0, 7.0, 6.0, 3.0, 8.0], "Sensorial": [0, 0, 0, 0, 0, 0, 0, 0]}}, "dsm": {"test_aplic": [29.0, 37.0, 20.0, 28.0, 34.0, 29.0, 18.0, 35.0], "test_aplic_h": [16.0, 18.0, 10.0, 15.0, 28.0, 14.0, 10.0, 18.0], "test_aplic_m": [13.0, 19.0, 10.0, 13.0, 6.0, 15.0, 8.0, 17.0], "pb_aplic": [18.0, 23.0, 24.0, 11.0, 18.0, 22.0, 17.0, 20.0], "pb_normal": [14.0, 20.0, 15.0, 10.0, 17.0, 20.0, 17.0, 17.0], "pb_alterado": [3.0, 3.0, 9.0, 1.0, 1.0, 2.0, 0, 3.0], "reeval_norm": [1.0, 4.0, 0, 1.0, 0, 2.0, 3.0, 5.0], "sala_reing": [0, 1.0, 0, 0, 0, 0, 4.0, 0], "res": {"Normal": [19.0, 27.0, 14.0, 24.0, 25.0, 20.0, 18.0, 24.0], "Rezago": [3.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0, 2.0], "Riesgo": [2.0, 1.0, 4.0, 1.0, 1.0, 4.0, 4.0, 2.0], "Retraso": [2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0]}, "detect": {"Rezago": [3.0, 2.0, 1.0, 1.0, 2.0, 1.0, 0, 2.0], "Riesgo": [2.0, 2.0, 4.0, 1.0, 1.0, 4.0, 5.0, 2.0], "Retraso": [2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0], "Riesgo BPS": [0, 2.0, 4.0, 2.0, 1.0, 4.0, 2.0, 3.0]}, "sala": {"Rezago": [0, 1.0, 0, 2.0, 0, 1.0, 1.0, 2.0], "Riesgo": [2.0, 0, 0, 1.0, 0, 1.0, 3.0, 1.0], "Retraso": [0, 3.0, 0, 1.0, 2.0, 0, 1.0, 0], "Riesgo BPS": [0, 0, 0, 2.0, 1.0, 1.0, 0, 1.0]}}, "edad": {"0-9": [352.0, 199.0, 339.0, 276.0, 326.0, 247.0, 328.0, 353.0], "10-19": [197.0, 95.0, 206.0, 138.0, 198.0, 119.0, 113.0, 164.0], "20-64": [781.0, 602.0, 942.0, 607.0, 760.0, 435.0, 734.0, 780.0], "65+": [499.0, 374.0, 823.0, 407.0, 459.0, 283.0, 568.0, 523.0]}, "yoy": {"Producción total": {"y_prev": [1301.0, 1680.0, 1627.0, 2152.0, 2149.0, 1554.0, 2187.0, 1875.0, 1688.0, 1762.0, 1963.0, 1486.0], "y_cur": [2428.0, 1818.0, 2960.0, 2014.0, 2299.0, 1629.0, 2202.0, 2476.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 2141, 2235, 2490, 1885], "lo": [null, null, null, null, null, null, null, null, 1555, 1623, 1808, 1369], "hi": [null, null, null, null, null, null, null, null, 2728, 2847, 3172, 2401]}, "IRA alta (respiratorio)": {"y_prev": [0, 0, 46.0, 40.0, 55.0, 30.0, 40.0, 29.0, 29.0, 25.0, 21.0, 22.0], "y_cur": [10.0, 18.0, 54.0, 72.0, 77.0, 52.0, 68.0, 66.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 49, 42, 35, 37], "lo": [null, null, null, null, null, null, null, null, 39, 33, 28, 29], "hi": [null, null, null, null, null, null, null, null, 59, 51, 43, 45]}, "Controles salud mental": {"y_prev": [245.0, 259.0, 266.0, 328.0, 283.0, 161.0, 416.0, 398.0, 327.0, 347.0, 372.0, 354.0], "y_cur": [334.0, 355.0, 393.0, 448.0, 589.0, 469.0, 413.0, 567.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 531, 563, 604, 575], "lo": [null, null, null, null, null, null, null, null, 347, 368, 395, 376], "hi": [null, null, null, null, null, null, null, null, 715, 759, 813, 774]}, "PAP tomados": {"y_prev": [34.0, 31.0, 0, 39.0, 53.0, 0, 45.0, 24.0, 53.0, 49.0, 62.0, 49.0], "y_cur": [43.0, 46.0, 22.0, 97.0, 65.0, 73.0, 61.0, 46.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 86, 79, 101, 79], "lo": [null, null, null, null, null, null, null, null, 62, 57, 73, 57], "hi": [null, null, null, null, null, null, null, null, 110, 101, 128, 101]}, "EMP realizados": {"y_prev": [123.0, 208.0, 101.0, 192.0, 209.0, 148.0, 200.0, 194.0, 440.0, 164.0, 230.0, 134.0], "y_cur": [148.0, 199.0, 245.0, 254.0, 306.0, 193.0, 208.0, 177.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 585, 218, 306, 178], "lo": [null, null, null, null, null, null, null, null, 386, 144, 202, 117], "hi": [null, null, null, null, null, null, null, null, 783, 292, 410, 239]}, "Sesiones CCR (rehab)": {"y_prev": [6.0, 217.0, 214.0, 9.0, 5.0, 58.0, 228.0, 183.0, 252.0, 236.0, 284.0, 399.0], "y_cur": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 3287, 3078, 3705, 5205], "lo": [null, null, null, null, null, null, null, null, 1972, 1847, 2223, 3123], "hi": [null, null, null, null, null, null, null, null, 4602, 4310, 5186, 7287]}, "EEDP/TEPSI aplicados": {"y_prev": [11.0, 16.0, 13.0, 15.0, 6.0, 13.0, 24.0, 23.0, 38.0, 20.0, 21.0, 28.0], "y_cur": [29.0, 37.0, 20.0, 28.0, 34.0, 29.0, 18.0, 35.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 88, 46, 49, 65], "lo": [null, null, null, null, null, null, null, null, 53, 28, 29, 39], "hi": [null, null, null, null, null, null, null, null, 123, 65, 68, 91]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 1906, "rcv_alto": 1004, "hta_bc": 1603, "hta_comp": 848, "dm_bc": 850, "dm_comp": 273}}, "201178": {"nombre": "SUR Tongoy", "tipo": "urgencia", "estamentos": {"Médico": [661.0, 1059.0, 877.0, null, 521.0, 637.0, 515.0, 888.0], "Enfermería": [185.0, 245.0, 158.0, null, 155.0, 88.0, 101.0, 772.0], "Téc. Enfermería": [943.0, 1077.0, 735.0, null, 551.0, 575.0, 383.0, 742.0], "Kinesiología": [0.0, 0.0, 0.0, null, 0.0, 0.0, 0.0, 0.0], "Matrona": [0.0, 0.0, 1.0, null, 1.0, 1.0, 0.0, 0.0], "Otros": [0.0, 0.0, 0.0, null, 0.0, 0.0, 0.0, 0.0]}, "categorizacion": {"C1": [1.0, 1.0, 2.0, null, 1.0, 2.0, 1.0, 1.0], "C2": [8.0, 0.0, 5.0, null, 4.0, 13.0, 11.0, 30.0], "C3": [100.0, 17.0, 53.0, null, 44.0, 57.0, 98.0, 91.0], "C4": [322.0, 91.0, 222.0, null, 190.0, 203.0, 224.0, 271.0], "C5": [1062.0, 246.0, 955.0, null, 863.0, 585.0, 290.0, 477.0]}, "prod_total": [1789.0, 2381.0, 1771.0, null, 1228.0, 1301.0, 999.0, 2402.0], "cat_total": [1847.0, 444.0, 1407.0, null, 1233.0, 1027.0, 736.0, 1021.0]}}, "poblacion": {"total": 11273, "mujeres": 5545, "hombres": 5728, "menor5": 470, "e15": 9425, "m_25_64": 3060, "e65": 1796}, "epi_umbrales": {"IRA Alta": 69, "Neumonía": 5, "SBO": 5, "Asma": 5, "EPOC": 5}, "generado": "2026 · CESFAM Ene–Ago, PSR Ene–Ago, SUR Ene–Ago", "pscv_metas": {"HTA": 60, "DM2": 40}, "pscv_corte": "Junio 2026"};
+const $=s=>document.querySelector(s);
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const nf=new Intl.NumberFormat('es-CL');
+const EST_SLOT={"Médico":1,"Enfermería":2,"Kinesiología":3,"Psicología":4,"Trabajo Social":5,"Nutrición":6,"Odontología":7,"Otros":8,
+  "Téc. Enfermería":3,"Matrona":6};
+const CAT_SLOT={"C1":8,"C2":2,"C3":4,"C4":3,"C5":1};
+let charts={};
+let dispKey="consolidado";
+let epiKey=Object.keys(DATA.epi_umbrales)[0];
+let mesI=DATA.meses.length-1;
+let sexo="t";  // "t" ambos | "h" hombres | "m" mujeres
+let edad="all"; // "all" | "0-9" | "10-19" | "20-64" | "65+"
+const EDAD_SLOT={"0-9":3,"10-19":4,"20-64":1,"65+":8};
+const EDAD_LBL={"0-9":"0–9 Infantil","10-19":"10–19 Adolescente","20-64":"20–64 Adultos","65+":"65+ Personas mayores"};
+// modo independiente por sección: "mes" | "acum" (ciclo)
+const modes={resumen:"mes",epi:"mes",cob:"mes",sm:"mes",prog:"mes",pacom:"mes",ccr:"mes",dsm:"mes"};
+// mes de análisis independiente por sección
+const secMes={resumen:mesI,epi:mesI,cob:mesI,sm:mesI,prog:mesI,pacom:mesI,ccr:mesI,dsm:mesI};
+const mm=key=>secMes[key];  // índice de mes de la sección
+const opts=(sel)=>DATA.labels.map((l,i)=>`<option value="${i}" ${i===sel?'selected':''}>${l}</option>`).join("");
+function modeToggle(key){return `<span class="modeseg" data-key="${key}">`+
+  `<button data-m="mes" aria-pressed="${modes[key]==='mes'}">Mes</button>`+
+  `<button data-m="acum" aria-pressed="${modes[key]==='acum'}">Ciclo</button></span>`+
+  `<select class="secmes" data-key="${key}" ${modes[key]==='acum'?'style="display:none"':''}>${opts(secMes[key])}</select>`;}
+
+// selectores
+const dispSel=$('#disp');
+[["consolidado","Consolidado (CESFAM + PSR)"],["105321","CESFAM Tongoy"],["105405","PSR Guanaqueros"],["201178","SUR Tongoy"]]
+  .forEach(([k,n])=>{if(DATA.dispositivos[k]){const o=document.createElement('option');o.value=k;o.textContent=n;dispSel.appendChild(o);}});
+dispSel.value=dispKey;
+dispSel.onchange=()=>{dispKey=dispSel.value;fixMonth();renderAll();};
+const mesSel=$('#mes');
+DATA.labels.forEach((l,i)=>{const o=document.createElement('option');o.value=i;o.textContent=l+" 2026";mesSel.appendChild(o);});
+function fixMonth(){ // último mes con dato para el dispositivo → resetea maestro y secciones
+  const s=dev().prod_total; let last=mesI;
+  for(let i=s.length-1;i>=0;i--){if(s[i]!=null){last=i;break;}}
+  mesI=last; mesSel.value=mesI; Object.keys(secMes).forEach(k=>secMes[k]=mesI);
+}
+mesSel.onchange=()=>{mesI=+mesSel.value;Object.keys(secMes).forEach(k=>secMes[k]=mesI);renderAll();};
+// toggles mes/ciclo por sección (delegación) — sin re-render completo del toggle para no perder el foco
+document.addEventListener('click',e=>{const b=e.target.closest('.modeseg[data-key] button');if(!b)return;
+  const key=b.closest('.modeseg').dataset.key; modes[key]=b.dataset.m; renderAll();});
+// selector de mes por sección
+document.addEventListener('change',e=>{const s=e.target.closest('.secmes');if(!s)return;
+  secMes[s.dataset.key]=+s.value; renderAll();});
+// filtro global de sexo
+$('#sexoseg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  sexo=b.dataset.s; $('#sexoseg').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.s===sexo));
+  renderAll();});
+// filtro global de tramo etario (afecta el gráfico de Producción por edad)
+$('#edadseg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  edad=b.dataset.e; $('#edadseg').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.e===edad));
+  renderAll();});
+// helpers de agregación de periodo
+const sumS=s=>s.reduce((a,b)=>a+(b||0),0);
+const nData=s=>s.filter(x=>x!=null).length;
+const SEXLBL={t:"ambos sexos",h:"hombres",m:"mujeres"};
+// selección por sexo de estructuras paralelas
+const estamSex=d=>sexo==='h'?d.estamentos_h:sexo==='m'?d.estamentos_m:d.estamentos;
+const sumEstam=e=>DATA.labels.map((_,i)=>{let any=false,s=0;
+  Object.values(e).forEach(ser=>{if(ser[i]!=null){any=true;s+=ser[i];}});return any?s:null;});
+const prodTotalSex=d=>sumEstam(estamSex(d));
+const smSerie=(d,base)=>sexo==='t'?d.salud_mental[base]:d.salud_mental[base+"_"+sexo];
+const ccrSerie=(d,base)=>sexo==='t'?d.ccr[base]:d.ccr[base+"_"+sexo];
+$('#periodo').textContent=DATA.generado;
+$('#theme').onclick=()=>{const t=document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme',t==='dark'?'light':'dark');renderAll();};
+
+const dev=()=>DATA.dispositivos[dispKey];
+const isSUR=()=>dev().tipo==='urgencia';
+
+function pct(a,b){return b?(a/b*100):0;}
+function acum(serie,upto){let s=0;for(let i=0;i<=upto;i++)s+=(serie[i]||0);return s;}
+
+// ---------- KPIs ----------
+function mesesEnAlerta(d){ // # meses con al menos un indicador sobre umbral
+  let n=0; DATA.meses.forEach((_,i)=>{
+    if(Object.keys(DATA.epi_umbrales).some(k=>{const x=d.epi[k][i];return x!=null&&x>DATA.epi_umbrales[k];})) n++;
+  }); return n;
+}
+function renderKPIsAcum(){
+  const d=dev(), s=isSUR()?d.prod_total:prodTotalSex(d), tot=sumS(s), n=nData(s), prom=n?tot/n:0;
+  let cards="";
+  cards+=kpi(isSUR()?"Atenciones de urgencia (periodo)":"Atenciones totales (periodo)", nf.format(tot), `${n} meses con dato`,"");
+  cards+=kpi("Promedio mensual", nf.format(Math.round(prom)), `Máx: ${nf.format(Math.max(...s.filter(x=>x!=null)))}`,"");
+  if(isSUR()){
+    const c=d.categorizacion, ct=sumS(d.cat_total);
+    const baja=sumS(c.C4)+sumS(c.C5), alta=sumS(c.C1)+sumS(c.C2);
+    cards+=kpi("Baja complejidad (C4+C5)", ct?`${(baja/ct*100).toFixed(0)}%`:'s/d',"del periodo","");
+    cards+=kpi("Alta complejidad (C1+C2)", nf.format(alta),"pacientes del periodo","");
+  }else{
+    const ma=mesesEnAlerta(d);
+    cards+=kpi("Meses en alerta epi.", `${ma} / ${nData(s)}`, ma>0?'Con indicador sobre umbral':'Sin alertas', ma>0?'down':'up', ma>0?'var(--critical)':'var(--good-ink)');
+    cards+=kpi("PAP tomados (periodo)", nf.format(sumS(d.extra["PAP tomados"])), `EMP: ${nf.format(sumS(d.extra["EMP realizados"]))}`,"");
+  }
+  $('#kpis').innerHTML=cards;
+  const last=DATA.labels[nData(s)? s.map((v,i)=>v!=null?i:-1).filter(i=>i>=0).slice(-1)[0]:mm('resumen')];
+  const sx=sexo!=='t'?` · ${SEXLBL[sexo]}`:'';
+  $('#mesHint').textContent=`${d.nombre} · Acumulado del periodo (${DATA.labels[0]}–${last} 2026, ${nData(s)} meses con dato)${sx}`;
+}
+function renderKPIs(){
+  if(modes.resumen==='acum'){renderKPIsAcum();return;}
+  const d=dev(), mi=mm('resumen'), s=isSUR()?d.prod_total:prodTotalSex(d), v=s[mi];
+  const prev=mi>0?s[mi-1]:null;
+  const valid=s.filter(x=>x!=null); const prom=valid.reduce((a,b)=>a+b,0)/(valid.length||1);
+  const dPrev=(v!=null&&prev!=null&&prev!==0)?(v-prev)/prev*100:null;
+  const dProm=(v!=null&&prom)?(v-prom)/prom*100:null;
+  const arrow=x=>x>=0?'▲':'▼', cls=x=>x>=0?'up':'down';
+  let cards="";
+  const lblProd=isSUR()?"Atenciones de urgencia":"Atenciones totales";
+  cards+=kpi(lblProd, v==null?'s/d':nf.format(v), dPrev==null?'—':`${arrow(dPrev)} ${dPrev.toFixed(1)}% vs mes anterior`, dPrev==null?'':cls(dPrev));
+  cards+=kpi("vs promedio", dProm==null?'—':`${dProm>=0?'+':''}${dProm.toFixed(1)}%`, `Promedio: ${nf.format(Math.round(prom))}`, dProm==null?'':cls(dProm));
+  if(isSUR()){
+    const c=d.categorizacion, tot=d.cat_total[mi];
+    const baja=tot?((c.C4[mi]||0)+(c.C5[mi]||0)):null;
+    cards+=kpi("Baja complejidad (C4+C5)", tot?`${(baja/tot*100).toFixed(0)}%`:'s/d', "de la categorización del mes","");
+    const alta=tot?((c.C1[mi]||0)+(c.C2[mi]||0)):null;
+    cards+=kpi("Alta complejidad (C1+C2)", tot?nf.format(alta):'s/d', "pacientes C1+C2 del mes","");
+  }else{
+    const alertas=Object.keys(DATA.epi_umbrales).filter(k=>{const x=d.epi[k][mi];return x!=null&&x>DATA.epi_umbrales[k];}).length;
+    cards+=kpi("Alertas epidemiológicas", String(alertas), alertas>0?'Indicadores sobre umbral':'Todo bajo umbral', alertas>0?'down':'up',
+      alertas>0?'var(--critical)':'var(--good-ink)');
+    const covN=d.extra["PAP tomados"][mi];
+    cards+=kpi("PAP tomados (mes)", covN==null?'s/d':nf.format(covN), `EMP: ${d.extra["EMP realizados"][mi]==null?'s/d':nf.format(d.extra["EMP realizados"][mi])}`,"");
+  }
+  $('#kpis').innerHTML=cards;
+  const sx=sexo!=='t'?` · ${SEXLBL[sexo]}`:'';
+  $('#mesHint').textContent=`${d.nombre} · ${DATA.labels[mi]} 2026${sx}`+(v==null?' · (mes sin dato para este dispositivo)':'');
+}
+function kpi(l,v,d,c,color){return `<div class="kpi"><p class="lbl">${l}</p><div class="val" ${color?`style="color:${color}"`:''}>${v}</div><div class="delta ${c||''}">${d}</div></div>`;}
+
+// ---------- semáforos epi ----------
+function renderSem(){
+  const box=$('#semaforos'); if(isSUR()){box.innerHTML='';return;} box.innerHTML='';
+  Object.keys(DATA.epi_umbrales).forEach(k=>{
+    const s=dev().epi[k], u=DATA.epi_umbrales[k];
+    const div=document.createElement('div');
+    if(modes.epi==='acum'){
+      const tot=sumS(s), ma=s.filter(x=>x!=null&&x>u).length;
+      const st=ma>0?'critical':'good';
+      div.className='sem '+st;
+      div.innerHTML=`<p class="name">${k}</p><div class="n">${nf.format(tot)}</div>
+        <span class="tag ${st}">${ma>0?ma+' meses ≥ umbral':'Sin alertas'}</span><div class="um">Total periodo · umbral mensual ${u}</div>`;
+    }else{
+      const v=s[mm('epi')]; let st,label,ntxt;
+      if(v==null){st='nodata';label='Sin dato';ntxt='s/d';}
+      else{const r=v/u; ntxt=nf.format(v);
+        if(r>=1){st='critical';label='ALERTA';}else if(r>=0.8){st='warning';label='Observación';}else{st='good';label='Normal';}}
+      div.className='sem '+st;
+      div.innerHTML=`<p class="name">${k}</p><div class="n">${ntxt}</div><span class="tag ${st}">${label}</span><div class="um">Umbral: ${u}</div>`;
+    }
+    box.appendChild(div);
+  });
+}
+
+// ---------- coberturas ----------
+function renderCov(){
+  const d=dev(), box=$('#cov'); box.innerHTML='';
+  const upto = modes.cob==='acum' ? DATA.meses.length-1 : mm('cob');
+  $('#h-cob').textContent = `Acumulado enero→${DATA.labels[upto]} sobre la población objetivo del percápita unificado de Tongoy.`;
+  const items=[
+    ["PAP tomados (mujeres 25–64)", acum(d.extra["PAP tomados"],upto), DATA.poblacion.m_25_64],
+    ["EMP realizados (15 y más)", acum(d.extra["EMP realizados"],upto), DATA.poblacion.e15],
+  ];
+  items.forEach(([n,ac,den])=>{
+    const p=pct(ac,den);
+    const row=document.createElement('div');row.className='row';
+    row.innerHTML=`<div class="cname">${n}</div><div class="bar"><div class="fill" style="width:${Math.min(p,100)}%"></div></div>
+      <div class="fig"><strong>${p.toFixed(1)}%</strong> <small>${nf.format(ac)} / ${nf.format(den)}</small></div>`;
+    box.appendChild(row);
+  });
+}
+
+// ---------- PSCV ----------
+function renderPSCV(){
+  const p=dev().pscv; if(!p) return;
+  $('#h-pscv').textContent=`Corte ${p.corte} · ${dev().nombre}. Compensación = personas con meta terapéutica sobre personas bajo control.`;
+  $('#pscvTiles').innerHTML=[
+    ["Personas en PSCV",p.pscv_total],["HTA bajo control",p.hta_bc],
+    ["DM2 bajo control",p.dm_bc],["RCV alto",p.rcv_alto]
+  ].map(([l,n])=>`<div class="tile"><p class="l">${l}</p><div class="n">${nf.format(n)}</div></div>`).join("");
+  const rows=[
+    ["Compensación HTA (PA<140/90)",p.hta_comp,p.hta_bc,DATA.pscv_metas.HTA],
+    ["Compensación DM2 (HbA1c<7%)",p.dm_comp,p.dm_bc,DATA.pscv_metas.DM2],
+  ];
+  $('#pscvBars').innerHTML=rows.map(([n,num,den,meta])=>{
+    const pc=den?num/den*100:0; const color=pc>=meta?'var(--good)':pc>=meta*0.9?'var(--warning)':'var(--critical)';
+    return `<div class="row"><div class="cname">${n}</div>
+      <div class="bar"><div class="fill" style="width:${Math.min(pc,100)}%;background:${color}"></div>
+        <div class="meta" style="left:${Math.min(meta,100)}%"></div></div>
+      <div class="fig"><strong>${pc.toFixed(1)}%</strong> <small>${nf.format(num)}/${nf.format(den)} · meta ${meta}%</small></div></div>`;
+  }).join("");
+}
+
+// ---------- Programas (PASMI, y a futuro PACOM / salud mental) ----------
+let progKey=null;
+function renderProgramas(){
+  const progs=dev().programas; if(!progs){return;}
+  const names=Object.keys(progs);
+  if(!progKey||!progs[progKey]) progKey=names[0];
+  // botones de programa (visibles solo si hay más de uno)
+  const bb=$('#progBtns'); bb.style.display = names.length>1?'flex':'none';
+  bb.innerHTML = names.map(n=>`<button data-p="${n}" aria-pressed="${n===progKey}">${n}</button>`).join('');
+  bb.querySelectorAll('button').forEach(b=>b.onclick=()=>{progKey=b.dataset.p;renderProgramas();});
+  const p=progs[progKey];
+  $('#t-prog').textContent=`Programas — ${progKey}`;
+  $('#h-prog').textContent = (progKey==='PASMI'?'Programa de Apoyo a la Salud Mental Infantil (A06-G, A26-F, A27-G). ':'')
+    + (modes.prog==='acum'?`Totales del periodo · ${dev().nombre}.`:`${DATA.labels[mm('prog')]} 2026 · ${dev().nombre}.`);
+  $('#progTiles').innerHTML=Object.entries(p).map(([lbl,s])=>{
+    const v = modes.prog==='acum'? sumS(s) : (s[mm('prog')]==null?'s/d':s[mm('prog')]);
+    return `<div class="tile"><p class="l">${lbl}</p><div class="n">${typeof v==='number'?nf.format(v):v}</div></div>`;
+  }).join("");
+  // gráfico: solo indicadores con algún dato > 0
+  charts.prog?.destroy();
+  const conDatos=Object.entries(p).filter(([_,s])=>sumS(s)>0);
+  const ds=(conDatos.length?conDatos:Object.entries(p)).map(([lbl,s],i)=>({label:lbl,data:s,
+    borderColor:cssv('--s'+((i%8)+1)),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:2,spanGaps:false}));
+  charts.prog=new Chart($('#chProg'),{type:'line',data:{labels:DATA.labels,datasets:ds},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:progKey+' — actividad mensual',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+// ---------- Salud Mental (A05 N/O + A06) ----------
+function smTrend(s){const v=s.filter(x=>x!=null);if(v.length<3)return'estable';
+  const h=Math.floor(v.length/2);const a=v.slice(0,h).reduce((x,y)=>x+y,0)/h;const b=v.slice(-h).reduce((x,y)=>x+y,0)/h;
+  return b>a*1.15?'al alza':b<a*0.85?'a la baja':'estable';}
+function smPeak(s){let mi=-1,mv=-1;s.forEach((v,i)=>{if(v!=null&&v>mv){mv=v;mi=i;}});return mi>=0?`${DATA.labels[mi]} (${nf.format(mv)})`:'s/d';}
+function renderSM(){
+  const sm=dev().salud_mental; if(!sm) return;
+  const d=dev(), acum=modes.sm==='acum', mi=mm('sm');
+  const val=s=>acum?sumS(s):(s[mi]==null?null:s[mi]);
+  const a06=sm.a06, ctrl=a06["Controles SM"], resc=a06["Rescate de pacientes"];
+  const ingS=smSerie(d,"Ingresos"), egrS=smSerie(d,"Egresos");
+  const sx=sexo!=='t'?` · ${SEXLBL[sexo]}`:'';
+  $('#h-sm').textContent=`A05 (ingresos/egresos) + A06 (actividad) · ${acum?'acumulado del periodo':(DATA.labels[mi]+' 2026')} · ${dev().nombre}${sx}.`;
+
+  // --- Lectura automática (siempre sobre el periodo completo) ---
+  const ingT=sumS(sm.Ingresos), egrT=sumS(sm.Egresos);
+  const riesgoT=Object.values(sm.riesgo).reduce((a,s)=>a+sumS(s),0);
+  const nc=nData(ctrl), promCtrl=nc?Math.round(sumS(ctrl)/nc):0;
+  const rescCeros=DATA.labels.filter((l,i)=>resc[i]===0);
+  const topDiag=Object.entries(sm.diag).map(([k,s])=>[k,sumS(s)]).sort((a,b)=>b[1]-a[1])[0];
+  let ins=[];
+  if(riesgoT>0) ins.push(`<span class="crit">⚠ ${nf.format(riesgoT)} evento(s) de riesgo</span> en ingresos (ideación ${sumS(sm.riesgo["Ideación suicida"])}, intento ${sumS(sm.riesgo["Intento de suicidio"])}, violencia ${sumS(sm.riesgo["Violencia (víctima)"])}) — prioridad de seguimiento.`);
+  ins.push(`<b>Controles SM</b> promedian <b>${nf.format(promCtrl)}/mes</b> (tendencia ${smTrend(ctrl)}, peak ${smPeak(ctrl)}).`);
+  ins.push(`<b>Rescate de pacientes</b>: ${nf.format(sumS(resc))} en el periodo`+(rescCeros.length?` <span class="crit">— sin registro en ${rescCeros.join(', ')}</span>.`:'.'));
+  ins.push(`Flujo: <b>${nf.format(ingT)}</b> ingresos vs <b>${nf.format(egrT)}</b> egresos (balance ${ingT-egrT>=0?'+':''}${nf.format(ingT-egrT)}).`);
+  if(topDiag&&topDiag[1]>0) ins.push(`Diagnóstico más frecuente: <b>${topDiag[0]}</b> (${nf.format(topDiag[1])}).`);
+  $('#smInsight').innerHTML='<b>Lectura del periodo — </b>'+ins.join(' ');
+
+  // --- tiles principales (siguen el filtro de sexo) ---
+  const ing=val(ingS), egr=val(egrS), bal=(ing!=null&&egr!=null)?ing-egr:null;
+  $('#smTiles').innerHTML=[
+    ["Ingresos",ing],["Egresos",egr],["Balance neto",bal],["Controles SM",val(ctrl)],["Rescate pacientes",val(resc)]
+  ].map(([l,v])=>`<div class="tile"><p class="l">${l}</p><div class="n" ${l==='Balance neto'&&typeof v==='number'?`style="color:${v>=0?'var(--good-ink)':'var(--critical)'}"`:''}>${v==null?'s/d':(l==='Balance neto'&&v>=0?'+':'')+nf.format(v)}</div></div>`).join("");
+
+  // --- charts ---
+  charts.sm?.destroy();
+  charts.sm=new Chart($('#chSM'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:'Ingresos'+sx,data:ingS,borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:cssv('--s1'),spanGaps:false},
+    {label:'Egresos'+sx, data:egrS, borderColor:cssv('--s2'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:cssv('--s2'),spanGaps:false}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Ingresos vs Egresos por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  charts.smact?.destroy();
+  charts.smact=new Chart($('#chSMact'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:'Controles SM',data:ctrl,borderColor:cssv('--s7'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:cssv('--s7'),spanGaps:false,yAxisID:'y'},
+    {label:'Rescate pacientes',data:resc,borderColor:cssv('--s4'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:cssv('--s4'),spanGaps:false,yAxisID:'y'}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Actividad del programa (A06): controles y rescate',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+
+  // --- desglose por sexo: ingresos H vs M ---
+  charts.smsex?.destroy();
+  charts.smsex=new Chart($('#chSMSex'),{type:'bar',data:{labels:DATA.labels,datasets:[
+    {label:'Ingresos hombres',data:sm.Ingresos_h,backgroundColor:cssv('--s1'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'i'},
+    {label:'Ingresos mujeres',data:sm.Ingresos_m,backgroundColor:cssv('--s5'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'i'}]},
+    options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,title:{display:true,text:'Ingresos por sexo (H/M) por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+
+  // --- diagnósticos + riesgo ---
+  $('#smDiagTitle').textContent=`Diagnósticos registrados en ingresos (${acum?'periodo':DATA.labels[mi]}) · pueden superar el total de ingresos`;
+  const entries=Object.entries(sm.diag).map(([k,s])=>[k,val(s)||0]).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(1,...entries.map(e=>e[1]));
+  $('#smDiag').innerHTML=entries.map(([k,v])=>`<div class="row" style="grid-template-columns:150px 1fr 44px">
+    <div class="cname" style="font-size:.85rem">${k}</div>
+    <div class="bar"><div class="fill" style="width:${v/max*100}%;background:var(--s7)"></div></div>
+    <div class="fig">${nf.format(v)}</div></div>`).join("");
+  const rz=Object.entries(sm.riesgo).map(([k,s])=>[k,val(s)||0]);
+  $('#smRiesgo').innerHTML="<strong>Factores de riesgo en ingresos:</strong> "+
+    rz.map(([k,v])=>`${k}: <strong style="color:${v>0?'var(--critical)':'var(--ink2)'}">${nf.format(v)}</strong>`).join(" · ");
+
+  // --- otras actividades A06 (secundarias) ---
+  const sec=["Consultorías (A.2)","Coordinación comunitaria (part.)","Emergencia/desastre (part.)","Psicoterapia individual"];
+  $('#smA06Tiles').innerHTML=sec.map(k=>`<div class="tile"><p class="l">${k}</p><div class="n">${val(a06[k])==null?'s/d':nf.format(val(a06[k]))}</div></div>`).join("");
+}
+
+// ---------- PACOM (Acompañamiento Psicosocial) ----------
+function renderPACOM(){
+  const p=dev().pacom; if(!p) return;
+  const acum=modes.pacom==='acum', mi=mm('pacom');
+  const val=s=>acum?sumS(s):(s[mi]==null?null:s[mi]);
+  $('#h-pacom').textContent=`Fuentes: A03-I (pautas), A05-T (ingresos/egresos), A06-C.1/D (planes y coordinación), A26-A col.M (visitas), A32-O (apoyo telefónico) · ${acum?'acumulado del periodo':(DATA.labels[mi]+' 2026')} · ${dev().nombre}.`;
+  const tk=["Ingresos","Egresos","Visitas domiciliarias","Apoyo telefónico (acciones)",
+            "Planes de acompañamiento","Evaluaciones participativas","Pauta ingreso (aplicadas)","Coordinación comunitaria"];
+  $('#pacomTiles').innerHTML=tk.map(k=>`<div class="tile"><p class="l">${k}</p><div class="n">${val(p[k])==null?'s/d':nf.format(val(p[k]))}</div></div>`).join("");
+  charts.pacom?.destroy();
+  charts.pacom=new Chart($('#chPacom'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:'Ingresos',data:p["Ingresos"],borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,spanGaps:false},
+    {label:'Egresos', data:p["Egresos"], borderColor:cssv('--s2'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,spanGaps:false}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Ingresos vs Egresos al programa',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  charts.pacomAct?.destroy();
+  const act=[["Visitas domiciliarias",7],["Apoyo telefónico (acciones)",4],["Coordinación comunitaria",3]];
+  charts.pacomAct=new Chart($('#chPacomAct'),{type:'line',data:{labels:DATA.labels,datasets:act.map(([k,slot])=>(
+    {label:k,data:p[k],borderColor:cssv('--s'+slot),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:2,spanGaps:false}))},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Actividad del programa por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+// ---------- CCR (A28 rehabilitación) ----------
+function renderCCR(){
+  const c=dev().ccr, d=dev(); if(!c) return;
+  const acum=modes.ccr==='acum', mi=mm('ccr');
+  const val=s=>acum?sumS(s):(s[mi]==null?null:s[mi]);
+  const ingS=ccrSerie(d,"Ingresos"), egrS=ccrSerie(d,"Egresos");
+  const sx=sexo!=='t'?` · ${SEXLBL[sexo]}`:'';
+  $('#h-ccr').textContent=`A28 Sección A (nivel primario) · ${acum?'acumulado del periodo':(DATA.labels[mi]+' 2026')} · ${dev().nombre}${sx}.`;
+  // lectura automática (periodo)
+  const egT=sumS(c["Egresos"]), abT=sumS(c["Abandono"]), inT=sumS(c["Ingresos"]);
+  const tasaAb=egT?(abT/egT*100):0;
+  const to=c.ses["Terapia Ocupacional"], toProm=nData(to)?Math.round(sumS(to)/nData(to)):0;
+  const kine=c.ses["Kinesiología"], sesT=sumS(c["Sesiones"]);
+  const partCeros=DATA.labels.filter((l,i)=>c["Participación comunidad"][i]===0);
+  const sesProm=nData(c["Sesiones"])?Math.round(sesT/nData(c["Sesiones"])):0;
+  let ins=[];
+  ins.push(`Flujo: <b>${nf.format(inT)}</b> ingresos vs <b>${nf.format(egT)}</b> egresos (balance ${inT-egT>=0?'+':''}${nf.format(inT-egT)}).`);
+  ins.push(`<b>Abandono</b>: ${nf.format(abT)} de ${nf.format(egT)} egresos = <span class="${tasaAb>=15?'crit':''}">${tasaAb.toFixed(1)}%</span>${tasaAb>=15?' — sobre 15%, revisar adherencia.':'.'}`);
+  ins.push(`<b>Terapeuta Ocupacional</b>: ${nf.format(sumS(to))} sesiones en el periodo (prom ${nf.format(toProm)}/mes, ${sesT?Math.round(sumS(to)/sesT*100):0}% del total; tendencia ${smTrend(to)}).`);
+  if(partCeros.length) ins.push(`<span class="crit">Participación en comunidad sin registro en ${partCeros.join(', ')}</span> — componente comunitario a reactivar.`);
+  $('#ccrInsight').innerHTML='<b>Lectura del periodo — </b>'+ins.join(' ');
+  // tiles (Ingresos/Egresos siguen el sexo; se destaca Terapeuta Ocupacional)
+  const tiles=[["Ingresos",val(ingS)],["Egresos",val(egrS)],["Abandono",val(c["Abandono"])],
+    ["Sesiones (total)",val(c["Sesiones"])],["Sesiones T. Ocupacional",val(to)],["Participación comunidad",val(c["Participación comunidad"])]];
+  $('#ccrTiles').innerHTML=tiles.map(([l,v])=>{
+    const col=(l==='Abandono'&&typeof v==='number'&&v>0)?'style="color:var(--critical)"':
+      (l==='Sesiones T. Ocupacional'?'style="color:var(--s4)"':'');
+    return `<div class="tile"><p class="l">${l}</p><div class="n" ${col}>${v==null?'s/d':nf.format(v)}</div></div>`;}).join("");
+  // charts
+  charts.ccr?.destroy();
+  charts.ccr=new Chart($('#chCCR'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:'Ingresos'+sx,data:ingS,borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,spanGaps:false},
+    {label:'Egresos'+sx, data:egrS, borderColor:cssv('--s2'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,spanGaps:false},
+    {label:'Abandono',data:c["Abandono"],borderColor:cssv('--s8'),backgroundColor:'transparent',borderWidth:2,borderDash:[5,4],tension:.3,pointRadius:2,spanGaps:false}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Ingresos, egresos y abandono',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  charts.ccrses?.destroy();
+  const SES={"Kinesiología":c.ses["Kinesiología"],"Terapia Ocupacional":c.ses["Terapia Ocupacional"],"Fonoaudiología":c.ses["Fonoaudiología"],"Psicología":c.ses["Psicología"]};
+  stackChart('chCCRses','Sesiones de rehabilitación por profesional (destaca T. Ocupacional)',SES,{"Kinesiología":3,"Terapia Ocupacional":4,"Fonoaudiología":5,"Psicología":7});
+  // desglose por sexo: ingresos H vs M
+  charts.ccrsex?.destroy();
+  charts.ccrsex=new Chart($('#chCCRSex'),{type:'bar',data:{labels:DATA.labels,datasets:[
+    {label:'Ingresos hombres',data:c.Ingresos_h,backgroundColor:cssv('--s1'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'i'},
+    {label:'Ingresos mujeres',data:c.Ingresos_m,backgroundColor:cssv('--s5'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'i'}]},
+    options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,title:{display:true,text:'Ingresos al CCR por sexo (H/M)',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  // condición (case mix)
+  $('#ccrCondTitle').textContent=`Ingresos por condición de salud (${acum?'periodo':DATA.labels[mi]})`;
+  const entries=Object.entries(c.cond).map(([k,s])=>[k,val(s)||0]).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(1,...entries.map(e=>e[1]));
+  $('#ccrCond').innerHTML=entries.map(([k,v])=>`<div class="row" style="grid-template-columns:170px 1fr 44px">
+    <div class="cname" style="font-size:.85rem">${k}</div>
+    <div class="bar"><div class="fill" style="width:${v/max*100}%;background:var(--s3)"></div></div>
+    <div class="fig">${nf.format(v)}</div></div>`).join("");
+}
+
+// ---------- Chile Crece Contigo — desarrollo infantil (A03 · A05-F) ----------
+function renderDSM(){
+  const x=dev().dsm; if(!x) return;
+  const acum=modes.dsm==='acum', mi=mm('dsm');
+  const val=s=>acum?sumS(s):(s[mi]==null?null:s[mi]);
+  $('#h-dsm').textContent=`A03 (pauta breve, EEDP/TEPSI, rezago/déficit/riesgo) + A05-F (Sala de Estimulación) · ${acum?'acumulado del periodo':(DATA.labels[mi]+' 2026')} · ${dev().nombre}.`;
+  // agregados del periodo para la lectura
+  const res=x.res, det=x.detect, sala=x.sala;
+  const evalT=sumS(res.Normal)+sumS(res.Rezago)+sumS(res.Riesgo)+sumS(res.Retraso);
+  const defT=sumS(res.Rezago)+sumS(res.Riesgo)+sumS(res.Retraso);
+  const pctDef=evalT?defT/evalT*100:0;
+  const detT=Object.values(det).reduce((a,s)=>a+sumS(s),0);
+  const salaT=Object.values(sala).reduce((a,s)=>a+sumS(s),0);
+  const cobertura=detT?salaT/detT*100:0;
+  let ins=[];
+  ins.push(`Pesquisa: <b>${nf.format(sumS(x.test_aplic))}</b> tests EEDP/TEPSI y <b>${nf.format(sumS(x.pb_aplic))}</b> pautas breves en el periodo.`);
+  ins.push(`<b>${pctDef.toFixed(1)}% con déficit</b> en 1ª evaluación (${nf.format(defT)} de ${nf.format(evalT)}: rezago+riesgo+retraso).`);
+  ins.push(`Derivación a <b>Sala de Estimulación</b>: <span class="${cobertura<60?'crit':''}">${nf.format(salaT)} ingresos de ${nf.format(detT)} detectados = ${cobertura.toFixed(0)}%</span>${cobertura<60?' — brecha de respuesta a cerrar.':'.'}`);
+  if(sumS(x.reeval_norm)>0) ins.push(`Recuperación: <b>${nf.format(sumS(x.reeval_norm))}</b> niños/as normalizan en reevaluación.`);
+  $('#dsmInsight').innerHTML='<b>Lectura del periodo — </b>'+ins.join(' ');
+  // tiles
+  const evalM=(res.Normal[mi]||0)+(res.Rezago[mi]||0)+(res.Riesgo[mi]||0)+(res.Retraso[mi]||0);
+  const defM=(res.Rezago[mi]||0)+(res.Riesgo[mi]||0)+(res.Retraso[mi]||0);
+  const pctM = acum ? (evalT?defT/evalT*100:0) : (evalM?defM/evalM*100:0);
+  const tiles=[
+    ["Test EEDP/TEPSI", val(x.test_aplic)],
+    ["% con déficit (1ª eval.)", (evalM||acum)? pctM.toFixed(0)+'%':'s/d'],
+    ["Pauta breve aplicada", val(x.pb_aplic)],
+    ["Detectados déficit/riesgo (A.3)", (()=>{const v=Object.values(det).reduce((a,s)=>a+(acum?sumS(s):(s[mi]||0)),0);return nf.format(v);})()],
+    ["Ingresos Sala Estimulación", (()=>{const v=Object.values(sala).reduce((a,s)=>a+(acum?sumS(s):(s[mi]||0)),0);return nf.format(v);})()],
+    ["Reeval. normalizadas", val(x.reeval_norm)]
+  ];
+  $('#dsmTiles').innerHTML=tiles.map(([l,v])=>`<div class="tile"><p class="l">${l}</p><div class="n">${v==null?'s/d':(typeof v==='number'?nf.format(v):v)}</div></div>`).join("");
+  // chart 1: resultado del test por mes (apilado severidad)
+  stackChart('chDSMres','Resultado del test de desarrollo por mes',
+    {"Normal":res.Normal,"Rezago":res.Rezago,"Riesgo":res.Riesgo,"Retraso":res.Retraso},
+    {"Normal":3,"Rezago":4,"Riesgo":2,"Retraso":8});
+  // chart 2: brecha detección (A.3) vs ingresos Sala de Estimulación
+  const detSerie=DATA.labels.map((_,i)=>Object.values(det).reduce((a,s)=>a+(s[i]||0),0));
+  const salaSerie=DATA.labels.map((_,i)=>Object.values(sala).reduce((a,s)=>a+(s[i]||0),0));
+  charts.dsmflujo?.destroy();
+  charts.dsmflujo=new Chart($('#chDSMflujo'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:'Detectados con déficit/riesgo (A.3)',data:detSerie,borderColor:cssv('--s2'),backgroundColor:'transparent',borderWidth:2.5,tension:.3,pointRadius:3,spanGaps:false},
+    {label:'Ingresos a Sala de Estimulación',data:salaSerie,borderColor:cssv('--s3'),backgroundColor:'transparent',borderWidth:2.5,tension:.3,pointRadius:3,spanGaps:false}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Detección vs derivación a Sala de Estimulación',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  // chart 3: tests por sexo (H/M)
+  charts.dsmsex?.destroy();
+  charts.dsmsex=new Chart($('#chDSMsex'),{type:'bar',data:{labels:DATA.labels,datasets:[
+    {label:'Tests hombres',data:x.test_aplic_h,backgroundColor:cssv('--s1'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'t'},
+    {label:'Tests mujeres',data:x.test_aplic_m,backgroundColor:cssv('--s5'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'t'}]},
+    options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,title:{display:true,text:'Tests de desarrollo aplicados por sexo (H/M)',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+// ---------- proyección interanual ----------
+const MES12=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+let proyKey=null;
+function proyIndicadores(){ return dev().yoy?Object.keys(dev().yoy):[]; }
+function renderProyBtns(){
+  const cont=$('#proyBtns'); cont.innerHTML='';
+  const ind=proyIndicadores(); if(!ind.length)return;
+  if(!ind.includes(proyKey)) proyKey=ind[0];
+  ind.forEach(k=>{const b=document.createElement('button');b.textContent=k;
+    b.setAttribute('aria-pressed',k===proyKey);
+    b.onclick=()=>{proyKey=k;[...cont.children].forEach(c=>c.setAttribute('aria-pressed',c.textContent===k));renderProy();};
+    cont.appendChild(b);});
+}
+function renderProy(){
+  const y=dev().yoy; if(!y||!proyKey||!y[proyKey])return;
+  const o=y[proyKey], prev=o.y_prev, cur=o.y_cur, fc=o.fc, lo=o.lo, hi=o.hi;
+  // último mes real de 2026
+  let lastReal=-1; cur.forEach((v,i)=>{if(v!=null)lastReal=i;});
+  // línea de proyección: ancla en el último real y continúa Sep–Dic
+  const proj=MES12.map(()=>null); if(lastReal>=0)proj[lastReal]=cur[lastReal];
+  for(let i=lastReal+1;i<12;i++)proj[i]=(fc[i]!=null?fc[i]:null);
+  const bhi=MES12.map(()=>null), blo=MES12.map(()=>null);
+  if(lastReal>=0){bhi[lastReal]=cur[lastReal];blo[lastReal]=cur[lastReal];}
+  for(let i=lastReal+1;i<12;i++){bhi[i]=hi[i];blo[i]=lo[i];}
+  // acumulados y variación
+  const acPrev=prev.reduce((a,b)=>a+(b||0),0);
+  const realIdx=cur.map((v,i)=>v!=null?i:-1).filter(i=>i>=0);
+  const acRealCur=realIdx.reduce((a,i)=>a+cur[i],0);
+  const acRealPrev=realIdx.reduce((a,i)=>a+(prev[i]||0),0);
+  const yoyPct=acRealPrev?((acRealCur-acRealPrev)/acRealPrev*100):0;
+  const projRest=[]; for(let i=lastReal+1;i<12;i++)projRest.push(fc[i]||0);
+  const sumProj=projRest.reduce((a,b)=>a+b,0);
+  const anioProj=acRealCur+sumProj;
+  const anioPrevFull=acPrev;
+  const yoyFull=anioPrevFull?((anioProj-anioPrevFull)/anioPrevFull*100):0;
+  const sg=v=>v>=0?'+':'', cl=v=>v>=0?'var(--good)':'var(--critical)';
+  $('#h-proy').textContent=`${proyKey} · ${dev().nombre} · comparación 2025 (base) vs 2026 (real hasta ${MES12[lastReal]}) y proyección estacional ${MES12[lastReal+1]||'—'}–Dic.`;
+  $('#proyInsight').innerHTML= yoyPct>=0
+    ? `📈 En lo que va de 2026, <strong>${proyKey}</strong> acumula <strong>${nf.format(acRealCur)}</strong> frente a <strong>${nf.format(acRealPrev)}</strong> en el mismo tramo de 2025 (<strong style="color:var(--good)">${sg(yoyPct)}${yoyPct.toFixed(1)}%</strong>). Si el patrón estacional se mantiene, el cierre 2026 rondaría <strong>${nf.format(Math.round(anioProj))}</strong> (banda ${nf.format(Math.round(anioProj*0.85))}–${nf.format(Math.round(anioProj*1.15))}).`
+    : `📉 En lo que va de 2026, <strong>${proyKey}</strong> acumula <strong>${nf.format(acRealCur)}</strong> frente a <strong>${nf.format(acRealPrev)}</strong> en 2025 (<strong style="color:var(--critical)">${yoyPct.toFixed(1)}%</strong>): conviene revisar si es registro o actividad real. Proyección de cierre 2026 ≈ <strong>${nf.format(Math.round(anioProj))}</strong>.`;
+  const tiles=[
+    ["Acum. 2026 (real)",nf.format(acRealCur),`hasta ${MES12[lastReal]}`,''],
+    ["vs 2025 mismo tramo",`${sg(yoyPct)}${yoyPct.toFixed(1)}%`,`${nf.format(acRealPrev)} en 2025`,cl(yoyPct)],
+    [`Proyección ${MES12[lastReal+1]||''}–Dic`,nf.format(Math.round(sumProj)),'4 meses estimados',''],
+    ["Cierre 2026 estimado",nf.format(Math.round(anioProj)),`2025: ${nf.format(anioPrevFull)} (${sg(yoyFull)}${yoyFull.toFixed(1)}%)`,cl(yoyFull)]
+  ];
+  $('#proyTiles').innerHTML=tiles.map(([t,v,s,c])=>
+    `<div class="tile"><p class="l">${t}</p><div class="n"${c?` style="color:${c}"`:''}>${v}</div><p class="l" style="margin:4px 0 0;font-size:.72rem;opacity:.85">${s}</p></div>`).join('');
+  charts.proy?.destroy();
+  const hx2rgba=(h,a)=>{h=h.replace('#','');const n=parseInt(h,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;};
+  const acc=cssv('--s7'), accSoft=hx2rgba(cssv('--s7'),0.16);
+  charts.proy=new Chart($('#chProy'),{type:'line',data:{labels:MES12,datasets:[
+    {label:'Banda alta',data:bhi,borderColor:'transparent',backgroundColor:accSoft,pointRadius:0,fill:'+1',tension:.3,order:5},
+    {label:'Banda baja',data:blo,borderColor:'transparent',backgroundColor:accSoft,pointRadius:0,fill:false,tension:.3,order:5},
+    {label:'2025 (base)',data:prev,borderColor:cssv('--muted'),backgroundColor:'transparent',borderWidth:2,borderDash:[3,3],tension:.3,pointRadius:2,pointBackgroundColor:cssv('--muted'),order:3},
+    {label:'2026 (real)',data:cur,borderColor:acc,backgroundColor:'transparent',borderWidth:2.6,tension:.3,pointRadius:3,pointBackgroundColor:acc,spanGaps:false,order:1},
+    {label:'2026 (proyección)',data:proj,borderColor:acc,backgroundColor:'transparent',borderWidth:2.4,borderDash:[7,5],tension:.3,pointRadius:3,pointStyle:'rectRot',pointBackgroundColor:acc,spanGaps:true,order:2}
+  ]},
+  options:{...baseOpts(),plugins:{...baseOpts().plugins,
+    legend:{labels:{color:cssv('--ink2'),boxWidth:12,usePointStyle:true,font:{size:11},filter:it=>!it.text.startsWith('Banda')}},
+    title:{display:true,text:proyKey+' — 2025 vs 2026 y proyección Sep–Dic',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+// ---------- charts ----------
+function baseOpts(stacked){
+  const ink=cssv('--ink2'),muted=cssv('--muted'),grid=cssv('--grid');
+  return{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:ink,boxWidth:12,boxHeight:12,usePointStyle:true,font:{size:11}}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y==null?'s/d':nf.format(c.parsed.y)}`}}},
+    scales:{x:{stacked:!!stacked,ticks:{color:muted},grid:{display:false},border:{color:cssv('--axis')}},
+      y:{stacked:!!stacked,beginAtZero:true,ticks:{color:muted,callback:v=>nf.format(v)},grid:{color:grid},border:{display:false}}}};
+}
+function lineChart(id,label,data,color){
+  charts[id]?.destroy();
+  charts[id]=new Chart($('#'+id),{type:'line',data:{labels:DATA.labels,datasets:[{label,data,borderColor:color,
+    backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,pointBackgroundColor:color,spanGaps:false}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,legend:{display:false},
+      title:{display:true,text:label,color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+function stackChart(id,title,seriesObj,slotMap){
+  charts[id]?.destroy();
+  const ds=Object.entries(seriesObj).map(([k,s])=>({label:k,data:s,
+    backgroundColor:cssv('--s'+(slotMap[k]||8)),borderColor:cssv('--surface'),borderWidth:2,borderRadius:2}));
+  charts[id]=new Chart($('#'+id),{type:'bar',data:{labels:DATA.labels,datasets:ds},
+    options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,
+      title:{display:true,text:title,color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+function drawEpi(){
+  const d=dev(), u=DATA.epi_umbrales[epiKey], s=d.epi[epiKey];
+  charts.epi?.destroy();
+  charts.epi=new Chart($('#chEpi'),{type:'line',data:{labels:DATA.labels,datasets:[
+    {label:epiKey,data:s,borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:3,
+      pointBackgroundColor:s.map(v=>v!=null&&v>=u?cssv('--critical'):cssv('--s1')),spanGaps:false},
+    {label:'Umbral',data:s.map(()=>u),borderColor:cssv('--critical'),borderWidth:1.5,borderDash:[6,5],pointRadius:0}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,title:{display:true,text:'Casos mensuales vs umbral — '+epiKey,color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  // desglose por sexo del indicador seleccionado (barras apiladas H/M)
+  charts.episex?.destroy();
+  charts.episex=new Chart($('#chEpiSex'),{type:'bar',data:{labels:DATA.labels,datasets:[
+    {label:'Hombres',data:d.epi_h[epiKey],backgroundColor:cssv('--s1'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'s'},
+    {label:'Mujeres',data:d.epi_m[epiKey],backgroundColor:cssv('--s5'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'s'}]},
+    options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,title:{display:true,text:epiKey+' por sexo (H/M)',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+// epi buttons
+const epiBtns=$('#epiBtns');
+Object.keys(DATA.epi_umbrales).forEach(k=>{const b=document.createElement('button');b.textContent=k;
+  b.setAttribute('aria-pressed',k===epiKey);
+  b.onclick=()=>{epiKey=k;[...epiBtns.children].forEach(c=>c.setAttribute('aria-pressed',c.textContent===k));drawEpi();};
+  epiBtns.appendChild(b);});
+
+// ---------- QC banner ----------
+function renderQC(){
+  const msgs=[];
+  // APS: meses sin dato por dispositivo (p.ej. mes recién cargado incompleto)
+  [["105321","CESFAM"],["105405","PSR"]].forEach(([k,n])=>{
+    const dd=DATA.dispositivos[k]; if(!dd) return;
+    const faltan=[]; dd.prod_total.forEach((v,i)=>{if(v==null)faltan.push(DATA.labels[i]);});
+    if(faltan.length) msgs.push(`${n} sin dato: ${faltan.join(", ")}`);
+  });
+  const sur=DATA.dispositivos["201178"];
+  if(sur){
+    const faltan=[]; sur.prod_total.forEach((v,i)=>{if(v==null)faltan.push(DATA.labels[i]);});
+    if(faltan.length)msgs.push("SUR sin registro: "+faltan.join(", "));
+    // descuadre categorización vs atenciones por profesional (>30%)
+    const desc=[];
+    sur.prod_total.forEach((v,i)=>{const c=sur.cat_total[i];
+      if(v&&c!=null&&v>0&&Math.abs(v-c)/v>0.3) desc.push(`${DATA.labels[i]} (${nf.format(c)} vs ${nf.format(v)})`);});
+    if(desc.length)msgs.push("SUR: categorización no cuadra con atenciones en "+desc.join(", "));
+  }
+  $('#qc').innerHTML= msgs.length ? "⚠️ <strong>Calidad de datos:</strong> "+msgs.join(" · ")
+                                  : "✓ <strong>Calidad de datos:</strong> sin observaciones en el periodo cargado.";
+}
+
+// ---------- layout por tipo ----------
+function applyLayout(){
+  const sur=isSUR(), cons=dispKey==="consolidado";
+  $('#sec-epi').classList.toggle('hide',sur);
+  $('#sec-prev').classList.toggle('hide',sur);
+  $('#sec-pscv').classList.toggle('hide',sur||!dev().pscv);
+  $('#sec-prog').classList.toggle('hide',sur||!dev().programas);
+  $('#sec-sm').classList.toggle('hide',sur||!dev().salud_mental);
+  $('#sec-pacom').classList.toggle('hide',sur||!dev().pacom);
+  $('#mh-group').classList.toggle('hide',sur);
+  $('#sec-ccr').classList.toggle('hide',sur||!dev().ccr);
+  $('#rehab-group').classList.toggle('hide',sur||!dev().ccr);
+  $('#sec-dsm').classList.toggle('hide',sur||!dev().dsm);
+  $('#dsm-group').classList.toggle('hide',sur||!dev().dsm);
+  $('#sec-cob').classList.toggle('hide',!cons);
+  const hayProy=!sur&&!!dev().yoy;
+  $('#sec-proy').classList.toggle('hide',!hayProy);
+  $('#proy-group').classList.toggle('hide',!hayProy);
+  $('#sec-cat').classList.toggle('hide',!sur);
+  $('#prodSexCard').classList.toggle('hide',sur);
+  $('#prodEdadCard').classList.toggle('hide',sur||!dev().edad);
+  $('#edadseg').closest('div').classList.toggle('hide',sur);
+  // toggles mes/ciclo por sección
+  ['resumen','epi','cob','sm','prog','pacom','ccr','dsm'].forEach(k=>{const el=$('#tg-'+k);if(el)el.innerHTML=modeToggle(k);});
+  $('#t-prod').textContent = sur?"Atención de urgencia — tendencia":"Producción — tendencia";
+  $('#h-prod').textContent = sur?"Atenciones de urgencia por mes y por profesional (Sección A.5, A08).":"Atenciones por mes y por estamento (consultas A04 + odontología A09).";
+}
+
+function renderAll(){
+  applyLayout(); renderQC(); renderKPIs(); renderSem();
+  $('#h-epi').textContent = modes.epi==='acum'
+    ? "Total de casos del periodo por indicador y cuántos meses superaron el umbral mensual (provisional, editable)."
+    : "Semáforo del mes seleccionado. Umbrales provisionales (editables), derivados de los propios datos 2026.";
+  const d=dev(), sx=sexo!=='t'?` · ${SEXLBL[sexo]}`:'';
+  lineChart('chTotal', (isSUR()?'Atenciones de urgencia':'Atenciones totales')+sx, isSUR()?d.prod_total:prodTotalSex(d), cssv('--s1'));
+  stackChart('chEst', (isSUR()?'Atenciones por profesional':'Atenciones por estamento')+sx, isSUR()?d.estamentos:estamSex(d), EST_SLOT);
+  if(!isSUR()){
+    drawEpi();
+    // desglose producción por sexo (H/M, total del centro por mes)
+    charts.prodsex?.destroy();
+    charts.prodsex=new Chart($('#chProdSex'),{type:'bar',data:{labels:DATA.labels,datasets:[
+      {label:'Hombres',data:sumEstam(d.estamentos_h),backgroundColor:cssv('--s1'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'s'},
+      {label:'Mujeres',data:sumEstam(d.estamentos_m),backgroundColor:cssv('--s5'),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'s'}]},
+      options:{...baseOpts(true),plugins:{...baseOpts(true).plugins,title:{display:true,text:'Atenciones totales por sexo (H/M) por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+    stackChart('chPrev','PAP tomados y EMP realizados',{"PAP tomados":d.extra["PAP tomados"],"EMP realizados":d.extra["EMP realizados"]},{"PAP tomados":1,"EMP realizados":3});
+    // Producción A04 por tramo etario (filtro global)
+    charts.edad?.destroy();
+    const bands=["0-9","10-19","20-64","65+"];
+    let dss, ttl, hint;
+    if(edad==='all'){
+      dss=bands.map(b=>({label:EDAD_LBL[b],data:d.edad[b],backgroundColor:cssv('--s'+EDAD_SLOT[b]),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2,stack:'e'}));
+      ttl='Consultas por tramo etario (A04) — composición mensual';
+      hint='Consultas médicas + de profesionales (A04) desglosadas por tramo etario. Usa el filtro "Tramo etario" arriba para aislar un grupo.';
+    }else{
+      dss=[{label:EDAD_LBL[edad],data:d.edad[edad],backgroundColor:cssv('--s'+EDAD_SLOT[edad]),borderRadius:3,borderColor:cssv('--surface'),borderWidth:2}];
+      const totb=sumS(d.edad[edad]);
+      ttl='Consultas por tramo etario (A04) — '+EDAD_LBL[edad];
+      hint=`Filtrado a ${EDAD_LBL[edad]}: ${nf.format(totb)} consultas en el periodo (A04 médicas + profesionales).`;
+    }
+    $('#h-edad').textContent=hint;
+    charts.edad=new Chart($('#chEdad'),{type:'bar',data:{labels:DATA.labels,datasets:dss},
+      options:{...baseOpts(edad==='all'),plugins:{...baseOpts(edad==='all').plugins,title:{display:true,text:ttl,color:cssv('--ink'),align:'start',font:{size:13}}}}});
+  }
+  if(!isSUR()&&d.pscv) renderPSCV();
+  if(!isSUR()&&d.programas) renderProgramas();
+  if(!isSUR()&&d.salud_mental) renderSM();
+  if(!isSUR()&&d.pacom) renderPACOM();
+  if(!isSUR()&&d.ccr) renderCCR();
+  if(!isSUR()&&d.dsm) renderDSM();
+  if(dispKey==="consolidado") renderCov();
+  if(!isSUR()&&d.yoy){renderProyBtns();renderProy();}
+  if(isSUR()) stackChart('chCat','Categorización por mes (C1–C5)',d.categorizacion,CAT_SLOT);
+}
+fixMonth(); renderAll();
+$('#foot').innerHTML='Fuente: REM Serie A (DEIS-MINSAL), CESFAM Tongoy · Percápita Tongoy 2026 (DATA SALUD Coquimbo). '+
+  'Coberturas calculadas sobre percápita unificado (solo consolidado). Umbrales epidemiológicos provisionales, editables. '+
+  'Datos: '+DATA.generado+'.';
+</script></body></html>
