@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard REM Tongoy — Presentación técnica</title>
+<style>
+  :root{
+    --bg:#0e1420; --bg2:#141c2b; --panel:#182233; --panel2:#1e2a3f;
+    --ink:#f2f6fc; --ink2:#c3cfe0; --muted:#8091a8; --line:#28344a;
+    --s1:#3987e5; --s3:#1fb488; --s7:#8b7bf0; --s4:#f0b429;
+    --crit:#f0655f; --good:#2fc48a;
+    --grad:linear-gradient(135deg,#3987e5,#8b7bf0);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    overflow:hidden}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:5.2vh 7vw;opacity:0;transition:opacity .35s ease}
+  .slide.active{display:flex;opacity:1}
+  h1{font-size:clamp(28px,5vw,60px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+  h2{font-size:clamp(22px,3.4vw,40px);line-height:1.1;font-weight:750;letter-spacing:-.015em;margin-bottom:.5em}
+  h2 .ac{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.lead{font-size:clamp(15px,1.7vw,21px);color:var(--ink2);line-height:1.55;max-width:52ch}
+  .eyebrow{font-size:clamp(11px,1.15vw,14px);letter-spacing:.18em;text-transform:uppercase;
+    color:var(--s3);font-weight:700;margin-bottom:1.1em}
+  .big{font-size:clamp(40px,8vw,92px);font-weight:850;letter-spacing:-.03em;line-height:1}
+  .ksub{color:var(--muted);font-size:clamp(12px,1.3vw,16px);margin-top:.5em}
+  .row{display:flex;gap:24px;flex-wrap:wrap}
+  .col{flex:1;min-width:0}
+  /* cards / grid */
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .card .ic{font-size:26px;margin-bottom:.4em;display:block}
+  .card h3{font-size:clamp(14px,1.5vw,18px);font-weight:700;margin-bottom:.3em}
+  .card p{font-size:clamp(12px,1.25vw,15px);color:var(--ink2);line-height:1.45}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .kpi .n{font-size:clamp(28px,4.4vw,52px);font-weight:850;letter-spacing:-.02em}
+  .kfit .kpi{padding:16px 16px}
+  .kfit .kpi .n{font-size:clamp(20px,2.3vw,30px)}
+  .kfit .kpi .l{font-size:clamp(10.5px,1.05vw,12.5px)}
+  .kpi .l{color:var(--muted);font-size:clamp(11px,1.2vw,14px);margin-top:.35em;line-height:1.35}
+  .pos{color:var(--good)} .neg{color:var(--crit)} .warn{color:var(--s4)}
+  .pill{display:inline-block;padding:.3em .8em;border-radius:999px;font-size:clamp(11px,1.1vw,13px);
+    font-weight:600;background:rgba(57,135,229,.16);color:#9cc4f7;border:1px solid rgba(57,135,229,.3)}
+  ul.clean{list-style:none;display:flex;flex-direction:column;gap:.85em;margin-top:.4em}
+  ul.clean li{position:relative;padding-left:1.7em;font-size:clamp(14px,1.5vw,19px);color:var(--ink2);line-height:1.4}
+  ul.clean li::before{content:"";position:absolute;left:0;top:.5em;width:.7em;height:.7em;border-radius:3px;background:var(--grad)}
+  ul.clean li b{color:var(--ink);font-weight:700}
+  /* pipeline */
+  .flow{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap;margin-top:1.2em}
+  .step{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .step .num{width:30px;height:30px;border-radius:9px;background:var(--grad);display:flex;align-items:center;
+    justify-content:center;font-weight:800;font-size:15px;margin-bottom:.6em;color:#fff}
+  .step h4{font-size:clamp(13px,1.4vw,17px);margin-bottom:.25em}
+  .step p{font-size:clamp(11px,1.2vw,14px);color:var(--muted);line-height:1.4}
+  .arrow{align-self:center;color:var(--muted);font-size:22px}
+  /* finding rows */
+  .find{display:flex;gap:16px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-left:4px solid var(--s4);border-radius:12px;padding:16px 20px}
+  .find .fn{font-size:clamp(22px,3vw,34px);font-weight:850;min-width:2.6em;text-align:center}
+  .find h4{font-size:clamp(13px,1.4vw,17px);margin-bottom:.2em}
+  .find p{font-size:clamp(11.5px,1.2vw,14.5px);color:var(--muted);line-height:1.4}
+  .find.crit{border-left-color:var(--crit)} .find.blue{border-left-color:var(--s1)} .find.tea{border-left-color:var(--s3)}
+  /* chrome */
+  #bar{position:fixed;top:0;left:0;height:3px;background:var(--grad);width:0;z-index:20;transition:width .3s}
+  #nav{position:fixed;bottom:18px;right:26px;display:flex;align-items:center;gap:14px;z-index:20;
+    color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+  #nav button{background:var(--panel2);border:1px solid var(--line);color:var(--ink2);width:34px;height:34px;
+    border-radius:9px;cursor:pointer;font-size:16px;transition:.15s}
+  #nav button:hover{background:var(--s1);color:#fff;border-color:var(--s1)}
+  .brand{position:fixed;bottom:18px;left:26px;z-index:20;color:var(--muted);font-size:12.5px;letter-spacing:.02em}
+  .brand b{color:var(--ink2);font-weight:700}
+  .dotlogo{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--grad);margin-right:7px;vertical-align:middle}
+  .foot-note{font-size:clamp(10.5px,1.05vw,13px);color:var(--muted);margin-top:1.4em;max-width:60ch;line-height:1.4}
+  .hint{position:fixed;bottom:56px;right:26px;color:var(--muted);font-size:11.5px;z-index:20;opacity:.8}
+  @media(max-width:760px){.g3,.g4{grid-template-columns:repeat(2,1fr)}.slide{padding:6vh 7vw}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage">
+
+  <!-- 1 · Portada -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dotlogo"></span>Herramienta de gestión estadística · REM</div>
+    <h1>Dashboard REM<br>CESFAM Tongoy</h1>
+    <p class="lead" style="margin-top:1.1em">De decenas de planillas mensuales a una sola pantalla que dice <b style="color:var(--ink)">qué mirar, dónde y por qué</b>. Vigilancia de producción, alertas y tendencias para los tres dispositivos de la red.</p>
+    <div class="row" style="margin-top:2em;gap:12px">
+      <span class="pill">CESFAM Tongoy</span>
+      <span class="pill">PSR Guanaqueros</span>
+      <span class="pill">SUR Tongoy</span>
+      <span class="pill">Serie A + Serie P</span>
+    </div>
+    <p class="foot-note">Reunión técnica · Ismael Vásquez Loyola, Jefe de Estadísticas · Datos REM ene–ago 2026, base comparativa 2025.</p>
+  </section>
+
+  <!-- 2 · El problema -->
+  <section class="slide">
+    <div class="eyebrow">El punto de partida</div>
+    <h2>El dato existe.<br><span class="ac">Está enterrado.</span></h2>
+    <div class="row" style="margin-top:.4em;gap:36px">
+      <div class="col">
+        <p class="lead">Cada mes, cada dispositivo genera un REM Serie A con <b style="color:var(--ink)">~30 hojas</b>. Multiplicado por tres centros y doce meses, la información de gestión queda repartida en cientos de celdas.</p>
+        <ul class="clean" style="margin-top:1.3em">
+          <li>Revisar producción es <b>abrir planilla por planilla</b>, a mano.</li>
+          <li>Las <b>alertas epidemiológicas</b> aparecen tarde, cuando el mes ya cerró.</li>
+          <li>Comparar centros o meses exige <b>rehacer el cálculo</b> cada vez.</li>
+          <li>Un solo analista sostiene todo el proceso.</li>
+        </ul>
+      </div>
+      <div class="col" style="flex:.85;display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div class="big" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">~1.000</div>
+          <div class="ksub">celdas relevantes por dispositivo/mes<br>que nadie alcanza a mirar todas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · La idea -->
+  <section class="slide">
+    <div class="eyebrow">La idea</div>
+    <h2>Que el REM se lea <span class="ac">solo</span>,<br>y muestre lo importante.</h2>
+    <p class="lead">Se carga el archivo tal cual sale de DEIS. El sistema reconoce el dispositivo, el mes y el año, extrae los indicadores clave y arma un tablero navegable. <b style="color:var(--ink)">Sin transcribir nada a mano.</b></p>
+    <div class="grid g3" style="margin-top:1.8em">
+      <div class="kpi"><div class="n">3</div><div class="l">dispositivos consolidados en una vista (CESFAM + PSR) y cada uno por separado</div></div>
+      <div class="kpi"><div class="n">2</div><div class="l">series integradas: Serie A (producción) y Serie P (PSCV)</div></div>
+      <div class="kpi"><div class="n">0</div><div class="l">digitación manual: el REM entra sin intervención</div></div>
+    </div>
+  </section>
+
+  <!-- 4 · Cómo funciona -->
+  <section class="slide">
+    <div class="eyebrow">Cómo funciona</div>
+    <h2>Tres pasos, cada mes.</h2>
+    <div class="flow">
+      <div class="step"><div class="num">1</div><h4>Cargar el REM</h4><p>Se sube el archivo Serie A / P tal como se descarga. No se edita ni se renombra.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="num">2</div><h4>Extracción automática</h4><p>Autodetecta DEIS, mes y año; lee ~30 hojas y arma la base de datos con caché para no repetir trabajo.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="num">3</div><h4>Dashboard</h4><p>Un HTML autocontenido: producción, alertas, coberturas, programas y proyección — listo para revisar.</p></div>
+    </div>
+    <p class="foot-note">Robusto ante detalles reales del REM: identifica el dispositivo por celdas fiables (no por fórmulas rotas), maneja meses incompletos y evita que archivos de distinto año se pisen entre sí.</p>
+  </section>
+
+  <!-- 5 · Qué muestra (módulos) -->
+  <section class="slide">
+    <div class="eyebrow">Qué muestra</div>
+    <h2>Un módulo por cada foco de gestión.</h2>
+    <div class="grid g4" style="margin-top:.4em">
+      <div class="card"><span class="ic">📊</span><h3>Producción</h3><p>Atenciones por estamento, tramo etario y sexo (A04 + odontología).</p></div>
+      <div class="card"><span class="ic">🌡️</span><h3>Epidemiología</h3><p>Semáforo de IRA, neumonía, SBO, asma y EPOC contra umbral mensual.</p></div>
+      <div class="card"><span class="ic">🎯</span><h3>Coberturas</h3><p>PAP y EMP sobre el percápita unificado de Tongoy.</p></div>
+      <div class="card"><span class="ic">❤️</span><h3>PSCV</h3><p>Compensación HTA y DM2 (Serie P).</p></div>
+      <div class="card"><span class="ic">🧠</span><h3>Salud Mental</h3><p>Ingresos/egresos, actividad del programa, PASMI y PACOM.</p></div>
+      <div class="card"><span class="ic">♿</span><h3>Rehabilitación</h3><p>CCR (A28): sesiones, altas, abandono y Terapia Ocupacional.</p></div>
+      <div class="card"><span class="ic">🧒</span><h3>Chile Crece Contigo</h3><p>Pesquisa EEDP/TEPSI y Sala de Estimulación (A03 · A05-F).</p></div>
+      <div class="card"><span class="ic">📈</span><h3>Proyección</h3><p>Comparación 2025 vs 2026 y estimación Sep–Dic.</p></div>
+    </div>
+    <p class="foot-note">Filtros transversales que recalculan todo el tablero: <b style="color:var(--ink2)">sexo</b> (con desglose H/M), <b style="color:var(--ink2)">tramo etario</b> (infantil, adolescente, adulto, persona mayor) y <b style="color:var(--ink2)">mes o acumulado del periodo</b>, ajustable por sección.</p>
+  </section>
+
+  <!-- 6 · El valor: hallazgos -->
+  <section class="slide">
+    <div class="eyebrow">Por qué importa</div>
+    <h2>No es solo ver datos:<br><span class="ac">ya reveló cosas accionables.</span></h2>
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;margin-top:.5em">
+      <div class="find crit"><div class="fn neg">15%</div><div><h4>Abandono en el CCR</h4><p>De 117 egresos, 18 fueron por abandono. Foco de retención a monitorear mes a mes.</p></div></div>
+      <div class="find"><div class="fn warn">≠</div><div><h4>Triage descuadrado en SUR</h4><p>En meses como febrero, 2.381 atenciones frente a 444 categorizadas: brecha de registro, no de actividad.</p></div></div>
+      <div class="find blue"><div class="fn" style="color:var(--s1)">↑↑</div><div><h4>Temporada respiratoria fuerte</h4><p>IRA alta 2026 muy por sobre 2025 en CESFAM. El semáforo lo marca antes del cierre.</p></div></div>
+      <div class="find tea"><div class="fn" style="color:var(--s3)">✓</div><div><h4>Calidad como subproducto</h4><p>El panel avisa meses sin dato y descuadres. La revisión de calidad deja de ser manual.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 7 · Proyección -->
+  <section class="slide">
+    <div class="eyebrow">La novedad</div>
+    <h2>Anticipar el cierre del año.</h2>
+    <div class="row" style="gap:40px;align-items:center">
+      <div class="col" style="flex:1.15">
+        <p class="lead">Con la base 2025 completa de CESFAM y PSR, el tablero proyecta septiembre a diciembre usando la <b style="color:var(--ink)">forma estacional del año anterior</b>, reescalada por el ritmo real de 2026. Con banda de incertidumbre y etiquetada como provisional.</p>
+        <div class="grid g3 kfit" style="margin-top:1.5em">
+          <div class="kpi"><div class="n pos">+22,7%</div><div class="l">producción consolidada 2026 vs. mismo tramo 2025</div></div>
+          <div class="kpi"><div class="n">17.826</div><div class="l">atenciones reales ene–ago (consolidado)</div></div>
+          <div class="kpi"><div class="n">~26.577</div><div class="l">cierre 2026 estimado si se mantiene el patrón</div></div>
+        </div>
+      </div>
+      <div class="col" style="flex:.85;min-width:280px">
+        <!-- SVG mini chart: 2025 vs 2026 + proyección -->
+        <svg viewBox="0 0 320 200" style="width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px">
+          <!-- baseline grid -->
+          <line x1="34" y1="20" x2="34" y2="168" stroke="#28344a"/>
+          <line x1="34" y1="168" x2="308" y2="168" stroke="#28344a"/>
+          <!-- 2025 dotted -->
+          <polyline fill="none" stroke="#8091a8" stroke-width="2" stroke-dasharray="3 3"
+            points="46,120 80,104 114,108 148,86 182,88 216,112 250,84 284,102 " />
+          <!-- 2026 real solid indigo -->
+          <polyline fill="none" stroke="#8b7bf0" stroke-width="2.8"
+            points="46,96 80,120 114,58 148,110 182,90 216,128 250,100 284,80" />
+          <!-- projection band -->
+          <polygon fill="#8b7bf0" opacity="0.16"
+            points="284,80 300,86 300,116 284,80" />
+          <!-- projection dashed -->
+          <polyline fill="none" stroke="#8b7bf0" stroke-width="2.4" stroke-dasharray="6 4"
+            points="284,80 292,92 300,86 308,120" />
+          <circle cx="284" cy="80" r="3.2" fill="#8b7bf0"/>
+          <text x="46" y="184" fill="#8091a8" font-size="9" font-family="sans-serif">Ene</text>
+          <text x="270" y="184" fill="#8091a8" font-size="9" font-family="sans-serif">Dic</text>
+          <text x="44" y="14" fill="#c3cfe0" font-size="10" font-family="sans-serif">Producción mensual</text>
+        </svg>
+        <div class="row" style="gap:16px;margin-top:.7em;font-size:12px;color:var(--muted)">
+          <span>┈ 2025 base</span><span style="color:#8b7bf0">━ 2026 real</span><span style="color:#8b7bf0">┅ proyección</span>
+        </div>
+      </div>
+    </div>
+    <p class="foot-note">Es una estimación, no una meta ni un compromiso: se afina cada mes al cargar nuevos REM. Disponible para CESFAM, PSR y el consolidado; SUR se suma al cargar su 2025.</p>
+  </section>
+
+  <!-- 8 · Valor / impacto -->
+  <section class="slide">
+    <div class="eyebrow">Impacto</div>
+    <h2>Menos horas de planilla,<br><span class="ac">más decisiones a tiempo.</span></h2>
+    <div class="grid g3" style="margin-top:.6em">
+      <div class="card"><span class="ic">⏱️</span><h3>Tiempo</h3><p>La consolidación mensual de los tres centros pasa de horas de trabajo manual a una carga de archivos.</p></div>
+      <div class="card"><span class="ic">🔎</span><h3>Anticipación</h3><p>Alertas epidemiológicas y de programas visibles dentro del mes, no después.</p></div>
+      <div class="card"><span class="ic">🤝</span><h3>Apoyo a los equipos</h3><p>Salud mental, rehabilitación e infancia obtienen su lectura clara para gestión y mejora de registro.</p></div>
+    </div>
+    <p class="foot-note">Todo en un único archivo HTML autocontenido: se abre sin instalar nada, funciona sin conexión y es fácil de compartir.</p>
+  </section>
+
+  <!-- 9 · Roadmap -->
+  <section class="slide">
+    <div class="eyebrow">Próximos pasos</div>
+    <h2>Lo que viene.</h2>
+    <ul class="clean" style="margin-top:.3em">
+      <li>Cargar el <b>REM 2025 de SUR</b> para extender la proyección a urgencia.</li>
+      <li>Sumar <b>REM 2024</b> y construir un <b>canal endémico</b> de dos años para las alertas.</li>
+      <li>Reemplazar umbrales y metas provisionales por las <b>Metas Sanitarias (Ley 19.813)</b> oficiales.</li>
+      <li>Mantener el foco en <b>CCR</b> (abandono) y en la <b>calidad del registro</b> de SUR y PASMI.</li>
+    </ul>
+    <p class="foot-note">Cada carga mensual mejora las tendencias y afina las proyecciones: la herramienta se vuelve más útil con el tiempo.</p>
+  </section>
+
+  <!-- 10 · Cierre -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dotlogo"></span>Cierre</div>
+    <h1>Del REM crudo<br>a <span class="ac">la decisión.</span></h1>
+    <p class="lead" style="margin-top:1.1em">Una herramienta hecha en casa, con los datos reales de Tongoy, que convierte el registro estadístico en información para gestionar. Lista para usarse este mes.</p>
+    <div class="row" style="margin-top:2em;gap:12px">
+      <span class="pill">Producción</span><span class="pill">Alertas</span><span class="pill">Coberturas</span>
+      <span class="pill">Programas</span><span class="pill">Proyección 2026</span>
+    </div>
+    <p class="foot-note">Gracias. ¿Preguntas? · Fuente: REM Serie A/P (DEIS-MINSAL) · Percápita Tongoy 2026 (DATA SALUD Coquimbo).</p>
+  </section>
+
+</div>
+
+<div class="brand"><span class="dotlogo"></span><b>Dashboard REM</b> · CESFAM Tongoy</div>
+<div id="nav">
+  <button id="prev" aria-label="Anterior">‹</button>
+  <span id="count">1 / 10</span>
+  <button id="next" aria-label="Siguiente">›</button>
+</div>
+<div class="hint">← → para navegar · F pantalla completa</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  const bar=document.getElementById('bar'), count=document.getElementById('count');
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    bar.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+  }
+  document.getElementById('next').onclick=()=>show(i+1);
+  document.getElementById('prev').onclick=()=>show(i-1);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(i+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(i-1);}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key.toLowerCase()==='f'){
+      if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+      else document.exitFullscreen&&document.exitFullscreen();
+    }
+  });
+  // click derecho del escenario avanza (zona), evitando los botones
+  document.getElementById('stage').addEventListener('click',e=>{
+    if(e.target.closest('#nav'))return;
+    const x=e.clientX/window.innerWidth;
+    if(x>0.62)show(i+1); else if(x<0.2)show(i-1);
+  });
+  show(0);
+</script>
+</body>
+</html>
