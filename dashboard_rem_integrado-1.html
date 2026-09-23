@@ -1,0 +1,900 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard REM · CESFAM Tongoy</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ---- Tokens: paleta categórica y de estado validadas (dataviz) ---- */
+:root{
+ --bg:#12100c;--surf:#1c1a16;--surf2:#232019;--line:#2c2c2a;--axis:#383835;
+ --ink:#ffffff;--ink2:#c3c2b7;--mut:#898781;--rail:#151310;
+ --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#4aa3c9;--s7:#9085e9;--s8:#e66767;
+ --good:#0ca30c;--warn:#fab219;--serious:#ec835a;--crit:#d03b3b;
+ --goodbg:rgba(12,163,12,.16);--warnbg:rgba(250,178,25,.16);--critbg:rgba(208,59,59,.16);--seriousbg:rgba(236,131,90,.16);}
+:root[data-theme=light]{
+ --bg:#f2f1ec;--surf:#fcfcfb;--surf2:#f4f3ee;--line:#e1e0d9;--axis:#c3c2b7;
+ --ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--rail:#171511;
+ --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#2e93bd;--s7:#4a3aa7;--s8:#e34948;
+ --good:#0ca30c;--warn:#fab219;--serious:#ec835a;--crit:#d03b3b;}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){
+ --bg:#f2f1ec;--surf:#fcfcfb;--surf2:#f4f3ee;--line:#e1e0d9;--axis:#c3c2b7;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--rail:#171511;
+ --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#2e93bd;--s7:#4a3aa7;--s8:#e34948;}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:100vh}
+/* sidebar */
+.rail{width:238px;flex-shrink:0;background:var(--rail);color:#dfe8f5;display:flex;flex-direction:column;padding:16px 12px;gap:2px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:4px 10px 14px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:10px}
+.brand .t{font-weight:800;font-size:15px;letter-spacing:-.01em}
+.brand .s{font-size:11px;color:#9a9a92;margin-top:2px}
+.navgroup{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7f7f78;font-weight:700;padding:12px 12px 5px}
+.navb{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;cursor:pointer;color:#cfcfc6;font-weight:600;font-size:13px;border:0;background:transparent;width:100%;text-align:left;transition:.12s}
+.navb .ic{width:20px;text-align:center;font-size:15px;filter:grayscale(.2)}
+.navb:hover{background:rgba(255,255,255,.06)}
+.navb[aria-current=true]{background:color-mix(in srgb,var(--acc,#3987e5) 26%,transparent);color:#fff;box-shadow:inset 3px 0 0 var(--acc,#3987e5)}
+.railfoot{margin-top:auto;font-size:10px;color:#78786f;padding:10px}
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.top h1{font-size:18px;margin:0;font-weight:800;letter-spacing:-.02em}.top .desc{font-size:12px;color:var(--mut);margin-top:2px}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--surf2);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{background:transparent;border:0;color:var(--ink2);padding:7px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--s1);color:#fff}
+.iconbtn{background:var(--surf2);border:1px solid var(--line);color:var(--ink2);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px}
+.content{padding:22px 24px 64px;max-width:1200px}
+.grid{display:grid;gap:14px}.k4{grid-template-columns:repeat(4,1fr)}.k3{grid-template-columns:repeat(3,1fr)}.k2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.k4,.k3{grid-template-columns:repeat(2,1fr)}.k2{grid-template-columns:1fr}.rail{width:60px}.brand .t,.brand .s,.navgroup,.navb span.lbl{display:none}.navb{justify-content:center}}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:15px 17px}
+/* KPI card con sparkline + delta + semáforo */
+.kpi{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:2px}
+.kpi .strip{position:absolute;left:0;top:0;bottom:0;width:4px}
+.kpi .lab{color:var(--mut);font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:6px;min-height:16px}
+.kpi .valrow{display:flex;align-items:baseline;gap:8px;margin-top:5px}
+.kpi .val{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .spark{margin-top:8px;height:26px}
+.kpi .sub{font-size:11px;margin-top:6px;color:var(--ink2)}
+.stat{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px}
+.stat.good{background:var(--goodbg);color:var(--good)}.stat.warn{background:var(--warnbg);color:var(--warn)}.stat.crit{background:var(--critbg);color:var(--crit)}.stat.serious{background:var(--seriousbg);color:var(--serious)}.stat.info{background:color-mix(in srgb,var(--s1) 16%,transparent);color:var(--s1)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.sec{margin-top:22px}.sec h2{font-size:14.5px;margin:0 0 10px;font-weight:750;letter-spacing:-.01em}
+.chartbox{position:relative;height:300px}.chartbox.sm{height:240px}
+.hint{color:var(--mut);font-size:12px;line-height:1.5}
+.cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.cardhead h2{font-size:14px;margin:0;font-weight:700}
+.tbtn{background:var(--surf2);border:1px solid var(--line);color:var(--mut);font-size:11px;font-weight:600;border-radius:7px;padding:4px 9px;cursor:pointer}
+.tbtn[aria-pressed=true]{color:var(--ink);border-color:var(--axis)}
+table.dv{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums;margin-top:6px}
+table.dv th,table.dv td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:right}
+table.dv th:first-child,table.dv td:first-child{text-align:left;color:var(--ink2)}
+table.dv th{color:var(--mut);font-weight:600}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.bg-good{background:var(--goodbg);color:var(--good)}.bg-warn{background:var(--warnbg);color:var(--warn)}.bg-crit{background:var(--critbg);color:var(--crit)}
+.metarow{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}.metarow:last-child{border-bottom:0}
+.metaname{flex:1;font-size:13px}.metaname b{font-weight:700}
+.bar{flex:0 0 180px;height:9px;background:var(--surf2);border-radius:6px;overflow:hidden}.bar>span{display:block;height:100%;border-radius:6px}
+.pctv{flex:0 0 74px;text-align:right;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.note{background:var(--surf2);border:1px solid var(--line);border-left:4px solid var(--s4);border-radius:10px;padding:12px 14px;color:var(--ink2);font-size:12.5px;line-height:1.55}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin-top:8px}.legend span{display:inline-flex;align-items:center;gap:6px}
+.na{padding:40px;text-align:center;color:var(--mut);font-size:14px}
+.pill{display:inline-block;background:var(--surf2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--ink2);margin-right:6px}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="app">
+ <nav class="rail">
+  <div class="brand"><div class="t">Dashboard REM</div><div class="s">CESFAM Tongoy · Coquimbo</div></div>
+  <div class="navgroup">General</div>
+  <button class="navb" data-mod="resumen" style="--acc:#3987e5"><span class="ic">🏠</span><span class="lbl">Resumen</span></button>
+  <button class="navb" data-mod="prod" style="--acc:#3987e5"><span class="ic">📊</span><span class="lbl">Producción</span></button>
+  <button class="navb" data-mod="cob" style="--acc:#199e70"><span class="ic">🎯</span><span class="lbl">Coberturas</span></button>
+  <div class="navgroup">Programas</div>
+  <button class="navb" data-mod="cv" style="--acc:#e34948"><span class="ic">❤️</span><span class="lbl">Cardiovascular</span></button>
+  <button class="navb" data-mod="sm" style="--acc:#7c6cf0"><span class="ic">🧠</span><span class="lbl">Salud Mental</span></button>
+  <button class="navb" data-mod="ccr" style="--acc:#1baf7a"><span class="ic">♿</span><span class="lbl">Rehabilitación CCR</span></button>
+  <button class="navb" data-mod="adol" style="--acc:#d55181"><span class="ic">🧑</span><span class="lbl">Adolescente · E. Amigable</span></button>
+  <button class="navb" data-mod="dent" style="--acc:#2e93bd"><span class="ic">🦷</span><span class="lbl">Dental (A09)</span></button>
+  <button class="navb" data-mod="chcc" style="--acc:#eda100"><span class="ic">🧒</span><span class="lbl">Chile Crece Contigo</span></button>
+  <button class="navb" data-mod="pacom" style="--acc:#e87ba4"><span class="ic">🤝</span><span class="lbl">PACOM / PASMI</span></button>
+  <div class="navgroup">Comunitario</div>
+  <button class="navb" data-mod="part" style="--acc:#c98500"><span class="ic">🗣️</span><span class="lbl">Participación y Educación</span></button>
+  <div class="navgroup">Vigilancia</div>
+  <button class="navb" data-mod="resp" style="--acc:#2e93bd"><span class="ic">🌡️</span><span class="lbl">Respiratorio / Epi</span></button>
+  <div class="navgroup">Análisis</div>
+  <button class="navb" data-mod="proy" style="--acc:#2e93bd"><span class="ic">📈</span><span class="lbl">Proyección interanual</span></button>
+  <button class="navb" data-mod="sp" style="--acc:#7c6cf0"><span class="ic">👥</span><span class="lbl">Serie P comparativa</span></button>
+  <div class="railfoot">Fuente: REM Serie A/P · DEIS-MINSAL</div>
+ </nav>
+ <div class="main">
+  <div class="top">
+   <div><h1 id="modTitle">Resumen</h1><div class="desc" id="modDesc"></div></div>
+   <div class="tools">
+    <span class="seg" id="centro">
+     <button data-c="consolidado" aria-pressed="true">Consolidado</button>
+     <button data-c="105321">CESFAM</button>
+     <button data-c="105405">PSR</button>
+     <button data-c="201178">SUR</button>
+    </span>
+    <button class="iconbtn" id="btnInforme" title="Generar informe salubrista de esta sección" style="width:auto;padding:0 12px;font-weight:700;font-size:13px">📄 Informe</button>
+    <button class="iconbtn" id="theme" title="Tema">◐</button>
+   </div>
+  </div>
+  <div class="content">
+   <section id="m-resumen"></section>
+   <section id="m-prod" hidden></section>
+   <section id="m-cv" hidden></section>
+   <section id="m-resp" hidden></section>
+   <section id="m-sm" hidden></section>
+   <section id="m-ccr" hidden></section>
+   <section id="m-chcc" hidden></section>
+   <section id="m-pacom" hidden></section>
+   <section id="m-cob" hidden></section>
+   <section id="m-proy" hidden></section>
+   <section id="m-adol" hidden></section>
+   <section id="m-dent" hidden></section>
+   <section id="m-part" hidden></section>
+   <section id="m-sp" hidden></section>
+  </div>
+ </div>
+</div>
+<div id="repOv" hidden style="position:fixed;inset:0;z-index:50;background:rgba(8,10,14,.55);display:flex;justify-content:flex-end">
+ <div style="width:min(680px,94vw);height:100%;background:var(--bg);border-left:1px solid var(--line);display:flex;flex-direction:column">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)">
+   <div><div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700">Informe salubrista · APS rural</div><div id="repTitle" style="font-size:16px;font-weight:800"></div></div>
+   <div style="display:flex;gap:8px"><button class="tbtn" id="repCopy">Copiar</button><button class="iconbtn" id="repClose" title="Cerrar">✕</button></div>
+  </div>
+  <div id="repBody" style="padding:20px 22px;overflow-y:auto;line-height:1.6;font-size:13.5px"></div>
+ </div>
+</div>
+<script>
+const D={"meses": [1, 2, 3, 4, 5, 6, 7, 8], "labels": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago"], "dispositivos": {"105321": {"nombre": "CESFAM Tongoy", "tipo": "aps", "estamentos": {"Médico": [473.0, 378.0, 446.0, 498.0, 656.0, 361.0, 383.0, 388.0], "Enfermería": [159.0, 55.0, 263.0, 83.0, 59.0, 56.0, 268.0, 139.0], "Kinesiología": [223.0, 176.0, 435.0, 8.0, 198.0, 17.0, 468.0, 422.0], "Psicología": [156.0, 156.0, 300.0, 171.0, 188.0, 1.0, 6.0, 180.0], "Trabajo Social": [287.0, 35.0, 74.0, 58.0, 47.0, 38.0, 37.0, 53.0], "Nutrición": [87.0, 68.0, 134.0, 65.0, 74.0, 31.0, 58.0, 81.0], "Odontología": [392.0, 385.0, 445.0, 416.0, 415.0, 376.0, 287.0, 479.0], "Otros": [97.0, 113.0, 283.0, 105.0, 127.0, 111.0, 53.0, 146.0]}, "estamentos_h": {"Médico": [181.0, 149.0, 186.0, 177.0, 254.0, 157.0, 163.0, 155.0], "Enfermería": [95.0, 32.0, 119.0, 56.0, 31.0, 22.0, 120.0, 99.0], "Kinesiología": [87.0, 63.0, 134.0, 3.0, 72.0, 8.0, 166.0, 165.0], "Psicología": [51.0, 53.0, 84.0, 56.0, 58.0, 1.0, 4.0, 49.0], "Trabajo Social": [128.0, 18.0, 36.0, 20.0, 22.0, 18.0, 16.0, 18.0], "Nutrición": [35.0, 34.0, 45.0, 21.0, 30.0, 14.0, 28.0, 33.0], "Odontología": [146.0, 156.0, 168.0, 162.0, 168.0, 146.0, 129.0, 185.0], "Otros": [32.0, 36.0, 83.0, 53.0, 59.0, 56.0, 19.0, 67.0]}, "estamentos_m": {"Médico": [292.0, 229.0, 260.0, 321.0, 402.0, 204.0, 220.0, 233.0], "Enfermería": [64.0, 23.0, 144.0, 27.0, 28.0, 34.0, 148.0, 40.0], "Kinesiología": [136.0, 113.0, 301.0, 5.0, 126.0, 9.0, 302.0, 257.0], "Psicología": [105.0, 103.0, 216.0, 115.0, 130.0, 0.0, 2.0, 131.0], "Trabajo Social": [159.0, 17.0, 38.0, 38.0, 25.0, 20.0, 21.0, 35.0], "Nutrición": [52.0, 34.0, 89.0, 44.0, 44.0, 17.0, 30.0, 48.0], "Odontología": [246.0, 229.0, 277.0, 254.0, 247.0, 230.0, 158.0, 294.0], "Otros": [65.0, 77.0, 200.0, 52.0, 68.0, 55.0, 34.0, 79.0]}, "epi": {"IRA Alta": [10.0, 17.0, 53.0, 66.0, 69.0, 12.0, 60.0, 62.0], "Neumonía": [8.0, 0.0, 1.0, 2.0, 1.0, 6.0, 1.0, 6.0], "SBO": [1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 4.0, 5.0], "Asma": [4.0, 0.0, 2.0, 0.0, 6.0, 6.0, 1.0, 1.0], "EPOC": [3.0, 3.0, 11.0, 0.0, 1.0, 1.0, 9.0, 1.0]}, "epi_h": {"IRA Alta": [3.0, 11.0, 24.0, 22.0, 31.0, 7.0, 32.0, 22.0], "Neumonía": [0.0, 0.0, 1.0, 1.0, 0.0, 3.0, 0.0, 1.0], "SBO": [0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 3.0, 1.0], "Asma": [2.0, 0.0, 1.0, 0.0, 1.0, 3.0, 0.0, 1.0], "EPOC": [2.0, 0.0, 3.0, 0.0, 1.0, 0.0, 3.0, 0.0]}, "epi_m": {"IRA Alta": [7.0, 6.0, 29.0, 44.0, 38.0, 5.0, 28.0, 40.0], "Neumonía": [8.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0, 5.0], "SBO": [1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 4.0], "Asma": [2.0, 0.0, 1.0, 0.0, 5.0, 3.0, 1.0, 0.0], "EPOC": [1.0, 3.0, 8.0, 0.0, 0.0, 1.0, 6.0, 1.0]}, "extra": {"PAP tomados": [43.0, 28.0, 10.0, 56.0, 50.0, 60.0, 46.0, 30.0], "EMP realizados": [86.0, 138.0, 170.0, 173.0, 245.0, 143.0, 137.0, 108.0]}, "prod_total": [1874.0, 1366.0, 2380.0, 1404.0, 1764.0, 991.0, 1560.0, 1888.0], "programas": {"PASMI": {"EDI (evaluaciones)": [3.0, 0.0, 0.0, 1.0, 2.0, 0.0, 1.0, 4.0], "Visitas a establecimiento": [2.0, 0, 5.0, 6.0, 1.0, 0, 5.0, 1.0], "Niños/as visitados": [2.0, 0, 3.0, 6.0, 1.0, 0, 5.0, 1.0], "Padres/madres en talleres": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0], "Talleres": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0], "Sesiones": [0, 0.0, 0.0, 0.0, 0, 0, 0, 0]}}, "salud_mental": {"Ingresos": [13.0, 24.0, 29.0, 13.0, 21.0, 3.0, 17.0, 19.0], "Egresos": [9.0, 0.0, 0.0, 3.0, 3.0, 11.0, 2.0, 6.0], "Ingresos_h": [4.0, 11.0, 11.0, 3.0, 11.0, 0.0, 7.0, 4.0], "Ingresos_m": [9.0, 13.0, 18.0, 10.0, 10.0, 3.0, 10.0, 15.0], "Egresos_h": [6.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0, 3.0], "Egresos_m": [3.0, 0.0, 0.0, 2.0, 2.0, 9.0, 2.0, 3.0], "diag": {"Ánimo/depresión": [2.0, 2.0, 4.0, 1.0, 0.0, 2.0, 3.0, 3.0], "Consumo sustancias": [0.0, 2.0, 2.0, 0.0, 1.0, 3.0, 4.0, 2.0], "Comportamiento": [1.0, 4.0, 4.0, 4.0, 2.0, 3.0, 0.0, 2.0], "Ansiedad": [2.0, 5.0, 1.0, 1.0, 3.0, 2.0, 1.0, 2.0], "TGD/Autismo": [1.0, 1.0, 3.0, 0.0, 1.0, 0.0, 0.0, 0.0], "Adaptativo": [2.0, 4.0, 9.0, 2.0, 5.0, 5.0, 8.0, 2.0], "Otros": [5.0, 5.0, 6.0, 5.0, 7.0, 4.0, 0.0, 4.0]}, "riesgo": {"Ideación suicida": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Intento de suicidio": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Violencia (víctima)": [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0]}, "a06": {"Controles SM": [258.0, 282.0, 363.0, 388.0, 429.0, 365.0, 297.0, 423.0], "Rescate de pacientes": [29.0, 0.0, 48.0, 15.0, 52.0, 0.0, 49.0, 16.0], "Psicoterapia individual": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Consultorías (A.2)": [1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], "Coordinación comunitaria (part.)": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0], "Emergencia/desastre (part.)": [0, 0, 0.0, 0.0, 0, 0, 20.0, 0]}}, "pacom": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 7.0], "Egresos": [2.0, 0.0, 0.0, 3.0, 2.0, 1.0, 1.0, 6.0], "Visitas domiciliarias": [12.0, 10.0, 0.0, 3.0, 8.0, 11.0, 0.0, 18.0], "Apoyo telefónico (acciones)": [58.0, 0.0, 17.0, 27.0, 48.0, 36.0, 0.0, 49.0], "Planes de acompañamiento": [0.0, 2.0, 1.0, 0.0, 1.0, 2.0, 0.0, 6.0], "Evaluaciones participativas": [1.0, 0.0, 0.0, 3.0, 2.0, 0.0, 0.0, 6.0], "Pauta ingreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 6.0], "Pauta egreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.0], "Coordinación comunitaria": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0]}, "ccr": {"Ingresos": [17.0, 35.0, 16.0, 38.0, 28.0, 15.0, 16.0, 37.0], "Reingresos": [2.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [26.0, 14.0, 16.0, 18.0, 17.0, 1.0, 11.0, 14.0], "Ingresos_h": [8.0, 11.0, 4.0, 23.0, 7.0, 1.0, 5.0, 15.0], "Ingresos_m": [9.0, 24.0, 12.0, 15.0, 21.0, 14.0, 11.0, 22.0], "Egresos_h": [9.0, 5.0, 5.0, 7.0, 10.0, 0.0, 2.0, 5.0], "Egresos_m": [17.0, 9.0, 11.0, 11.0, 7.0, 1.0, 9.0, 9.0], "Egresos por alta": [23.0, 10.0, 14.0, 17.0, 10.0, 1.0, 11.0, 13.0], "Abandono": [3.0, 4.0, 2.0, 1.0, 7.0, 0.0, 0.0, 1.0], "Sesiones": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0], "Participación comunidad": [13.0, 10.0, 13.0, 7.0, 0.0, 0.0, 0.0, 0.0], "ses": {"Kinesiología": [130.0, 208.0, 129.0, 168.0, 161.0, 80.0, 99.0, 242.0], "Terapia Ocupacional": [43.0, 55.0, 47.0, 64.0, 54.0, 69.0, 39.0, 39.0], "Fonoaudiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "cond": {"Musculoesquelético": [15.0, 17.0, 15.0, 28.0, 20.0, 9.0, 17.0, 21.0], "Neurológico": [2.0, 3.0, 1.0, 6.0, 1.0, 0.0, 2.0, 8.0], "Otros": [0.0, 15.0, 0.0, 4.0, 7.0, 6.0, 3.0, 8.0], "Sensorial": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "dsm": {"test_aplic": [21.0, 30.0, 19.0, 23.0, 25.0, 21.0, 8.0, 30.0], "test_aplic_h": [11.0, 15.0, 10.0, 11.0, 21.0, 10.0, 6.0, 17.0], "test_aplic_m": [10.0, 15.0, 9.0, 12.0, 4.0, 11.0, 2.0, 13.0], "pb_aplic": [12.0, 17.0, 19.0, 7.0, 15.0, 16.0, 13.0, 19.0], "pb_normal": [11.0, 16.0, 11.0, 6.0, 14.0, 14.0, 13.0, 16.0], "pb_alterado": [1.0, 1.0, 8.0, 1.0, 1.0, 2.0, 0.0, 3.0], "reeval_norm": [0.0, 3.0, 0.0, 1.0, 0.0, 1.0, 3.0, 4.0], "sala_reing": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0], "res": {"Normal": [11.0, 23.0, 13.0, 19.0, 17.0, 15.0, 9.0, 20.0], "Rezago": [3.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Riesgo": [2.0, 1.0, 4.0, 1.0, 1.0, 4.0, 4.0, 2.0], "Retraso": [2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0]}, "detect": {"Rezago": [3.0, 2.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Riesgo": [2.0, 2.0, 4.0, 1.0, 1.0, 4.0, 5.0, 2.0], "Retraso": [2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0], "Riesgo BPS": [0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 0.0]}, "sala": {"Rezago": [0.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 2.0], "Riesgo": [2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 3.0, 1.0], "Retraso": [0.0, 3.0, 0.0, 1.0, 2.0, 0.0, 0.0, 0.0], "Riesgo BPS": [0.0, 0.0, 0.0, 2.0, 1.0, 1.0, 0.0, 1.0]}}, "edad": {"0-9": [309.0, 154.0, 290.0, 211.0, 274.0, 139.0, 259.0, 294.0], "10-19": [160.0, 71.0, 179.0, 108.0, 166.0, 65.0, 74.0, 121.0], "20-64": [649.0, 478.0, 793.0, 436.0, 610.0, 263.0, 540.0, 617.0], "65+": [364.0, 278.0, 673.0, 233.0, 299.0, 148.0, 400.0, 377.0]}, "yoy": {"Producción total": {"y_prev": [944.0, 1185.0, 1163.0, 1536.0, 1588.0, 1169.0, 1583.0, 1428.0, 1170.0, 1241.0, 1356.0, 1042.0], "y_cur": [1874.0, 1366.0, 2380.0, 1404.0, 1764.0, 991.0, 1560.0, 1888.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 1516, 1608, 1757, 1350], "lo": [null, null, null, null, null, null, null, null, 1003, 1064, 1162, 893], "hi": [null, null, null, null, null, null, null, null, 2029, 2152, 2351, 1807]}, "IRA alta (respiratorio)": {"y_prev": [0.0, 0.0, 32.0, 40.0, 42.0, 18.0, 26.0, 21.0, 29.0, 20.0, 21.0, 14.0], "y_cur": [10.0, 17.0, 53.0, 66.0, 69.0, 12.0, 60.0, 62.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 53, 36, 38, 25], "lo": [null, null, null, null, null, null, null, null, 32, 22, 23, 16], "hi": [null, null, null, null, null, null, null, null, 73, 50, 53, 35]}, "Controles salud mental": {"y_prev": [180.0, 186.0, 212.0, 244.0, 190.0, 94.0, 333.0, 302.0, 267.0, 278.0, 298.0, 299.0], "y_cur": [258.0, 282.0, 363.0, 388.0, 429.0, 365.0, 297.0, 423.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 490, 510, 547, 549], "lo": [null, null, null, null, null, null, null, null, 294, 306, 328, 329], "hi": [null, null, null, null, null, null, null, null, 686, 714, 766, 768]}, "PAP tomados": {"y_prev": [34.0, 31.0, 0.0, 39.0, 53.0, 0.0, 45.0, 24.0, 53.0, 49.0, 61.0, 49.0], "y_cur": [43.0, 28.0, 10.0, 56.0, 50.0, 60.0, 46.0, 30.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 60, 56, 69, 56], "lo": [null, null, null, null, null, null, null, null, 50, 46, 58, 46], "hi": [null, null, null, null, null, null, null, null, 70, 65, 81, 65]}, "EMP realizados": {"y_prev": [83.0, 154.0, 66.0, 166.0, 150.0, 84.0, 178.0, 156.0, 220.0, 128.0, 171.0, 67.0], "y_cur": [86.0, 138.0, 170.0, 173.0, 245.0, 143.0, 137.0, 108.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 285, 166, 221, 87], "lo": [null, null, null, null, null, null, null, null, 171, 99, 133, 52], "hi": [null, null, null, null, null, null, null, null, 398, 232, 310, 121]}, "Sesiones CCR (rehab)": {"y_prev": [6.0, 217.0, 98.0, 9.0, 5.0, 58.0, 228.0, 183.0, 252.0, 236.0, 284.0, 399.0], "y_cur": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 3318, 3107, 3739, 5253], "lo": [null, null, null, null, null, null, null, null, 1991, 1864, 2244, 3152], "hi": [null, null, null, null, null, null, null, null, 4645, 4350, 5235, 7355]}, "EEDP/TEPSI aplicados": {"y_prev": [8.0, 13.0, 8.0, 12.0, 4.0, 11.0, 17.0, 21.0, 19.0, 15.0, 16.0, 24.0], "y_cur": [21.0, 30.0, 19.0, 23.0, 25.0, 21.0, 8.0, 30.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 46, 36, 39, 58], "lo": [null, null, null, null, null, null, null, null, 27, 22, 23, 35], "hi": [null, null, null, null, null, null, null, null, 64, 51, 54, 81]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 1335, "rcv_alto": 722, "hta_bc": 1127, "hta_comp": 582, "dm_bc": 639, "dm_comp": 211}}, "105405": {"nombre": "PSR Guanaqueros", "tipo": "aps", "estamentos": {"Médico": [173.0, 103.0, 167.0, 246.0, 210.0, 235.0, 206.0, 224.0], "Enfermería": [102.0, 113.0, 155.0, 131.0, 119.0, 82.0, 121.0, 135.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 21.0, 13.0, 0.0], "Psicología": [3.0, 26.0, 0.0, 0.0, 0.0, 53.0, 49.0, 0.0], "Trabajo Social": [30.0, 14.0, 13.0, 20.0, 23.0, 35.0, 15.0, 14.0], "Nutrición": [18.0, 24.0, 12.0, 20.0, 14.0, 32.0, 49.0, 20.0], "Odontología": [207.0, 163.0, 205.0, 170.0, 141.0, 169.0, 172.0, 177.0], "Otros": [21.0, 9.0, 28.0, 23.0, 28.0, 11.0, 17.0, 18.0]}, "estamentos_h": {"Médico": [70.0, 48.0, 63.0, 88.0, 70.0, 126.0, 100.0, 88.0], "Enfermería": [40.0, 55.0, 78.0, 68.0, 71.0, 46.0, 65.0, 76.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 11.0, 9.0, 0.0], "Psicología": [1.0, 8.0, 0.0, 0.0, 0.0, 15.0, 15.0, 0.0], "Trabajo Social": [8.0, 6.0, 5.0, 10.0, 11.0, 10.0, 5.0, 6.0], "Nutrición": [3.0, 8.0, 7.0, 5.0, 4.0, 16.0, 17.0, 7.0], "Odontología": [68.0, 72.0, 75.0, 74.0, 52.0, 76.0, 73.0, 65.0], "Otros": [1.0, 0.0, 2.0, 0.0, 0.0, 2.0, 0.0, 0.0]}, "estamentos_m": {"Médico": [103.0, 55.0, 104.0, 158.0, 140.0, 109.0, 106.0, 136.0], "Enfermería": [62.0, 58.0, 77.0, 63.0, 48.0, 36.0, 56.0, 59.0], "Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 4.0, 0.0], "Psicología": [2.0, 18.0, 0.0, 0.0, 0.0, 38.0, 34.0, 0.0], "Trabajo Social": [22.0, 8.0, 8.0, 10.0, 12.0, 25.0, 10.0, 8.0], "Nutrición": [15.0, 16.0, 5.0, 15.0, 10.0, 16.0, 32.0, 13.0], "Odontología": [139.0, 91.0, 130.0, 96.0, 89.0, 93.0, 99.0, 112.0], "Otros": [20.0, 9.0, 26.0, 23.0, 28.0, 9.0, 17.0, 18.0]}, "epi": {"IRA Alta": [0.0, 1.0, 1.0, 6.0, 8.0, 40.0, 8.0, 4.0], "Neumonía": [0.0, 3.0, 0.0, 3.0, 4.0, 1.0, 2.0, 0.0], "SBO": [0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0], "EPOC": [0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]}, "epi_h": {"IRA Alta": [0.0, 0.0, 0.0, 1.0, 3.0, 24.0, 3.0, 3.0], "Neumonía": [0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0], "SBO": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], "EPOC": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]}, "epi_m": {"IRA Alta": [0.0, 1.0, 1.0, 5.0, 5.0, 16.0, 5.0, 1.0], "Neumonía": [0.0, 1.0, 0.0, 2.0, 3.0, 0.0, 2.0, 0.0], "SBO": [0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Asma": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], "EPOC": [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "extra": {"PAP tomados": [0.0, 18.0, 12.0, 41.0, 15.0, 13.0, 15.0, 16.0], "EMP realizados": [62.0, 61.0, 75.0, 81.0, 61.0, 50.0, 71.0, 69.0]}, "prod_total": [554.0, 452.0, 580.0, 610.0, 535.0, 638.0, 642.0, 588.0], "programas": {"PASMI": {"EDI (evaluaciones)": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Visitas a establecimiento": [0.0, 0.0, 0, 0, 0, 0, 12.0, 0.0], "Niños/as visitados": [0.0, 0.0, 0, 0, 0, 0, 12.0, 0.0], "Padres/madres en talleres": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0], "Talleres": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0], "Sesiones": [0.0, 0.0, 0, 0, 0, 0, 0.0, 0.0]}}, "salud_mental": {"Ingresos": [10.0, 9.0, 2.0, 13.0, 9.0, 7.0, 7.0, 6.0], "Egresos": [0.0, 0.0, 0.0, 2.0, 1.0, 0.0, 2.0, 2.0], "Ingresos_h": [6.0, 2.0, 1.0, 6.0, 5.0, 2.0, 2.0, 1.0], "Ingresos_m": [4.0, 7.0, 1.0, 7.0, 4.0, 5.0, 5.0, 5.0], "Egresos_h": [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 2.0], "Egresos_m": [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0], "diag": {"Ánimo/depresión": [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0], "Consumo sustancias": [3.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0], "Comportamiento": [2.0, 1.0, 1.0, 7.0, 0.0, 1.0, 0.0, 0.0], "Ansiedad": [3.0, 0.0, 0.0, 1.0, 2.0, 2.0, 0.0, 4.0], "TGD/Autismo": [0.0, 1.0, 0.0, 4.0, 2.0, 0.0, 1.0, 1.0], "Adaptativo": [2.0, 5.0, 1.0, 1.0, 2.0, 2.0, 5.0, 1.0], "Otros": [5.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0]}, "riesgo": {"Ideación suicida": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Intento de suicidio": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Violencia (víctima)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]}, "a06": {"Controles SM": [76.0, 73.0, 30.0, 60.0, 160.0, 104.0, 116.0, 144.0], "Rescate de pacientes": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicoterapia individual": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Consultorías (A.2)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Coordinación comunitaria (part.)": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0], "Emergencia/desastre (part.)": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0]}}, "pacom": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Visitas domiciliarias": [0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.0, 0.0], "Apoyo telefónico (acciones)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Planes de acompañamiento": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Evaluaciones participativas": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Pauta ingreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 24.0, 0.0, 0.0, 0.0], "Pauta egreso (aplicadas)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Coordinación comunitaria": [0.0, 0, 0, 0, 0, 0, 0.0, 0.0]}, "ccr": {"Ingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Reingresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Ingresos_h": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Ingresos_m": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos_h": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos_m": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Egresos por alta": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Abandono": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Sesiones": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Participación comunidad": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "ses": {"Kinesiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Terapia Ocupacional": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Fonoaudiología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Psicología": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "cond": {"Musculoesquelético": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Neurológico": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Otros": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Sensorial": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "dsm": {"test_aplic": [8.0, 7.0, 1.0, 5.0, 9.0, 8.0, 10.0, 5.0], "test_aplic_h": [5.0, 3.0, 0.0, 4.0, 7.0, 4.0, 4.0, 1.0], "test_aplic_m": [3.0, 4.0, 1.0, 1.0, 2.0, 4.0, 6.0, 4.0], "pb_aplic": [6.0, 6.0, 5.0, 4.0, 3.0, 6.0, 4.0, 1.0], "pb_normal": [3.0, 4.0, 4.0, 4.0, 3.0, 6.0, 4.0, 1.0], "pb_alterado": [2.0, 2.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0], "reeval_norm": [1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0], "sala_reing": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "res": {"Normal": [8.0, 4.0, 1.0, 5.0, 8.0, 5.0, 9.0, 4.0], "Rezago": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 2.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0]}, "detect": {"Rezago": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 2.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0], "Riesgo BPS": [0.0, 2.0, 4.0, 2.0, 0.0, 1.0, 2.0, 3.0]}, "sala": {"Rezago": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Riesgo": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "Retraso": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "Riesgo BPS": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "edad": {"0-9": [43.0, 45.0, 49.0, 65.0, 52.0, 108.0, 69.0, 59.0], "10-19": [37.0, 24.0, 27.0, 30.0, 32.0, 54.0, 39.0, 43.0], "20-64": [132.0, 124.0, 149.0, 171.0, 150.0, 172.0, 194.0, 163.0], "65+": [135.0, 96.0, 150.0, 174.0, 160.0, 135.0, 168.0, 146.0]}, "yoy": {"Producción total": {"y_prev": [357.0, 495.0, 464.0, 616.0, 561.0, 385.0, 604.0, 447.0, 518.0, 521.0, 607.0, 444.0], "y_cur": [554.0, 452.0, 580.0, 610.0, 535.0, 638.0, 642.0, 588.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 628, 631, 736, 538], "lo": [null, null, null, null, null, null, null, null, 491, 494, 576, 421], "hi": [null, null, null, null, null, null, null, null, 764, 768, 895, 655]}, "IRA alta (respiratorio)": {"y_prev": [0.0, 0.0, 14.0, 0.0, 13.0, 12.0, 14.0, 8.0, 0.0, 5.0, 0.0, 8.0], "y_cur": [0.0, 1.0, 1.0, 6.0, 8.0, 40.0, 8.0, 4.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 0, 5, 0, 8], "lo": [null, null, null, null, null, null, null, null, 0, 3, 0, 5], "hi": [null, null, null, null, null, null, null, null, 0, 7, 0, 11]}, "Controles salud mental": {"y_prev": [65.0, 73.0, 54.0, 84.0, 93.0, 67.0, 83.0, 96.0, 60.0, 69.0, 74.0, 55.0], "y_cur": [76.0, 73.0, 30.0, 60.0, 160.0, 104.0, 116.0, 144.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 72, 83, 89, 66], "lo": [null, null, null, null, null, null, null, null, 49, 56, 60, 45], "hi": [null, null, null, null, null, null, null, null, 95, 110, 118, 88]}, "PAP tomados": {"y_prev": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], "y_cur": [0.0, 18.0, 12.0, 41.0, 15.0, 13.0, 15.0, 16.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, null, null, null, null], "lo": [null, null, null, null, null, null, null, null, null, null, null, null], "hi": [null, null, null, null, null, null, null, null, null, null, null, null]}, "EMP realizados": {"y_prev": [40.0, 54.0, 35.0, 26.0, 59.0, 64.0, 22.0, 38.0, 220.0, 36.0, 59.0, 67.0], "y_cur": [62.0, 61.0, 75.0, 81.0, 61.0, 50.0, 71.0, 69.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 407, 67, 109, 124], "lo": [null, null, null, null, null, null, null, null, 244, 40, 65, 74], "hi": [null, null, null, null, null, null, null, null, 570, 93, 153, 173]}, "Sesiones CCR (rehab)": {"y_prev": [0.0, 0.0, 116.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "y_cur": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 0, 0, 0, 0], "lo": [null, null, null, null, null, null, null, null, 0, 0, 0, 0], "hi": [null, null, null, null, null, null, null, null, 0, 0, 0, 0]}, "EEDP/TEPSI aplicados": {"y_prev": [3.0, 3.0, 5.0, 3.0, 2.0, 2.0, 7.0, 2.0, 19.0, 5.0, 5.0, 4.0], "y_cur": [8.0, 7.0, 1.0, 5.0, 9.0, 8.0, 10.0, 5.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 46, 12, 12, 10], "lo": [null, null, null, null, null, null, null, null, 27, 7, 7, 6], "hi": [null, null, null, null, null, null, null, null, 64, 17, 17, 14]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 571, "rcv_alto": 282, "hta_bc": 476, "hta_comp": 266, "dm_bc": 211, "dm_comp": 62}}, "consolidado": {"nombre": "Consolidado (CESFAM + PSR)", "tipo": "aps", "estamentos": {"Médico": [646.0, 481.0, 613.0, 744.0, 866.0, 596.0, 589.0, 612.0], "Enfermería": [261.0, 168.0, 418.0, 214.0, 178.0, 138.0, 389.0, 274.0], "Kinesiología": [223.0, 176.0, 435.0, 8.0, 198.0, 38.0, 481.0, 422.0], "Psicología": [159.0, 182.0, 300.0, 171.0, 188.0, 54.0, 55.0, 180.0], "Trabajo Social": [317.0, 49.0, 87.0, 78.0, 70.0, 73.0, 52.0, 67.0], "Nutrición": [105.0, 92.0, 146.0, 85.0, 88.0, 63.0, 107.0, 101.0], "Odontología": [599.0, 548.0, 650.0, 586.0, 556.0, 545.0, 459.0, 656.0], "Otros": [118.0, 122.0, 311.0, 128.0, 155.0, 122.0, 70.0, 164.0]}, "estamentos_h": {"Médico": [251.0, 197.0, 249.0, 265.0, 324.0, 283.0, 263.0, 243.0], "Enfermería": [135.0, 87.0, 197.0, 124.0, 102.0, 68.0, 185.0, 175.0], "Kinesiología": [87.0, 63.0, 134.0, 3.0, 72.0, 19.0, 175.0, 165.0], "Psicología": [52.0, 61.0, 84.0, 56.0, 58.0, 16.0, 19.0, 49.0], "Trabajo Social": [136.0, 24.0, 41.0, 30.0, 33.0, 28.0, 21.0, 24.0], "Nutrición": [38.0, 42.0, 52.0, 26.0, 34.0, 30.0, 45.0, 40.0], "Odontología": [214.0, 228.0, 243.0, 236.0, 220.0, 222.0, 202.0, 250.0], "Otros": [33.0, 36.0, 85.0, 53.0, 59.0, 58.0, 19.0, 67.0]}, "estamentos_m": {"Médico": [395.0, 284.0, 364.0, 479.0, 542.0, 313.0, 326.0, 369.0], "Enfermería": [126.0, 81.0, 221.0, 90.0, 76.0, 70.0, 204.0, 99.0], "Kinesiología": [136.0, 113.0, 301.0, 5.0, 126.0, 19.0, 306.0, 257.0], "Psicología": [107.0, 121.0, 216.0, 115.0, 130.0, 38.0, 36.0, 131.0], "Trabajo Social": [181.0, 25.0, 46.0, 48.0, 37.0, 45.0, 31.0, 43.0], "Nutrición": [67.0, 50.0, 94.0, 59.0, 54.0, 33.0, 62.0, 61.0], "Odontología": [385.0, 320.0, 407.0, 350.0, 336.0, 323.0, 257.0, 406.0], "Otros": [85.0, 86.0, 226.0, 75.0, 96.0, 64.0, 51.0, 97.0]}, "epi": {"IRA Alta": [10.0, 18.0, 54.0, 72.0, 77.0, 52.0, 68.0, 66.0], "Neumonía": [8.0, 3.0, 1.0, 5.0, 5.0, 7.0, 3.0, 6.0], "SBO": [1.0, 3.0, 0, 1.0, 2.0, 1.0, 5.0, 5.0], "Asma": [4.0, 0, 2.0, 0, 6.0, 8.0, 1.0, 1.0], "EPOC": [3.0, 4.0, 11.0, 0, 1.0, 2.0, 9.0, 1.0]}, "epi_h": {"IRA Alta": [3.0, 11.0, 24.0, 23.0, 34.0, 31.0, 35.0, 25.0], "Neumonía": [0, 2.0, 1.0, 2.0, 1.0, 4.0, 0, 1.0], "SBO": [0, 0, 0, 0, 2.0, 1.0, 4.0, 1.0], "Asma": [2.0, 0, 1.0, 0, 1.0, 4.0, 0, 1.0], "EPOC": [2.0, 0, 3.0, 0, 1.0, 1.0, 3.0, 0]}, "epi_m": {"IRA Alta": [7.0, 7.0, 30.0, 49.0, 43.0, 21.0, 33.0, 41.0], "Neumonía": [8.0, 1.0, 0, 3.0, 4.0, 3.0, 3.0, 5.0], "SBO": [1.0, 3.0, 0, 1.0, 0, 0, 1.0, 4.0], "Asma": [2.0, 0, 1.0, 0, 5.0, 4.0, 1.0, 0], "EPOC": [1.0, 4.0, 8.0, 0, 0, 1.0, 6.0, 1.0]}, "extra": {"PAP tomados": [43.0, 46.0, 22.0, 97.0, 65.0, 73.0, 61.0, 46.0], "EMP realizados": [148.0, 199.0, 245.0, 254.0, 306.0, 193.0, 208.0, 177.0]}, "prod_total": [2428.0, 1818.0, 2960.0, 2014.0, 2299.0, 1629.0, 2202.0, 2476.0], "programas": {"PASMI": {"EDI (evaluaciones)": [3.0, 0, 0, 1.0, 3.0, 1.0, 1.0, 4.0], "Visitas a establecimiento": [2.0, 0, 5.0, 6.0, 1.0, 0, 17.0, 1.0], "Niños/as visitados": [2.0, 0, 3.0, 6.0, 1.0, 0, 17.0, 1.0], "Padres/madres en talleres": [0, 0, 0, 0, 0, 0, 0, 0], "Talleres": [0, 0, 0, 0, 0, 0, 0, 0], "Sesiones": [0, 0, 0, 0, 0, 0, 0, 0]}}, "salud_mental": {"Ingresos": [23.0, 33.0, 31.0, 26.0, 30.0, 10.0, 24.0, 25.0], "Egresos": [9.0, 0, 0, 5.0, 4.0, 11.0, 4.0, 8.0], "Ingresos_h": [10.0, 13.0, 12.0, 9.0, 16.0, 2.0, 9.0, 5.0], "Ingresos_m": [13.0, 20.0, 19.0, 17.0, 14.0, 8.0, 15.0, 20.0], "Egresos_h": [6.0, 0, 0, 2.0, 2.0, 2.0, 0, 5.0], "Egresos_m": [3.0, 0, 0, 3.0, 2.0, 9.0, 4.0, 3.0], "diag": {"Ánimo/depresión": [2.0, 2.0, 4.0, 1.0, 0, 3.0, 4.0, 3.0], "Consumo sustancias": [3.0, 2.0, 2.0, 0, 2.0, 4.0, 5.0, 2.0], "Comportamiento": [3.0, 5.0, 5.0, 11.0, 2.0, 4.0, 0, 2.0], "Ansiedad": [5.0, 5.0, 1.0, 2.0, 5.0, 4.0, 1.0, 6.0], "TGD/Autismo": [1.0, 2.0, 3.0, 4.0, 3.0, 0, 1.0, 1.0], "Adaptativo": [4.0, 9.0, 10.0, 3.0, 7.0, 7.0, 13.0, 3.0], "Otros": [10.0, 5.0, 6.0, 5.0, 9.0, 4.0, 0, 5.0]}, "riesgo": {"Ideación suicida": [0, 1.0, 0, 0, 0, 0, 0, 0], "Intento de suicidio": [0, 0, 0, 0, 1.0, 1.0, 0, 0], "Violencia (víctima)": [0, 0, 1.0, 0, 1.0, 0, 0, 2.0]}, "a06": {"Controles SM": [334.0, 355.0, 393.0, 448.0, 589.0, 469.0, 413.0, 567.0], "Rescate de pacientes": [29.0, 0, 48.0, 15.0, 52.0, 0, 49.0, 16.0], "Psicoterapia individual": [0, 0, 0, 0, 0, 0, 0, 0], "Consultorías (A.2)": [1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], "Coordinación comunitaria (part.)": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0], "Emergencia/desastre (part.)": [0, 0, 0, 0, 0, 0, 20.0, 0]}}, "pacom": {"Ingresos": [0, 0, 0, 0, 2.0, 2.0, 1.0, 7.0], "Egresos": [2.0, 0, 0, 3.0, 2.0, 1.0, 1.0, 6.0], "Visitas domiciliarias": [12.0, 10.0, 0, 3.0, 8.0, 11.0, 0, 18.0], "Apoyo telefónico (acciones)": [58.0, 0, 17.0, 27.0, 48.0, 36.0, 0, 49.0], "Planes de acompañamiento": [0, 2.0, 1.0, 0, 1.0, 2.0, 0, 6.0], "Evaluaciones participativas": [1.0, 0, 0, 3.0, 2.0, 0, 0, 6.0], "Pauta ingreso (aplicadas)": [0, 0, 0, 0, 24.0, 1.0, 0, 6.0], "Pauta egreso (aplicadas)": [0, 0, 0, 0, 0, 0, 0, 6.0], "Coordinación comunitaria": [22.0, 18.0, 34.0, 19.0, 18.0, 18.0, 18.0, 18.0]}, "ccr": {"Ingresos": [17.0, 35.0, 16.0, 38.0, 28.0, 15.0, 16.0, 37.0], "Reingresos": [2.0, 0, 2.0, 0, 0, 0, 0, 0], "Egresos": [26.0, 14.0, 16.0, 18.0, 17.0, 1.0, 11.0, 14.0], "Ingresos_h": [8.0, 11.0, 4.0, 23.0, 7.0, 1.0, 5.0, 15.0], "Ingresos_m": [9.0, 24.0, 12.0, 15.0, 21.0, 14.0, 11.0, 22.0], "Egresos_h": [9.0, 5.0, 5.0, 7.0, 10.0, 0, 2.0, 5.0], "Egresos_m": [17.0, 9.0, 11.0, 11.0, 7.0, 1.0, 9.0, 9.0], "Egresos por alta": [23.0, 10.0, 14.0, 17.0, 10.0, 1.0, 11.0, 13.0], "Abandono": [3.0, 4.0, 2.0, 1.0, 7.0, 0, 0, 1.0], "Sesiones": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0], "Participación comunidad": [13.0, 10.0, 13.0, 7.0, 0, 0, 0, 0], "ses": {"Kinesiología": [130.0, 208.0, 129.0, 168.0, 161.0, 80.0, 99.0, 242.0], "Terapia Ocupacional": [43.0, 55.0, 47.0, 64.0, 54.0, 69.0, 39.0, 39.0], "Fonoaudiología": [0, 0, 0, 0, 0, 0, 0, 0], "Psicología": [0, 0, 0, 0, 0, 0, 0, 0]}, "cond": {"Musculoesquelético": [15.0, 17.0, 15.0, 28.0, 20.0, 9.0, 17.0, 21.0], "Neurológico": [2.0, 3.0, 1.0, 6.0, 1.0, 0, 2.0, 8.0], "Otros": [0, 15.0, 0, 4.0, 7.0, 6.0, 3.0, 8.0], "Sensorial": [0, 0, 0, 0, 0, 0, 0, 0]}}, "dsm": {"test_aplic": [29.0, 37.0, 20.0, 28.0, 34.0, 29.0, 18.0, 35.0], "test_aplic_h": [16.0, 18.0, 10.0, 15.0, 28.0, 14.0, 10.0, 18.0], "test_aplic_m": [13.0, 19.0, 10.0, 13.0, 6.0, 15.0, 8.0, 17.0], "pb_aplic": [18.0, 23.0, 24.0, 11.0, 18.0, 22.0, 17.0, 20.0], "pb_normal": [14.0, 20.0, 15.0, 10.0, 17.0, 20.0, 17.0, 17.0], "pb_alterado": [3.0, 3.0, 9.0, 1.0, 1.0, 2.0, 0, 3.0], "reeval_norm": [1.0, 4.0, 0, 1.0, 0, 2.0, 3.0, 5.0], "sala_reing": [0, 1.0, 0, 0, 0, 0, 4.0, 0], "res": {"Normal": [19.0, 27.0, 14.0, 24.0, 25.0, 20.0, 18.0, 24.0], "Rezago": [3.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0, 2.0], "Riesgo": [2.0, 1.0, 4.0, 1.0, 1.0, 4.0, 4.0, 2.0], "Retraso": [2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0]}, "detect": {"Rezago": [3.0, 2.0, 1.0, 1.0, 2.0, 1.0, 0, 2.0], "Riesgo": [2.0, 2.0, 4.0, 1.0, 1.0, 4.0, 5.0, 2.0], "Retraso": [2.0, 2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0], "Riesgo BPS": [0, 2.0, 4.0, 2.0, 1.0, 4.0, 2.0, 3.0]}, "sala": {"Rezago": [0, 1.0, 0, 2.0, 0, 1.0, 1.0, 2.0], "Riesgo": [2.0, 0, 0, 1.0, 0, 1.0, 3.0, 1.0], "Retraso": [0, 3.0, 0, 1.0, 2.0, 0, 1.0, 0], "Riesgo BPS": [0, 0, 0, 2.0, 1.0, 1.0, 0, 1.0]}}, "edad": {"0-9": [352.0, 199.0, 339.0, 276.0, 326.0, 247.0, 328.0, 353.0], "10-19": [197.0, 95.0, 206.0, 138.0, 198.0, 119.0, 113.0, 164.0], "20-64": [781.0, 602.0, 942.0, 607.0, 760.0, 435.0, 734.0, 780.0], "65+": [499.0, 374.0, 823.0, 407.0, 459.0, 283.0, 568.0, 523.0]}, "yoy": {"Producción total": {"y_prev": [1301.0, 1680.0, 1627.0, 2152.0, 2149.0, 1554.0, 2187.0, 1875.0, 1688.0, 1762.0, 1963.0, 1486.0], "y_cur": [2428.0, 1818.0, 2960.0, 2014.0, 2299.0, 1629.0, 2202.0, 2476.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 2141, 2235, 2490, 1885], "lo": [null, null, null, null, null, null, null, null, 1555, 1623, 1808, 1369], "hi": [null, null, null, null, null, null, null, null, 2728, 2847, 3172, 2401]}, "IRA alta (respiratorio)": {"y_prev": [0, 0, 46.0, 40.0, 55.0, 30.0, 40.0, 29.0, 29.0, 25.0, 21.0, 22.0], "y_cur": [10.0, 18.0, 54.0, 72.0, 77.0, 52.0, 68.0, 66.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 49, 42, 35, 37], "lo": [null, null, null, null, null, null, null, null, 39, 33, 28, 29], "hi": [null, null, null, null, null, null, null, null, 59, 51, 43, 45]}, "Controles salud mental": {"y_prev": [245.0, 259.0, 266.0, 328.0, 283.0, 161.0, 416.0, 398.0, 327.0, 347.0, 372.0, 354.0], "y_cur": [334.0, 355.0, 393.0, 448.0, 589.0, 469.0, 413.0, 567.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 531, 563, 604, 575], "lo": [null, null, null, null, null, null, null, null, 347, 368, 395, 376], "hi": [null, null, null, null, null, null, null, null, 715, 759, 813, 774]}, "PAP tomados": {"y_prev": [34.0, 31.0, 0, 39.0, 53.0, 0, 45.0, 24.0, 53.0, 49.0, 62.0, 49.0], "y_cur": [43.0, 46.0, 22.0, 97.0, 65.0, 73.0, 61.0, 46.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 86, 79, 101, 79], "lo": [null, null, null, null, null, null, null, null, 62, 57, 73, 57], "hi": [null, null, null, null, null, null, null, null, 110, 101, 128, 101]}, "EMP realizados": {"y_prev": [123.0, 208.0, 101.0, 192.0, 209.0, 148.0, 200.0, 194.0, 440.0, 164.0, 230.0, 134.0], "y_cur": [148.0, 199.0, 245.0, 254.0, 306.0, 193.0, 208.0, 177.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 585, 218, 306, 178], "lo": [null, null, null, null, null, null, null, null, 386, 144, 202, 117], "hi": [null, null, null, null, null, null, null, null, 783, 292, 410, 239]}, "Sesiones CCR (rehab)": {"y_prev": [6.0, 217.0, 214.0, 9.0, 5.0, 58.0, 228.0, 183.0, 252.0, 236.0, 284.0, 399.0], "y_cur": [173.0, 263.0, 176.0, 232.0, 215.0, 149.0, 138.0, 281.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 3287, 3078, 3705, 5205], "lo": [null, null, null, null, null, null, null, null, 1972, 1847, 2223, 3123], "hi": [null, null, null, null, null, null, null, null, 4602, 4310, 5186, 7287]}, "EEDP/TEPSI aplicados": {"y_prev": [11.0, 16.0, 13.0, 15.0, 6.0, 13.0, 24.0, 23.0, 38.0, 20.0, 21.0, 28.0], "y_cur": [29.0, 37.0, 20.0, 28.0, 34.0, 29.0, 18.0, 35.0, null, null, null, null], "fc": [null, null, null, null, null, null, null, null, 88, 46, 49, 65], "lo": [null, null, null, null, null, null, null, null, 53, 28, 29, 39], "hi": [null, null, null, null, null, null, null, null, 123, 65, 68, 91]}}, "pscv": {"corte": "Junio 2026", "pscv_total": 1906, "rcv_alto": 1004, "hta_bc": 1603, "hta_comp": 848, "dm_bc": 850, "dm_comp": 273}}, "201178": {"nombre": "SUR Tongoy", "tipo": "urgencia", "estamentos": {"Médico": [661.0, 1059.0, 877.0, null, 521.0, 637.0, 515.0, 888.0], "Enfermería": [185.0, 245.0, 158.0, null, 155.0, 88.0, 101.0, 772.0], "Téc. Enfermería": [943.0, 1077.0, 735.0, null, 551.0, 575.0, 383.0, 742.0], "Kinesiología": [0.0, 0.0, 0.0, null, 0.0, 0.0, 0.0, 0.0], "Matrona": [0.0, 0.0, 1.0, null, 1.0, 1.0, 0.0, 0.0], "Otros": [0.0, 0.0, 0.0, null, 0.0, 0.0, 0.0, 0.0]}, "categorizacion": {"C1": [1.0, 1.0, 2.0, null, 1.0, 2.0, 1.0, 1.0], "C2": [8.0, 0.0, 5.0, null, 4.0, 13.0, 11.0, 30.0], "C3": [100.0, 17.0, 53.0, null, 44.0, 57.0, 98.0, 91.0], "C4": [322.0, 91.0, 222.0, null, 190.0, 203.0, 224.0, 271.0], "C5": [1062.0, 246.0, 955.0, null, 863.0, 585.0, 290.0, 477.0]}, "prod_total": [1789.0, 2381.0, 1771.0, null, 1228.0, 1301.0, 999.0, 2402.0], "cat_total": [1847.0, 444.0, 1407.0, null, 1233.0, 1027.0, 736.0, 1021.0]}}, "poblacion": {"total": 11273, "mujeres": 5545, "hombres": 5728, "menor5": 470, "e15": 9425, "m_25_64": 3060, "e65": 1796}, "epi_umbrales": {"IRA Alta": 69, "Neumonía": 5, "SBO": 5, "Asma": 5, "EPOC": 5}, "generado": "2026 · CESFAM Ene–Ago, PSR Ene–Ago, SUR Ene–Ago", "pscv_metas": {"HTA": 60, "DM2": 40}, "pscv_corte": "Junio 2026"}, SM={"centros": {"105321": "CESFAM Tongoy", "105405": "PSR Guanaqueros", "consolidado": "Consolidado"}, "anios": [2024, 2025, 2026], "parcial": {"2026": "ene–ago"}, "serie": {"ingresos": {"105321": [372, 362, 139], "105405": [124, 114, 63], "consolidado": [496, 476, 202]}, "controles": {"105321": [3204, 2883, 2805], "105405": [1161, 873, 763], "consolidado": [4365, 3756, 3568]}, "altas": {"105321": [1, 53, 34], "105405": [0, 18, 7], "consolidado": [1, 71, 41]}}, "corte": {"pbc_sm": {"105321": {"2025": 669, "2026": 1143}, "105405": {"2025": 190, "2026": 243}, "consolidado": {"2025": 859, "2026": 1386}}, "concentracion": {"105321": {"2025": 4.31, "2026": 2.45}, "105405": {"2025": 4.59, "2026": 3.14}, "consolidado": {"2025": 4.37, "2026": 2.57}}, "demencia": {"105321": {"2025": 22, "2026": 33}, "105405": {"2025": 6, "2026": 4}, "consolidado": {"2025": 28, "2026": 37}}, "acomp": {"105321": {"2025": 17, "2026": 17}, "105405": {"2025": 0, "2026": 0}, "consolidado": {"2025": 17, "2026": 17}}, "mejorninez": {"105321": {"2025": 87, "2026": 31}, "105405": {"2025": 55, "2026": 3}, "consolidado": {"2025": 142, "2026": 34}}, "interv_grup": {"105321": {"2025": 0, "2026": 39}, "105405": {"2025": 0, "2026": 16}, "consolidado": {"2025": 0, "2026": 55}}, "consultorias": {"105321": {"2025": 3, "2026": 7}, "105405": {"2025": 0, "2026": 0}, "consolidado": {"2025": 3, "2026": 7}}, "colab": {"105321": {"2025": 1, "2026": 0}, "105405": {"2025": 0, "2026": 0}, "consolidado": {"2025": 1, "2026": 0}}}}, MY={"years": [2022, 2023, 2024, 2025, 2026], "partial2026": "ene-ago", "serie": {"ingresos": {"105321": {"2022": 294, "2023": 275, "2024": 453, "2025": 362, "2026_parcial": 139, "2026_anualizado": 208}, "105405": {"2022": 103, "2023": 107, "2024": 129, "2025": 114, "2026_parcial": 63, "2026_anualizado": 94}, "consolidado": {"2022": 397, "2023": 382, "2024": 582, "2025": 476, "2026_parcial": 202, "2026_anualizado": 303}}, "controles": {"105321": {"2022": 1981, "2023": 3243, "2024": 3204, "2025": 2883, "2026_parcial": 2805, "2026_anualizado": 4208}, "105405": {"2022": 687, "2023": 1024, "2024": 1161, "2025": 873, "2026_parcial": 763, "2026_anualizado": 1144}, "consolidado": {"2022": 2668, "2023": 4267, "2024": 4365, "2025": 3756, "2026_parcial": 3568, "2026_anualizado": 5352}}, "altas": {"105321": {"2022": 40, "2023": 58, "2024": 72, "2025": 53, "2026_parcial": 34, "2026_anualizado": 51}, "105405": {"2022": 7, "2023": 9, "2024": 15, "2025": 18, "2026_parcial": 7, "2026_anualizado": 10}, "consolidado": {"2022": 47, "2023": 67, "2024": 87, "2025": 71, "2026_parcial": 41, "2026_anualizado": 62}}}, "proj": {"ingresos": {"105321": {"2026_reg": 441, "2027_reg": 480, "band": 55, "slope": 38.2}, "105405": {"2026_reg": 127, "2027_reg": 132, "band": 8, "slope": 5.5}, "consolidado": {"2026_reg": 568, "2027_reg": 612, "band": 63, "slope": 43.7}}, "controles": {"105321": {"2026_reg": 3494, "2027_reg": 3761, "band": 412, "slope": 266.7}, "105405": {"2026_reg": 1110, "2027_reg": 1179, "band": 158, "slope": 69.5}, "consolidado": {"2026_reg": 4604, "2027_reg": 4941, "band": 559, "slope": 336.2}}, "altas": {"105321": {"2026_reg": 69, "2027_reg": 74, "band": 10, "slope": 5.3}, "105405": {"2026_reg": 22, "2027_reg": 26, "band": 1, "slope": 3.9}, "consolidado": {"2026_reg": 91, "2027_reg": 100, "band": 10, "slope": 9.2}}}}, EX={"105321": {"dent_ctrl": [113, 116, 179, 97, 94, 90, 63, 135], "dent_urg": [17, 23, 18, 27, 26, 34, 25, 31], "dent_educ": [76, 56, 132, 235, 214, 175, 165, 293], "dent_altas": [6, 6, 2, 6, 2, 2, 1, 1], "dent_activ": [1013, 940, 1064, 1223, 1173, 1116, 823, 1438], "dent_ingr": [15, 23, 15, 22, 21, 15, 25, 34], "adol_ea": [26, 69, 96, 102, 6, 42, 21, 34], "adol_ctrl": [28, 73, 104, 118, 99, 42, 59, 58], "adol_craff": [14, 36, 52, 57, 46, 20, 23, 26], "adol_phq": [0, 0, 0, 0, 0, 0, 0, 0], "par_reclamos": [0, 0, 0, 7, 6, 1, 2, 7], "par_consultas": [4, 0, 0, 7, 9, 6, 7, 4], "par_social": [0, 0, 0, 0, 0, 0, 0, 0], "par_satisf": [0, 0, 0, 0, 0, 0, 0, 0], "edu_ingresos": [6, 5, 8, 67, 99, 22, 2, 218], "edu_activ": [1, 2, 1, 11, 11, 4, 0, 7], "edu_consej": [844, 666, 851, 790, 857, 580, 529, 798]}, "105405": {"dent_ctrl": [13, 40, 20, 10, 24, 12, 23, 21], "dent_urg": [2, 5, 5, 4, 5, 6, 4, 5], "dent_educ": [12, 23, 3, 46, 12, 10, 12, 15], "dent_altas": [1, 0, 1, 1, 1, 0, 2, 1], "dent_activ": [291, 406, 414, 565, 392, 472, 400, 420], "dent_ingr": [2, 19, 2, 10, 4, 0, 5, 3], "adol_ea": [0, 0, 0, 0, 0, 0, 0, 8], "adol_ctrl": [28, 14, 10, 12, 6, 42, 4, 8], "adol_craff": [14, 7, 5, 6, 3, 21, 5, 2], "adol_phq": [0, 0, 0, 0, 0, 0, 0, 0], "par_reclamos": [0, 0, 0, 1, 1, 0, 0, 4], "par_consultas": [0, 0, 0, 0, 0, 6, 0, 2], "par_social": [0, 0, 0, 0, 0, 0, 0, 0], "par_satisf": [0, 0, 0, 0, 0, 0, 0, 0], "edu_ingresos": [2, 0, 0, 0, 1, 0, 0, 3], "edu_activ": [1, 0, 0, 0, 1, 0, 0, 2], "edu_consej": [309, 284, 48, 319, 21, 264, 494, 357]}, "consolidado": {"dent_ctrl": [126, 156, 199, 107, 118, 102, 86, 156], "dent_urg": [19, 28, 23, 31, 31, 40, 29, 36], "dent_educ": [88, 79, 135, 281, 226, 185, 177, 308], "dent_altas": [7, 6, 3, 7, 3, 2, 3, 2], "dent_activ": [1304, 1346, 1478, 1788, 1565, 1588, 1223, 1858], "dent_ingr": [17, 42, 17, 32, 25, 15, 30, 37], "adol_ea": [26, 69, 96, 102, 6, 42, 21, 42], "adol_ctrl": [56, 87, 114, 130, 105, 84, 63, 66], "adol_craff": [28, 43, 57, 63, 49, 41, 28, 28], "adol_phq": [0, 0, 0, 0, 0, 0, 0, 0], "par_reclamos": [0, 0, 0, 8, 7, 1, 2, 11], "par_consultas": [4, 0, 0, 7, 9, 12, 7, 6], "par_social": [0, 0, 0, 0, 0, 0, 0, 0], "par_satisf": [0, 0, 0, 0, 0, 0, 0, 0], "edu_ingresos": [8, 5, 8, 67, 100, 22, 2, 221], "edu_activ": [2, 2, 1, 11, 12, 4, 0, 9], "edu_consej": [1153, 950, 899, 1109, 878, 844, 1023, 1155]}}, SP={"years": ["2024", "2025", "2026"], "corte": {"2024": "dic-2024", "2025": "dic-2025", "2026": "jun-2026"}, "prog": {"Mujer": {"105321": [531, 623, 565], "105405": [242, 250, 265], "consolidado": [773, 873, 830]}, "Infancia": {"105321": [123, 214, 110], "105405": [36, 42, 38], "consolidado": [159, 256, 148]}, "PSCV": {"105321": [1503, 1467, 1335], "105405": [543, 604, 571], "consolidado": [2046, 2071, 1906]}, "Personas mayores": {"105321": [493, 486, 683], "105405": [275, 252, 337], "consolidado": [768, 738, 1020]}, "Salud mental": {"105321": [578, 669, 1143], "105405": [261, 190, 243], "consolidado": [839, 859, 1386]}, "Adolescente": {"105321": [211, 240, 333], "105405": [109, 45, 63], "consolidado": [320, 285, 396]}, "Mejor Ninez": {"105321": [21, 87, 31], "105405": [11, 55, 3], "consolidado": [32, 142, 34]}}};
+const $=s=>document.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const nf=new Intl.NumberFormat('es-CL');
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const LB=D.labels;
+let centro='consolidado', mod='resumen';
+const CN={'105321':'CESFAM Tongoy','105405':'PSR Guanaqueros','consolidado':'Consolidado (CESFAM+PSR)','201178':'SUR Tongoy'};
+const dev=()=>D.dispositivos[centro];
+const isSUR=()=>centro==='201178';
+let charts={};
+function destroyIn(sec){Object.keys(charts).forEach(k=>{if(k.startsWith(sec+':')){charts[k].destroy();delete charts[k];}});}
+const sum=a=>a.reduce((x,y)=>x+(y||0),0);
+const lastIdx=a=>{for(let i=a.length-1;i>=0;i--)if(a[i]!=null)return i;return a.length-1;};
+
+// ---- chart helpers (mark specs dataviz: líneas 2px, puntos con anillo de superficie, grilla recesiva, hover crosshair) ----
+Chart.defaults.font.family='ui-sans-serif,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
+function base(stacked){const ink=cssv('--ink2'),mut=cssv('--mut'),grid=cssv('--line'),axis=cssv('--axis'),surf=cssv('--surf');
+ return{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  layout:{padding:{top:4}},
+  elements:{line:{borderWidth:2},point:{radius:0,hoverRadius:5,borderWidth:2,borderColor:surf},bar:{borderRadius:4,borderSkipped:false}},
+  plugins:{legend:{labels:{color:ink,usePointStyle:true,pointStyle:'circle',boxWidth:8,boxHeight:8,font:{size:11},padding:12}},
+   tooltip:{backgroundColor:surf,titleColor:cssv('--ink'),bodyColor:ink,borderColor:grid,borderWidth:1,padding:10,usePointStyle:true,cornerRadius:8,
+     titleFont:{weight:'700'},callbacks:{label:c=>' '+c.dataset.label+': '+(c.parsed.y==null?'s/d':nf.format(c.parsed.y))}}},
+  scales:{x:{stacked:!!stacked,ticks:{color:mut,font:{size:11}},grid:{display:false},border:{color:axis}},
+   y:{stacked:!!stacked,beginAtZero:true,ticks:{color:mut,font:{size:11},callback:v=>nf.format(v),maxTicksLimit:6},grid:{color:grid,drawTicks:false},border:{display:false}}}};}
+function line(id,title,data,color,extra){const c=cssv(color);charts[id]?.destroy();
+ charts[id]=new Chart($('#'+id.split(':')[1]),{type:'line',data:{labels:LB,datasets:[{label:title,data,borderColor:c,backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5,pointBackgroundColor:c,pointBorderColor:cssv('--surf'),pointBorderWidth:2,spanGaps:false},...(extra||[])]},
+  options:{...base(),plugins:{...base().plugins,legend:{display:!!(extra&&extra.length)},title:{display:true,text:title,color:cssv('--ink'),align:'start',font:{size:13,weight:'700'},padding:{bottom:10}}}}});}
+function stack(id,title,obj,slots){charts[id]?.destroy();
+ const ds=Object.entries(obj).map(([k,s],i)=>({label:k,data:s,backgroundColor:cssv('--s'+((slots&&slots[k])||((i%8)+1))),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2,borderSkipped:false,stack:'s'}));
+ charts[id]=new Chart($('#'+id.split(':')[1]),{type:'bar',data:{labels:LB,datasets:ds},options:{...base(true),plugins:{...base(true).plugins,title:{display:true,text:title,color:cssv('--ink'),align:'start',font:{size:13,weight:'700'},padding:{bottom:10}}}}});}
+
+// ---- KPI: sparkline SVG + delta + semáforo con ícono (estado nunca por color solo) ----
+const STGLYPH={good:'✓',warn:'▲',serious:'▲',crit:'!',info:'•'};
+const STWORD={good:'En rango',warn:'Observar',serious:'Atención',crit:'Alerta',info:''};
+function sparkSVG(series,color){const s=series.filter(v=>v!=null);if(s.length<2)return '';
+ const w=120,h=26,mn=Math.min(...s),mx=Math.max(...s),rg=(mx-mn)||1;
+ const pts=series.map((v,i)=>v==null?null:[i/(series.length-1)*w, h-2-((v-mn)/rg)*(h-4)]).filter(Boolean);
+ const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+ const last=pts[pts.length-1];
+ return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="width:100%"><path d="${d}" fill="none" stroke="${cssv(color)}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.2" fill="${cssv(color)}"/></svg>`;}
+function kpi(lab,val,sub,st,opts){opts=opts||{};const col=st==='good'?'--good':st==='warn'?'--warn':st==='crit'?'--crit':st==='serious'?'--serious':'--s1';
+ const stcls=(st==='good'||st==='warn'||st==='crit'||st==='serious')?st:'info';
+ const chip = opts.delta!=null ? `<span class="stat ${opts.delta>=0?'good':'crit'}">${opts.delta>=0?'▲':'▼'} ${opts.delta>=0?'+':''}${opts.delta}%</span>` :
+              (STWORD[st]?`<span class="stat ${stcls}">${STGLYPH[st]} ${STWORD[st]}</span>`:'');
+ const spark = opts.spark ? sparkSVG(opts.spark, opts.sparkColor||col) : '';
+ return `<div class="card kpi"><span class="strip" style="background:var(${col})"></span>`+
+  `<div class="lab">${lab}</div>`+
+  `<div class="valrow"><div class="val">${val}</div>${chip}</div>`+
+  (spark||`<div class="sub">${sub}</div>`)+
+  (spark?`<div class="sub">${sub}</div>`:'')+
+  `</div>`;}
+// tabla de datos accesible (toggle) para un gráfico
+function dataTable(headers, rows){
+ let h='<table class="dv"><thead><tr>'+headers.map(x=>`<th>${x}</th>`).join('')+'</tr></thead><tbody>';
+ h+=rows.map(r=>'<tr>'+r.map((c,i)=>`<td>${i&&typeof c==='number'?nf.format(c):c}</td>`).join('')+'</tr>').join('');
+ return h+'</tbody></table>';}
+function wireTable(btnId, boxId){const b=$('#'+btnId),x=$('#'+boxId);if(!b)return;b.onclick=()=>{const on=x.hasAttribute('hidden');if(on)x.removeAttribute('hidden');else x.setAttribute('hidden','');b.setAttribute('aria-pressed',on);};}
+function meterRows(rows){return rows.map(([n,s,p])=>{const col=p>=85?'--good':p>=60?'--warn':'--crit';
+ return `<div class="metarow"><div class="metaname"><b>${n}</b><br><span class="hint">${s}</span></div><div class="bar"><span style="width:${Math.max(2,Math.min(100,p)).toFixed(0)}%;background:var(${col})"></span></div><div class="pctv" style="color:var(${col})">${p.toFixed(0)}%</div></div>`;}).join('');}
+function naMsg(txt){return `<div class="na">${txt}</div>`;}
+
+// ============ MÓDULOS ============
+function mResumen(){
+ const s=$('#m-resumen');
+ if(isSUR()){ // SUR: urgencia
+   const d=dev(); const tot=sum(d.prod_total);
+   s.innerHTML=`<div class="grid k4">${kpi('Atenciones de urgencia','—',CN[centro],'s1')}</div>`+
+    `<div class="sec"><h2>Atenciones de urgencia por mes</h2><div class="card"><div class="chartbox"><canvas id="cvResumen"></canvas></div></div></div>`;
+   line('resumen:cvResumen','Atenciones de urgencia (A08)',d.prod_total,'--s1');
+   return;
+ }
+ const d=dev();
+ const prodTot=sum(d.prod_total);
+ const li=lastIdx(d.prod_total);
+ const yoyP=d.yoy&&d.yoy['Producción total'];
+ const cierre=yoyP? (sum(yoyP.y_cur.filter(x=>x!=null))+sum(yoyP.fc.slice(li+1).filter(x=>x!=null))) : null;
+ // epi meses en alerta
+ let alertMonths=0; LB.forEach((_,i)=>{if(Object.keys(D.epi_umbrales).some(k=>{const x=d.epi[k][i];return x!=null&&x>D.epi_umbrales[k];}))alertMonths++;});
+ const pscv=d.pscv;
+ const htaComp=pscv? (pscv.hta_bc?pscv.hta_comp/pscv.hta_bc*100:0):0;
+ const ccrAband=d.ccr? (sum(d.ccr.Egresos)?sum(d.ccr.Abandono)/sum(d.ccr.Egresos)*100:0):0;
+ const smIng=d.salud_mental? sum(d.salud_mental.Ingresos):0;
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Atenciones totales (ene–ago)',nf.format(prodTot),cierre?('proyec. cierre '+nf.format(Math.round(cierre))):CN[centro],'s1')}
+   ${kpi('Meses en alerta epidemiológica',alertMonths+' / '+LB.length,'IRA/Neumonía/SBO/Asma/EPOC',alertMonths>=4?'crit':alertMonths>=2?'warn':'good')}
+   ${kpi('Compensación HTA (PSCV)',htaComp.toFixed(0)+'%','meta '+D.pscv_metas.HTA+'% · corte '+pscv.corte,htaComp>=D.pscv_metas.HTA?'good':htaComp>=D.pscv_metas.HTA*0.8?'warn':'crit')}
+   ${kpi('Abandono en CCR',ccrAband.toFixed(0)+'%','foco de retención',ccrAband>15?'crit':ccrAband>8?'warn':'good')}
+  </div>
+  <div class="sec"><h2>Actividad por programa · ${CN[centro]}</h2>
+   <div class="grid k2">
+    <div class="card"><div class="chartbox sm"><canvas id="cvResProd"></canvas></div></div>
+    <div class="card"><div class="chartbox sm"><canvas id="cvResProg"></canvas></div></div>
+   </div></div>
+  <div class="sec note">Vista de resumen. Usa el menú de la izquierda para entrar a cada módulo. El filtro de centro (arriba) recalcula todo. SUR Tongoy sólo participa en urgencia/producción.</div>`;
+ line('resumen:cvResProd','Atenciones totales por mes',d.prod_total,'--s1');
+ destroyIn('resumen');
+ // programas mini: controles SM + sesiones CCR + IRA
+ const smC=(SM.serie&&null); // use salud_mental ingresos vs ccr sesiones
+ charts['resumen:cvResProd']=new Chart($('#cvResProd'),{type:'line',data:{labels:LB,datasets:[{label:'Atenciones totales',data:d.prod_total,borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:3,tension:.25,pointRadius:3}]},options:{...base(),plugins:{...base().plugins,legend:{display:false},title:{display:true,text:'Atenciones totales por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ charts['resumen:cvResProg']=new Chart($('#cvResProg'),{type:'bar',data:{labels:LB,datasets:[
+   {label:'Ingresos SM',data:d.salud_mental.Ingresos,backgroundColor:cssv('--s3'),borderRadius:3},
+   {label:'Sesiones CCR',data:d.ccr.Sesiones,backgroundColor:cssv('--s2'),borderRadius:3},
+   {label:'IRA alta',data:d.epi['IRA Alta'],backgroundColor:cssv('--s6'),borderRadius:3}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Programas: SM · CCR · Respiratorio',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+function mProd(){
+ const s=$('#m-prod'), d=dev();
+ const li=lastIdx(d.prod_total), tot=sum(d.prod_total);
+ if(isSUR()){
+   s.innerHTML=`<div class="grid k3">${kpi('Atenciones de urgencia',nf.format(sum(d.prod_total)),'A08 · '+CN[centro],'s1')}
+     ${kpi('Mes más alto',LB[d.prod_total.indexOf(Math.max(...d.prod_total.filter(x=>x!=null)))],'','s1')}
+     ${kpi('Categorización total',nf.format(sum(d.cat_total.filter(x=>x!=null))),'triage C1–C5','s1')}</div>
+     <div class="sec"><h2>Atenciones de urgencia por mes</h2><div class="card"><div class="chartbox"><canvas id="cvProdU"></canvas></div></div></div>
+     <div class="sec"><h2>Categorización (C1–C5)</h2><div class="card"><div class="chartbox"><canvas id="cvProdCat"></canvas></div></div></div>`;
+   line('prod:cvProdU','Atenciones de urgencia',d.prod_total,'--s1');
+   stack('prod:cvProdCat','Categorización por mes',d.categorizacion,{'C1':8,'C2':4,'C3':1,'C4':2,'C5':3});
+   return;
+ }
+ const yoyP=d.yoy['Producción total'];
+ const cierre=sum(yoyP.y_cur.filter(x=>x!=null))+sum(yoyP.fc.slice(li+1).filter(x=>x!=null));
+ const lead=Object.entries(d.estamentos).map(([k,v])=>[k,sum(v)]).sort((a,b)=>b[1]-a[1])[0];
+ const pap=sum(d.extra['PAP tomados']), emp=sum(d.extra['EMP realizados']);
+ const cob = centro==='consolidado';
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Atenciones totales (ene–ago)',nf.format(tot),'proyec. cierre '+nf.format(Math.round(cierre)),'s1')}
+   ${kpi('Estamento con más atenciones',lead[0],nf.format(lead[1])+' atenciones','s1')}
+   ${kpi('PAP tomados',nf.format(pap),cob?('cobertura '+(pap/D.poblacion.m_25_64*100).toFixed(0)+'% (M25–64)'):'mujeres 25–64','s1')}
+   ${kpi('EMP realizados',nf.format(emp),cob?('cobertura '+(emp/D.poblacion.e15*100).toFixed(0)+'% (15+)'):'15 y más','s1')}
+  </div>
+  <div class="sec"><h2>Atenciones totales — tendencia y proyección</h2>
+   <div class="card"><div class="chartbox"><canvas id="cvProdTot"></canvas></div>
+   <div class="hint" style="margin-top:6px">Línea sólida = real ene–ago 2026; segmento punteado = proyección estacional a diciembre (base 2025).</div></div></div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvProdEst"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvProdEdad"></canvas></div></div>
+  </div>`;
+ // trend + proj
+ const fc=yoyP.fc, lo=yoyP.lo, hi=yoyP.hi;
+ const proj=LB.map((_,i)=>null); proj[li]=d.prod_total[li];
+ const projLabels=[...LB]; const extraM=['Sep','Oct','Nov','Dic'];
+ // build 12-month axis
+ const axis=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+ const real=axis.map((m,i)=>i<d.prod_total.length?d.prod_total[i]:null);
+ const projLine=axis.map((m,i)=>{ if(i===li)return d.prod_total[li]; if(i>li&&fc[i]!=null)return fc[i]; return null;});
+ const band=axis.map((m,i)=> i>li&&hi[i]!=null?hi[i]:(i===li?d.prod_total[li]:null));
+ const bandLo=axis.map((m,i)=> i>li&&lo[i]!=null?lo[i]:(i===li?d.prod_total[li]:null));
+ charts['prod:cvProdTot']?.destroy();
+ charts['prod:cvProdTot']=new Chart($('#cvProdTot'),{type:'line',data:{labels:axis,datasets:[
+   {label:'Banda',data:band,borderColor:'transparent',backgroundColor:'rgba(59,130,246,.12)',pointRadius:0,fill:'+1',tension:.25},
+   {label:'Banda2',data:bandLo,borderColor:'transparent',backgroundColor:'rgba(59,130,246,.12)',pointRadius:0,fill:false,tension:.25},
+   {label:'2026 real',data:real,borderColor:cssv('--s1'),backgroundColor:'transparent',borderWidth:3,tension:.25,pointRadius:3,pointBackgroundColor:cssv('--s1')},
+   {label:'Proyección',data:projLine,borderColor:cssv('--s1'),borderDash:[7,5],borderWidth:2.4,tension:.25,pointRadius:3,pointStyle:'rectRot',spanGaps:true}
+ ]},options:{...base(),plugins:{...base().plugins,legend:{labels:{color:cssv('--ink2'),usePointStyle:true,boxWidth:10,font:{size:11},filter:it=>!it.text.startsWith('Banda')}},title:{display:true,text:'Atenciones totales 2026 + proyección Sep–Dic',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ stack('prod:cvProdEst','Atenciones por estamento',d.estamentos);
+ stack('prod:cvProdEdad','Consultas por tramo etario (A04)',{'0–9':d.edad['0-9'],'10–19':d.edad['10-19'],'20–64':d.edad['20-64'],'65+':d.edad['65+']},{'0–9':3,'10–19':4,'20–64':1,'65+':8});
+}
+
+function mCV(){
+ const s=$('#m-cv');
+ if(isSUR()){s.innerHTML=naMsg('El módulo Cardiovascular no aplica a SUR Tongoy (urgencia). Selecciona CESFAM, PSR o Consolidado.');return;}
+ const d=dev(), p=d.pscv;
+ const htaC=p.hta_bc?p.hta_comp/p.hta_bc*100:0, dmC=p.dm_bc?p.dm_comp/p.dm_bc*100:0;
+ const rcv=p.pscv_total?p.rcv_alto/p.pscv_total*100:0;
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Población bajo control PSCV',nf.format(p.pscv_total),'corte '+p.corte,'s1')}
+   ${kpi('Compensación HTA',htaC.toFixed(0)+'%','meta '+D.pscv_metas.HTA+'% · '+nf.format(p.hta_comp)+'/'+nf.format(p.hta_bc),htaC>=D.pscv_metas.HTA?'good':htaC>=D.pscv_metas.HTA*0.8?'warn':'crit')}
+   ${kpi('Compensación DM2',dmC.toFixed(0)+'%','meta '+D.pscv_metas.DM2+'% · '+nf.format(p.dm_comp)+'/'+nf.format(p.dm_bc),dmC>=D.pscv_metas.DM2?'good':dmC>=D.pscv_metas.DM2*0.8?'warn':'crit')}
+   ${kpi('Riesgo CV alto',rcv.toFixed(0)+'%',nf.format(p.rcv_alto)+' personas','warn')}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><h2 style="font-size:14px">Compensación vs meta</h2><div id="cvMetas"></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvCVbar"></canvas></div></div>
+  </div>
+  <div class="sec note">PSCV (REM Serie P, corte ${p.corte}). Metas referenciales editables (HTA ${D.pscv_metas.HTA}% · DM2 ${D.pscv_metas.DM2}%): reemplazar por metas Ley 19.813 vigentes.</div>`;
+ $('#cvMetas').innerHTML=meterRows([
+   ['Compensación HTA (PA<140/90)','logrado '+htaC.toFixed(0)+'% / meta '+D.pscv_metas.HTA+'%', htaC/D.pscv_metas.HTA*100],
+   ['Compensación DM2 (HbA1c<7%)','logrado '+dmC.toFixed(0)+'% / meta '+D.pscv_metas.DM2+'%', dmC/D.pscv_metas.DM2*100]
+ ]);
+ charts['cv:cvCVbar']?.destroy();
+ charts['cv:cvCVbar']=new Chart($('#cvCVbar'),{type:'bar',data:{labels:['HTA','DM2'],datasets:[
+   {label:'Bajo control',data:[p.hta_bc,p.dm_bc],backgroundColor:cssv('--s4'),borderRadius:4},
+   {label:'Compensados',data:[p.hta_comp,p.dm_comp],backgroundColor:cssv('--good'),borderRadius:4}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Bajo control vs compensados',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+function mResp(){
+ const s=$('#m-resp');
+ if(isSUR()){s.innerHTML=naMsg('El módulo Respiratorio/Epidemiología usa morbilidad A04 de APS. No aplica a SUR.');return;}
+ const d=dev();
+ const inds=Object.keys(D.epi_umbrales);
+ let alertM=0; LB.forEach((_,i)=>{if(inds.some(k=>{const x=d.epi[k][i];return x!=null&&x>D.epi_umbrales[k];}))alertM++;});
+ const iraTot=sum(d.epi['IRA Alta']);
+ const yoyI=d.yoy&&d.yoy['IRA alta (respiratorio)'];
+ s.innerHTML=`<div class="grid k3">
+   ${kpi('IRA alta acumulada',nf.format(iraTot),'infecciones respiratorias altas','s6')}
+   ${kpi('Meses sobre umbral',alertM+' / '+LB.length,'≥ umbral en algún indicador',alertM>=4?'crit':alertM>=2?'warn':'good')}
+   ${kpi('Umbral IRA (provisional)',nf.format(D.epi_umbrales['IRA Alta']),'p75 de la serie','s6')}
+  </div>
+  <div class="sec"><h2>Semáforo epidemiológico (mes vs umbral)</h2><div class="card" id="epiSem" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px"></div></div>
+  <div class="sec"><h2>Casos por indicador vs umbral</h2>
+   <div class="tools" style="margin-bottom:8px"><span class="seg" id="epiSel"></span></div>
+   <div class="card"><div class="chartbox"><canvas id="cvEpi"></canvas></div></div></div>
+  <div class="sec note">Umbrales provisionales (percentil 75 de la propia serie 2026). Para vigilancia formal, construir canal endémico con 3–5 años (requiere re-mapear REM 2022–2023).</div>`;
+ // semaforo cards
+ $('#epiSem').innerHTML=inds.map(k=>{const s2=d.epi[k],u=D.epi_umbrales[k];const li=lastIdx(s2);const v=s2[li];const st=v==null?'--mut':v>u?'--crit':v>u*0.7?'--warn':'--good';
+  return `<div class="card" style="text-align:center;padding:12px"><div class="hint">${k}</div><div style="font-size:22px;font-weight:800;color:var(${st})">${v==null?'s/d':nf.format(v)}</div><div class="hint">umbral ${u}</div></div>`;}).join('');
+ // selector
+ let epiKey='IRA Alta';
+ $('#epiSel').innerHTML=inds.map((k,i)=>`<button data-k="${k}" aria-pressed="${i===0}">${k}</button>`).join('');
+ function drawEpi(){const s2=d.epi[epiKey],u=D.epi_umbrales[epiKey];charts['resp:cvEpi']?.destroy();
+  charts['resp:cvEpi']=new Chart($('#cvEpi'),{type:'line',data:{labels:LB,datasets:[
+    {label:epiKey,data:s2,borderColor:cssv('--s6'),backgroundColor:'transparent',borderWidth:3,tension:.25,pointRadius:4,pointBackgroundColor:s2.map(v=>v!=null&&v>u?cssv('--crit'):cssv('--s6'))},
+    {label:'Umbral',data:s2.map(()=>u),borderColor:cssv('--crit'),borderDash:[6,5],borderWidth:1.5,pointRadius:0}]},
+    options:{...base(),plugins:{...base().plugins,title:{display:true,text:epiKey+' — casos vs umbral',color:cssv('--ink'),align:'start',font:{size:13}}}}});}
+ $('#epiSel').querySelectorAll('button').forEach(b=>b.onclick=()=>{epiKey=b.dataset.k;$('#epiSel').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.k===epiKey));drawEpi();});
+ drawEpi();
+}
+
+function mSM(){
+ const s=$('#m-sm');
+ if(isSUR()){s.innerHTML=naMsg('El Programa de Salud Mental es de APS. No aplica a SUR Tongoy.');return;}
+ const key=centro==='consolidado'?'consolidado':centro;
+ const ser=SM.serie, cor=SM.corte;
+ const ing=ser.ingresos[key], ctrl=ser.controles[key], alt=ser.altas[key];
+ const pbc26=cor.pbc_sm[key]['2026'], pbc25=cor.pbc_sm[key]['2025'];
+ const conc26=cor.concentracion[key]['2026'];
+ const concProj=conc26*12/8;
+ const grow=pbc25?((pbc26-pbc25)/pbc25*100):0;
+ const ratio=ing[2]? (alt[2]/ing[2]*100):0;
+ const META=6;
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Población bajo control SM',nf.format(pbc26),(grow>=0?'▲ +':'▼ ')+grow.toFixed(0)+'% vs dic-2025',grow>40?'warn':'good')}
+   ${kpi('Concentración de controles',conc26.toFixed(2),'proyec. '+concProj.toFixed(1)+' · meta ref. '+META,concProj>=META?'good':concProj>=META*0.7?'warn':'crit')}
+   ${kpi('Ingresos (ene–ago 2026)',nf.format(ing[2]),'año 2025: '+nf.format(ing[1]),'good')}
+   ${kpi('Razón altas / ingresos',ratio.toFixed(0)+'%','egreso oportuno',ratio<10?'crit':ratio<20?'warn':'good')}
+  </div>
+  <div class="sec"><h2>Tendencia multianual 2024–2026</h2>
+   <div class="tools" style="margin-bottom:8px"><span class="seg" id="smMet">
+     <button data-m="controles" aria-pressed="true">Controles</button><button data-m="ingresos">Ingresos</button><button data-m="altas">Altas</button></span></div>
+   <div class="card"><div class="chartbox"><canvas id="cvSMtr"></canvas></div>
+    <div class="hint" id="smHint" style="margin-top:6px"></div></div></div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvSMcmp"></canvas></div><div class="hint" style="margin-top:6px">Comparación entre centros.</div></div>
+   <div class="card"><h2 style="font-size:14px">Poblaciones bajo control (jun-2026)</h2>
+     <div class="grid k2" style="margin-top:6px">
+      ${kpi('Demencia',nf.format(cor.demencia[key]['2026']),'REM-P6','s1')}
+      ${kpi('Acompañamiento psic.',nf.format(cor.acomp[key]['2026']),'REM-P6 A.3','s1')}
+      ${kpi('Mejor Niñez/SENAME',nf.format(cor.mejorninez[key]['2026']),'REM-P13','s1')}
+      ${kpi('Intervención grupal',nf.format(cor.interv_grup[key]['2026']),'sesiones 2026','s1')}
+     </div></div>
+  </div>
+  <div class="sec note">Tendencia desde 2024 (los REM 2022–2023 usan otro formato, no comparables). 2026 = ene–ago; proyección lineal simple. PBC = cortes dic-2025 / jun-2026.</div>`;
+ let met='controles';
+ function drawTr(){const s2=ser[met][key];const axis=['2024','2025','2026 (ene–ago)'];const acc=cssv('--s3');
+   const projFull=Math.round(s2[2]*12/8);
+   charts['sm:cvSMtr']?.destroy();
+   charts['sm:cvSMtr']=new Chart($('#cvSMtr'),{type:'line',data:{labels:axis,datasets:[
+     {label:met,data:s2,borderColor:acc,backgroundColor:'transparent',borderWidth:3,tension:.25,pointRadius:5,pointBackgroundColor:acc},
+     {label:'2026 proyectado',data:[null,null,projFull],borderColor:acc,borderDash:[6,5],borderWidth:2,pointRadius:5,pointStyle:'rectRot'}]},
+     options:{...base(),plugins:{...base().plugins,title:{display:true,text:met[0].toUpperCase()+met.slice(1)+' de salud mental — '+CN[centro],color:cssv('--ink'),align:'start',font:{size:13}}}}});
+   $('#smHint').innerHTML=`2024: <b>${nf.format(s2[0])}</b> · 2025: <b>${nf.format(s2[1])}</b> · 2026 (8m): <b>${nf.format(s2[2])}</b> — proyección año ≈ <b>${nf.format(projFull)}</b>.`+(met==='altas'?' <span style="color:var(--warn)">2024 altas con subregistro.</span>':'');}
+ $('#smMet').querySelectorAll('button').forEach(b=>b.onclick=()=>{met=b.dataset.m;$('#smMet').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===met));drawTr();});
+ drawTr();
+ // comparación centros
+ charts['sm:cvSMcmp']?.destroy();
+ const centros=['105321','105405','consolidado'];
+ charts['sm:cvSMcmp']=new Chart($('#cvSMcmp'),{type:'bar',data:{labels:['2024','2025','2026*'],datasets:centros.map((c,i)=>({label:CN[c].split(' (')[0],data:ser.controles[c],backgroundColor:cssv('--s'+(i+1)),borderRadius:4}))},options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Controles SM por centro',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+}
+
+function mCCR(){
+ const s=$('#m-ccr');
+ if(isSUR()){s.innerHTML=naMsg('El CCR es de APS. No aplica a SUR Tongoy.');return;}
+ const d=dev(), c=d.ccr;
+ const ing=sum(c.Ingresos), eg=sum(c.Egresos), alta=sum(c['Egresos por alta']), aband=sum(c.Abandono), ses=sum(c.Sesiones);
+ const abandPct=eg?aband/eg*100:0;
+ const to=sum(c.ses['Terapia Ocupacional']);
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Ingresos CCR',nf.format(ing),'ene–ago 2026','s2')}
+   ${kpi('Sesiones de rehabilitación',nf.format(ses),'todas las disciplinas','s2')}
+   ${kpi('Abandono',abandPct.toFixed(0)+'%',nf.format(aband)+' de '+nf.format(eg)+' egresos',abandPct>15?'crit':abandPct>8?'warn':'good')}
+   ${kpi('Sesiones Terapia Ocupacional',nf.format(to),(ses?(to/ses*100).toFixed(0):0)+'% del total','s2')}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvCCRflujo"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvCCRses"></canvas></div></div>
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvCCRcond"></canvas></div></div>
+   <div class="card"><h2 style="font-size:14px">Retención y participación</h2><div id="ccrMet"></div></div>
+  </div>
+  <div class="sec note">CCR (REM-A28). El abandono es el foco de monitoreo. Se destaca el estamento Terapeuta Ocupacional. Participación comunitaria y condición de salud desde A28 secciones respectivas.</div>`;
+ charts['ccr:cvCCRflujo']?.destroy();
+ charts['ccr:cvCCRflujo']=new Chart($('#cvCCRflujo'),{type:'line',data:{labels:LB,datasets:[
+   {label:'Ingresos',data:c.Ingresos,borderColor:cssv('--s2'),borderWidth:2.5,tension:.25,pointRadius:3},
+   {label:'Egresos por alta',data:c['Egresos por alta'],borderColor:cssv('--good'),borderWidth:2.5,tension:.25,pointRadius:3},
+   {label:'Abandono',data:c.Abandono,borderColor:cssv('--crit'),borderWidth:2.5,tension:.25,pointRadius:3}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Flujo de pacientes CCR',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ stack('ccr:cvCCRses','Sesiones por estamento (incl. Terapia Ocupacional)',c.ses,{'Kinesiología':3,'Terapia Ocupacional':4,'Fonoaudiología':6,'Psicología':7});
+ stack('ccr:cvCCRcond','Ingresos por condición de salud',c.cond,{'Musculoesquelético':1,'Neurológico':7,'Sensorial':6,'Otros':8});
+ const part=sum(c['Participación comunidad']);
+ $('#ccrMet').innerHTML=meterRows([
+   ['Egresos por alta (buen cierre)','alta '+nf.format(alta)+' / egresos '+nf.format(eg), eg?alta/eg*100:0],
+   ['Retención (1 − abandono)','abandono '+abandPct.toFixed(0)+'%', 100-abandPct]
+ ])+`<div class="hint" style="margin-top:8px">Participación comunitaria acumulada: <b>${nf.format(part)}</b> actividades.</div>`;
+}
+
+function mChCC(){
+ const s=$('#m-chcc');
+ if(isSUR()||!dev().dsm){s.innerHTML=naMsg('Chile Crece Contigo es de APS (desarrollo infantil 0–9). No aplica a SUR.');return;}
+ const d=dev().dsm;
+ const test=sum(d.test_aplic), pb=sum(d.pb_aplic), alt=sum(d.pb_alterado), reev=sum(d.reeval_norm);
+ const sala=Object.values(d.sala).reduce((a,v)=>a+sum(v),0);
+ const altPct=pb?alt/pb*100:0;
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('EEDP / TEPSI aplicados',nf.format(test),'evaluaciones del desarrollo (A03)','s4')}
+   ${kpi('Pauta breve — alterados',altPct.toFixed(0)+'%',nf.format(alt)+' de '+nf.format(pb)+' aplicadas',altPct>20?'warn':'good')}
+   ${kpi('Sala de Estimulación (ingresos)',nf.format(sala),'A05-F · rezago/riesgo/retraso/BPS','s4')}
+   ${kpi('Reevaluaciones normalizadas',nf.format(reev),'recupera desarrollo normal','good')}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvChTest"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvChRes"></canvas></div></div>
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvChDet"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvChSala"></canvas></div></div>
+  </div>
+  <div class="sec note">Chile Crece Contigo — pesquisa del desarrollo (EEDP/TEPSI, pauta breve) y Sala de Estimulación (A03 · A05-F). La pesquisa detecta rezago/riesgo/retraso para intervención temprana.</div>`;
+ charts['chcc:cvChTest']?.destroy();
+ charts['chcc:cvChTest']=new Chart($('#cvChTest'),{type:'bar',data:{labels:LB,datasets:[
+   {label:'Niños',data:d.test_aplic_h,backgroundColor:cssv('--s1'),borderRadius:3,stack:'s'},
+   {label:'Niñas',data:d.test_aplic_m,backgroundColor:cssv('--s5'),borderRadius:3,stack:'s'}]},
+   options:{...base(true),plugins:{...base(true).plugins,title:{display:true,text:'EEDP/TEPSI aplicados por mes (H/M)',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ stack('chcc:cvChRes','Resultados de la evaluación',d.res,{'Normal':2,'Rezago':4,'Riesgo':8,'Retraso':5});
+ stack('chcc:cvChDet','Detección (pesquisa)',d.detect,{'Rezago':4,'Riesgo':8,'Retraso':5,'Riesgo BPS':3});
+ stack('chcc:cvChSala','Ingresos a Sala de Estimulación',d.sala,{'Rezago':4,'Riesgo':8,'Retraso':5,'Riesgo BPS':3});
+}
+
+function mPacom(){
+ const s=$('#m-pacom');
+ if(isSUR()||!dev().pacom){s.innerHTML=naMsg('PACOM/PASMI son programas de APS. No aplican a SUR.');return;}
+ const p=dev().pacom, pas=(dev().programas&&dev().programas.PASMI)||{};
+ const ing=sum(p.Ingresos), vis=sum(p['Visitas domiciliarias']), tel=sum(p['Apoyo telefónico (acciones)']), coord=sum(p['Coordinación comunitaria']);
+ const edi=sum(pas['EDI (evaluaciones)']||[]);
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('PACOM — ingresos',nf.format(ing),'acompañamiento psicosocial','s5')}
+   ${kpi('Visitas domiciliarias',nf.format(vis),'PACOM','s5')}
+   ${kpi('Apoyo telefónico',nf.format(tel),'acciones de seguimiento','s5')}
+   ${kpi('PASMI — EDI',nf.format(edi),'evaluación diagnóstica integral','s3')}
+  </div>
+  <div class="sec"><h2>PACOM — actividad mensual</h2>
+   <div class="card"><div class="chartbox"><canvas id="cvPacom"></canvas></div></div></div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvPacomPautas"></canvas></div></div>
+   <div class="card"><h2 style="font-size:14px">PASMI — resumen del periodo</h2><div id="pasmiTiles" class="grid k2" style="margin-top:6px"></div></div>
+  </div>
+  <div class="sec note">PACOM (Programa de Acompañamiento Psicosocial, A05-T/A06-D/A26/A32) y PASMI (Apoyo a la Salud Mental Infantil, A06-G/A26-F/A27-G). Apoyan a psicología y al equipo psicosocial.</div>`;
+ charts['pacom:cvPacom']?.destroy();
+ charts['pacom:cvPacom']=new Chart($('#cvPacom'),{type:'line',data:{labels:LB,datasets:[
+   {label:'Visitas domiciliarias',data:p['Visitas domiciliarias'],borderColor:cssv('--s5'),borderWidth:2.5,tension:.25,pointRadius:3},
+   {label:'Apoyo telefónico',data:p['Apoyo telefónico (acciones)'],borderColor:cssv('--s3'),borderWidth:2.5,tension:.25,pointRadius:3},
+   {label:'Coordinación comunitaria',data:p['Coordinación comunitaria'],borderColor:cssv('--s2'),borderWidth:2.5,tension:.25,pointRadius:3}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'PACOM — acciones por mes',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ stack('pacom:cvPacomPautas','Pautas e ingresos/egresos PACOM',{'Ingresos':p.Ingresos,'Egresos':p.Egresos,'Pauta ingreso':p['Pauta ingreso (aplicadas)'],'Pauta egreso':p['Pauta egreso (aplicadas)']},{'Ingresos':2,'Egresos':4,'Pauta ingreso':1,'Pauta egreso':8});
+ const pt=[['EDI (evaluaciones)',sum(pas['EDI (evaluaciones)']||[])],['Visitas establecimiento',sum(pas['Visitas a establecimiento']||[])],['Niños/as visitados',sum(pas['Niños/as visitados']||[])],['Talleres',sum(pas['Talleres']||[])]];
+ $('#pasmiTiles').innerHTML=pt.map(([l,v])=>`<div class="card" style="padding:12px"><div class="hint">${l}</div><div style="font-size:22px;font-weight:800">${nf.format(v)}</div></div>`).join('');
+}
+
+function mCob(){
+ const s=$('#m-cob');
+ if(isSUR()){s.innerHTML=naMsg('Las coberturas percápita son de APS. No aplican a SUR.');return;}
+ const d=dev(); const pap=sum(d.extra['PAP tomados']), emp=sum(d.extra['EMP realizados']);
+ const cons=centro==='consolidado';
+ const pob=D.poblacion;
+ const papCob=cons?pap/pob.m_25_64*100:null, empCob=cons?emp/pob.e15*100:null;
+ const pscv=d.pscv;
+ s.innerHTML=`<div class="grid k3">
+   ${kpi('PAP tomados',nf.format(pap),cons?('cobertura '+papCob.toFixed(0)+'% · meta 100% trienio'):'mujeres 25–64 (percápita solo consolidado)',cons?(papCob>=70?'good':papCob>=40?'warn':'crit'):'s1')}
+   ${kpi('EMP realizados',nf.format(emp),cons?('cobertura '+empCob.toFixed(0)+'% (15+)'):'15 y más',cons?(empCob>=20?'good':'warn'):'s1')}
+   ${kpi('Población bajo control PSCV',nf.format(pscv.pscv_total),'corte '+pscv.corte,'s1')}
+  </div>
+  ${cons?`<div class="sec"><div class="card"><h2 style="font-size:14px">Avance de cobertura sobre percápita unificado</h2><div id="cobMet" style="margin-top:6px"></div>
+    <div class="hint" style="margin-top:8px">Percápita Tongoy 2026: total ${nf.format(pob.total)} · mujeres 25–64: ${nf.format(pob.m_25_64)} · 15 y más: ${nf.format(pob.e15)}.</div></div></div>`
+   :`<div class="sec note">Las coberturas se calculan sobre el percápita unificado de Tongoy, disponible sólo para el Consolidado. Para ${CN[centro]} se muestran los valores absolutos.</div>`}
+  <div class="sec"><h2>PAP y EMP por mes</h2><div class="card"><div class="chartbox sm"><canvas id="cvCob"></canvas></div></div></div>`;
+ if(cons){$('#cobMet').innerHTML=meterRows([
+   ['PAP tomados (mujeres 25–64)','acum '+nf.format(pap)+' / percápita '+nf.format(pob.m_25_64), papCob],
+   ['EMP realizados (15 y más)','acum '+nf.format(emp)+' / percápita '+nf.format(pob.e15), empCob*3]
+ ]);}
+ stack('cob:cvCob','PAP tomados y EMP realizados',{'PAP tomados':d.extra['PAP tomados'],'EMP realizados':d.extra['EMP realizados']},{'PAP tomados':1,'EMP realizados':3});
+}
+
+let proyInd='controles';
+function mProy(){
+ const s=$('#m-proy');
+ const key=centro==='201178'?null:(centro==='consolidado'?'consolidado':centro);
+ if(!key){s.innerHTML=naMsg('La proyección interanual usa el Programa de Salud Mental (APS, formularios re-mapeados 2022–2026). No aplica a SUR.');return;}
+ const INDLBL={controles:'Controles de salud mental',ingresos:'Ingresos al programa',altas:'Altas clínicas'};
+ const ser=MY.serie[proyInd][key], pr=MY.proj[proyInd][key];
+ const full=[ser['2022'],ser['2023'],ser['2024'],ser['2025']];
+ const ann=ser['2026_anualizado'], parc=ser['2026_parcial'];
+ const p26=pr['2026_reg'], p27=pr['2027_reg'], band=pr['band'], slope=pr['slope'];
+ const v2025=ser['2025'];
+ const varAnn=v2025?((ann-v2025)/v2025*100):0;
+ const cagr=(full[0]&&full[3]>0)?((Math.pow(full[3]/full[0],1/3)-1)*100):0;
+ s.innerHTML=`<div class="tools" style="margin-bottom:12px"><span class="seg" id="proySel">
+    <button data-i="controles" aria-pressed="${proyInd==='controles'}">Controles</button>
+    <button data-i="ingresos" aria-pressed="${proyInd==='ingresos'}">Ingresos</button>
+    <button data-i="altas" aria-pressed="${proyInd==='altas'}">Altas clínicas</button></span></div>
+  <div class="grid k4">
+   ${kpi('Cierre 2026 estimado',nf.format(ann),(varAnn>=0?'▲ +':'▼ ')+varAnn.toFixed(0)+'% vs 2025 ('+nf.format(v2025)+')',Math.abs(varAnn)>25?'warn':'good')}
+   ${kpi('Proyección 2027 (regresión)',nf.format(p27),'banda ±'+nf.format(band),'s1')}
+   ${kpi('Tendencia',(slope>=0?'+':'')+nf.format(Math.round(slope))+'/año','pendiente 2022–2025',slope>=0?'good':'warn')}
+   ${kpi('Crecimiento anual medio','+'+cagr.toFixed(0)+'%','CAGR 2022→2025',cagr>=0?'good':'warn')}
+  </div>
+  <div class="sec"><h2>${INDLBL[proyInd]} — histórico 2022–2026 y proyección</h2>
+   <div class="card"><div class="chartbox"><canvas id="cvProy"></canvas></div>
+   <div class="hint" style="margin-top:6px">Barras/línea sólida = años reales completos (2022–2025). Rombo = cierre 2026 estimado (anualizado desde ene–ago). Segmento punteado = proyección por regresión lineal a 2027, con banda de incertidumbre.</div></div></div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvProyCmp"></canvas></div><div class="hint" style="margin-top:6px">Comparación interanual (años completos; 2026 anualizado).</div></div>
+   <div class="card"><h2 style="font-size:14px">Variación interanual</h2><div id="proyTab" style="margin-top:6px"></div></div>
+  </div>
+  <div class="sec note"><b>Re-mapeo de formularios antiguos:</b> los REM 2022–2024 usan versiones distintas del formulario; esta serie se extrajo por <b>anclaje de etiqueta</b> (se localiza la fila por su texto —"INGRESOS AL PROGRAMA", "Controles Salud Mental"…— y no por celda fija), lo que la hace comparable a lo largo de los 5 años. Validación: 2025 re-mapeado coincide exactamente con la extracción por celda. Las proyecciones son estadísticas (regresión sobre 4 años completos) y provisionales.</div>`;
+ // chart
+ const axis=['2022','2023','2024','2025','2026','2027'];
+ const acc=cssv('--s6');
+ const realFull=[full[0],full[1],full[2],full[3],null,null];
+ const annPt=[null,null,null,null,ann,null];
+ const fcast=[null,null,null,full[3],p26,p27];
+ const bhi=[null,null,null,full[3],p26+band,p27+band];
+ const blo=[null,null,null,full[3],p26-band,p27-band];
+ charts['proy:cvProy']?.destroy();
+ charts['proy:cvProy']=new Chart($('#cvProy'),{type:'line',data:{labels:axis,datasets:[
+   {label:'Banda',data:bhi,borderColor:'transparent',backgroundColor:'rgba(6,182,212,.13)',pointRadius:0,fill:'+1',tension:.2},
+   {label:'Banda2',data:blo,borderColor:'transparent',backgroundColor:'rgba(6,182,212,.13)',pointRadius:0,fill:false,tension:.2},
+   {label:'Real (años completos)',data:realFull,borderColor:acc,backgroundColor:'transparent',borderWidth:3,tension:.2,pointRadius:5,pointBackgroundColor:acc},
+   {label:'Cierre 2026 estimado',data:annPt,borderColor:acc,pointRadius:7,pointStyle:'rectRot',pointBackgroundColor:'transparent',showLine:false},
+   {label:'Proyección (regresión)',data:fcast,borderColor:acc,borderDash:[7,5],borderWidth:2.4,tension:.2,pointRadius:4,pointStyle:'circle',spanGaps:true}
+ ]},options:{...base(),plugins:{...base().plugins,legend:{labels:{color:cssv('--ink2'),usePointStyle:true,boxWidth:10,font:{size:11},filter:it=>!it.text.startsWith('Banda')}},title:{display:true,text:INDLBL[proyInd]+' — '+CN[centro],color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ // comparison bars
+ charts['proy:cvProyCmp']?.destroy();
+ charts['proy:cvProyCmp']=new Chart($('#cvProyCmp'),{type:'bar',data:{labels:['2022','2023','2024','2025','2026*'],datasets:[
+   {label:INDLBL[proyInd],data:[full[0],full[1],full[2],full[3],ann],backgroundColor:['#64748b','#64748b','#64748b','#64748b',cssv('--s6')].map((x,i)=>i<4?cssv('--s3'):cssv('--s6')),borderRadius:4}]},
+   options:{...base(),plugins:{...base().plugins,legend:{display:false},title:{display:true,text:'Comparación por año (2026 anualizado*)',color:cssv('--ink'),align:'start',font:{size:13}}}}});
+ // table YoY
+ const yrs=[['2022',full[0]],['2023',full[1]],['2024',full[2]],['2025',full[3]],['2026 (est.)',ann]];
+ let rows='';
+ for(let i=0;i<yrs.length;i++){const [yl,v]=yrs[i];const prev=i>0?yrs[i-1][1]:null;const yo=prev?((v-prev)/prev*100):null;
+   const col=yo==null?'--mut':yo>=0?'--good':'--crit';
+   rows+=`<div class="metarow"><div class="metaname"><b>${yl}</b></div><div style="flex:0 0 90px;text-align:right;font-weight:700">${nf.format(v)}</div><div class="pctv" style="color:var(${col})">${yo==null?'—':(yo>=0?'+':'')+yo.toFixed(0)+'%'}</div></div>`;}
+ $('#proyTab').innerHTML=rows;
+ $('#proySel').querySelectorAll('button').forEach(b=>b.onclick=()=>{proyInd=b.dataset.i;mProy();});
+}
+
+// ===== Módulos nuevos: Adolescente, Dental, Participación/Educación, Serie P =====
+const exd=()=> (centro==='201178')?null:EX[centro==='consolidado'?'consolidado':centro];
+function twoLine(id,title,a,al,ac,b,bl,bc){charts[id]?.destroy();
+ charts[id]=new Chart($('#'+id.split(':')[1]),{type:'line',data:{labels:LB,datasets:[
+  {label:al,data:a,borderColor:cssv(ac),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5},
+  {label:bl,data:b,borderColor:cssv(bc),backgroundColor:'transparent',borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5}]},
+  options:{...base(),plugins:{...base().plugins,title:{display:true,text:title,color:cssv('--ink'),align:'start',font:{size:13,weight:'700'},padding:{bottom:10}}}}});}
+
+function mAdol(){const s=$('#m-adol');const e=exd();
+ if(!e){s.innerHTML=naMsg('El Programa Adolescente y los Espacios Amigables son de APS. No aplica a SUR Tongoy.');return;}
+ const ctrl=sum(e.adol_ctrl),ea=sum(e.adol_ea),craff=sum(e.adol_craff),phq=sum(e.adol_phq);
+ const eaPct=ctrl?ea/ctrl*100:0;const pbc=SP.prog['Adolescente'][centro==='consolidado'?'consolidado':centro][2];
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Controles integrales adolescente',nf.format(ctrl),'A01 Sección D · ene–ago','info',{spark:e.adol_ctrl,sparkColor:'--s5'})}
+   ${kpi('En Espacio Amigable',nf.format(ea),eaPct.toFixed(0)+'% de los controles',eaPct>=40?'good':eaPct>=20?'warn':'crit',{spark:e.adol_ea,sparkColor:'--s5'})}
+   ${kpi('CRAFF aplicados',nf.format(craff),'tamizaje de consumo (A03)','info',{spark:e.adol_craff,sparkColor:'--s2'})}
+   ${kpi('Población bajo control',nf.format(pbc),'Serie P9 (corte jun-2026)','info')}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvAdolCtrl"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvAdolTam"></canvas></div></div>
+  </div>
+  <div class="sec note">Programa Adolescente (10–19). <b>Espacios Amigables</b>: modalidad de atención adolescente-friendly (A01 Sección D). Tamizajes: CRAFF (consumo de alcohol/drogas) y PHQ-9 modificado (depresión), desde A03.</div>`;
+ twoLine('adol:cvAdolCtrl','Controles adolescente vs Espacio Amigable',e.adol_ctrl,'Controles integrales','--s7',e.adol_ea,'En Espacio Amigable','--s5');
+ charts['adol:cvAdolTam']?.destroy();
+ charts['adol:cvAdolTam']=new Chart($('#cvAdolTam'),{type:'bar',data:{labels:LB,datasets:[
+   {label:'CRAFF',data:e.adol_craff,backgroundColor:cssv('--s2'),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2,stack:'t'},
+   {label:'PHQ-9',data:e.adol_phq,backgroundColor:cssv('--s4'),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2,stack:'t'}]},
+   options:{...base(true),plugins:{...base(true).plugins,title:{display:true,text:'Tamizajes aplicados por mes',color:cssv('--ink'),align:'start',font:{size:13,weight:'700'}}}}});}
+
+function mDent(){const s=$('#m-dent');const e=exd();
+ if(!e){s.innerHTML=naMsg('El Programa Dental (A09) es de APS. No aplica a SUR Tongoy.');return;}
+ const ctrl=sum(e.dent_ctrl),urg=sum(e.dent_urg),altas=sum(e.dent_altas),activ=sum(e.dent_activ),educ=sum(e.dent_educ),ingr=sum(e.dent_ingr);
+ const altaR=ingr?altas/ingr*100:0;
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Controles odontológicos',nf.format(ctrl),'A09 · ene–ago','info',{spark:e.dent_ctrl,sparkColor:'--s6'})}
+   ${kpi('Urgencias GES',nf.format(urg),'consulta de urgencia odontológica','warn',{spark:e.dent_urg,sparkColor:'--s2'})}
+   ${kpi('Altas integrales',nf.format(altas),(altaR).toFixed(0)+'% de ingresos con enfoque riesgo',altas>ingr*0.3?'good':'warn',{spark:e.dent_altas,sparkColor:'--s3'})}
+   ${kpi('Actividades totales',nf.format(activ),'prestaciones odontológicas','info',{spark:e.dent_activ,sparkColor:'--s6'})}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvDentFlujo"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvDentEduc"></canvas></div></div>
+  </div>
+  <div class="sec note">Salud bucal (REM-A09). La <b>urgencia GES</b> alta en relación a controles suele indicar acceso reactivo más que preventivo. La educación individual con instrucción de higiene es el pilar preventivo.</div>`;
+ charts['dent:cvDentFlujo']?.destroy();
+ charts['dent:cvDentFlujo']=new Chart($('#cvDentFlujo'),{type:'line',data:{labels:LB,datasets:[
+   {label:'Controles',data:e.dent_ctrl,borderColor:cssv('--s6'),borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5},
+   {label:'Urgencias GES',data:e.dent_urg,borderColor:cssv('--s2'),borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5},
+   {label:'Altas integrales',data:e.dent_altas,borderColor:cssv('--s3'),borderWidth:2,tension:.3,pointRadius:0,pointHoverRadius:5}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Flujo odontológico por mes',color:cssv('--ink'),align:'start',font:{size:13,weight:'700'},padding:{bottom:10}}}}});
+ stack('dent:cvDentEduc','Educación individual e ingresos con enfoque de riesgo',{'Educación individual':e.dent_educ,'Ingresos enfoque riesgo':e.dent_ingr},{'Educación individual':4,'Ingresos enfoque riesgo':1});}
+
+function mPart(){const s=$('#m-part');const e=exd();
+ if(!e){s.innerHTML=naMsg('Participación social y Educación para la salud son de APS. No aplica a SUR Tongoy.');return;}
+ const consej=sum(e.edu_consej),grupal=sum(e.edu_ingresos),activ=sum(e.edu_activ),recl=sum(e.par_reclamos),felic=sum(e.par_consultas),social=sum(e.par_social);
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('Consejerías individuales',nf.format(consej),'educación 1:1 (A19a)','info',{spark:e.edu_consej,sparkColor:'--s3'})}
+   ${kpi('Ingresos a educación grupal',nf.format(grupal),'talleres/grupos (A27)','info',{spark:e.edu_ingresos,sparkColor:'--s4'})}
+   ${kpi('Reclamos (OIRS)',nf.format(recl),felic+' felicitaciones/sugerencias',recl>felic?'warn':'good',{spark:e.par_reclamos,sparkColor:'--s2'})}
+   ${kpi('Participación social',nf.format(social),'sesiones (consejos, cuentas públicas)','info',{spark:e.par_social,sparkColor:'--s7'})}
+  </div>
+  <div class="grid k2 sec">
+   <div class="card"><div class="chartbox sm"><canvas id="cvEdu"></canvas></div></div>
+   <div class="card"><div class="chartbox sm"><canvas id="cvPart"></canvas></div></div>
+  </div>
+  <div class="sec note">Mapeo del REM de <b>Participación</b> (A19b: OIRS, participación social, satisfacción usuaria) y <b>Educación para la salud</b> (A19a consejerías individuales, A27 educación grupal). Son el pulso del vínculo con la comunidad.</div>`;
+ twoLine('part:cvEdu','Educación: consejerías individuales vs grupal',e.edu_consej,'Consejerías individuales','--s3',e.edu_ingresos,'Ingresos educación grupal','--s4');
+ charts['part:cvPart']?.destroy();
+ charts['part:cvPart']=new Chart($('#cvPart'),{type:'bar',data:{labels:LB,datasets:[
+   {label:'Reclamos',data:e.par_reclamos,backgroundColor:cssv('--s2'),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2},
+   {label:'Consultas/felicitaciones',data:e.par_consultas,backgroundColor:cssv('--s3'),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2}]},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'OIRS por mes (reclamos vs felicitaciones)',color:cssv('--ink'),align:'start',font:{size:13,weight:'700'}}}}});}
+
+function mSP(){const s=$('#m-sp');const key=centro==='201178'?null:(centro==='consolidado'?'consolidado':centro);
+ if(!key){s.innerHTML=naMsg('La Serie P (población bajo control) es de APS. No aplica a SUR Tongoy.');return;}
+ const progs=Object.keys(SP.prog);const yrs=SP.years;
+ const tot=yrs.map((y,i)=>progs.reduce((a,p)=>a+SP.prog[p][key][i],0));
+ // mayor crecimiento 2024->2026
+ let best=null;progs.forEach(p=>{const a=SP.prog[p][key][0],b=SP.prog[p][key][2];const g=a?((b-a)/a*100):0;if(!best||g>best.g)best={p,g,a,b};});
+ const sm=SP.prog['Salud mental'][key];const pm=SP.prog['Personas mayores'][key];
+ s.innerHTML=`<div class="grid k4">
+   ${kpi('PBC total (jun-2026)',nf.format(tot[2]),'suma de programas','info')}
+   ${kpi('Mayor crecimiento','+'+best.g.toFixed(0)+'%',best.p+' ('+nf.format(best.a)+'→'+nf.format(best.b)+')',best.g>=0?'good':'crit')}
+   ${kpi('Salud mental',nf.format(sm[2]),(sm[0]?'▲ +'+((sm[2]-sm[0])/sm[0]*100).toFixed(0)+'% vs 2024':''),'warn')}
+   ${kpi('Personas mayores',nf.format(pm[2]),(pm[0]?'▲ +'+((pm[2]-pm[0])/pm[0]*100).toFixed(0)+'% vs 2024':''),'info')}
+  </div>
+  <div class="sec"><h2>Progresión de la población bajo control por programa (2024–2026)</h2>
+   <div class="card"><div class="chartbox"><canvas id="cvSP"></canvas></div>
+    <div class="hint" style="margin-top:6px">Cortes de la Serie P: <b>diciembre 2024</b>, <b>diciembre 2025</b> y <b>junio 2026</b>. Ojo: 2026 es corte de mitad de año, por lo que algunos programas aparecen naturalmente más bajos que un cierre de diciembre.</div></div></div>
+  <div class="sec"><div class="card"><h2 style="font-size:14px">Matriz por programa</h2><div id="spTab" style="margin-top:6px;overflow-x:auto"></div></div></div>
+  <div class="sec note">Fuente: Serie P (REM-P1 Mujer, P2 Infancia, P4 PSCV, P5 Personas Mayores, P6 Salud Mental, P9 Adolescente, P13 Mejor Niñez). Extraído por corte; la comparación dic vs jun debe leerse con cautela.</div>`;
+ charts['sp:cvSP']?.destroy();
+ const cols=['--s4','--s1','--s3'];
+ charts['sp:cvSP']=new Chart($('#cvSP'),{type:'bar',data:{labels:progs,datasets:yrs.map((y,i)=>({
+   label:SP.corte[y],data:progs.map(p=>SP.prog[p][key][i]),backgroundColor:cssv(cols[i]),borderRadius:3,borderColor:cssv('--surf'),borderWidth:2}))},
+   options:{...base(),plugins:{...base().plugins,title:{display:true,text:'Personas bajo control por programa · '+CN[centro],color:cssv('--ink'),align:'start',font:{size:13,weight:'700'},padding:{bottom:10}}}}});
+ let rows='<table class="dv"><thead><tr><th>Programa</th>'+yrs.map(y=>`<th>${SP.corte[y]}</th>`).join('')+'<th>Δ 24→26</th></tr></thead><tbody>';
+ progs.forEach(p=>{const v=SP.prog[p][key];const g=v[0]?((v[2]-v[0])/v[0]*100):0;
+   rows+=`<tr><td>${p}</td>${v.map(x=>`<td>${nf.format(x)}</td>`).join('')}<td style="color:var(${g>=0?'--good':'--crit'})">${g>=0?'+':''}${g.toFixed(0)}%</td></tr>`;});
+ rows+='</tbody></table>';$('#spTab').innerHTML=rows;}
+
+// ================= INFORME SALUBRISTA (APS rural) =================
+const RURAL='La red de Tongoy (comuna de Coquimbo) es una zona costera rural: el CESFAM Tongoy y su posta rural PSR Guanaqueros conforman la atención primaria, mientras el SUR Tongoy resuelve la urgencia. Hay población dispersa, dependencia de la red y una marcada estacionalidad estival (aumento de población flotante en verano).';
+function H3(t){return `<h3 style="font-size:13.5px;font-weight:800;margin:16px 0 5px;color:var(--ink)">${t}</h3>`;}
+function P(t){return `<p style="margin:0 0 8px;color:var(--ink2)">${t}</p>`;}
+function RECS(arr){return H3('Recomendaciones')+'<ul style="margin:4px 0 8px;padding-left:18px;color:var(--ink2)">'+arr.map(x=>`<li style="margin-bottom:5px">${x}</li>`).join('')+'</ul>';}
+function NOTE(t){return `<p style="margin-top:14px;padding:10px 12px;background:var(--surf2);border-left:3px solid var(--s4);border-radius:8px;font-size:12px;color:var(--mut)">${t}</p>`;}
+function cierre(indKey){const d=dev();const y=d.yoy&&d.yoy[indKey];if(!y)return null;
+ const li=lastIdx(y.y_cur);const real=sum(y.y_cur.filter(x=>x!=null));const proj=sum(y.fc.slice(li+1).filter(x=>x!=null));
+ const full=real+proj;const f25=sum(y.y_prev);return {real,proj,full,f25,pct:f25?((full-f25)/f25*100):0,li};}
+function money(n){return nf.format(Math.round(n));}
+function pctxt(p){return (p>=0?'+':'')+p.toFixed(0)+'%';}
+
+function repHead(){return P(`<b>${CN[centro]}</b> · periodo enero–agosto 2026 (poblaciones bajo control al corte disponible). ${RURAL}`);}
+
+function repResumen(){const d=dev();if(isSUR())return repProd();
+ const c=cierre('Producción total');
+ let alertM=0;LB.forEach((_,i)=>{if(Object.keys(D.epi_umbrales).some(k=>{const x=d.epi[k][i];return x!=null&&x>D.epi_umbrales[k];}))alertM++;});
+ const p=d.pscv;const hta=p.hta_bc?p.hta_comp/p.hta_bc*100:0;
+ const ab=sum(d.ccr.Egresos)?sum(d.ccr.Abandono)/sum(d.ccr.Egresos)*100:0;
+ let h=repHead();
+ h+=H3('Situación actual')+P(`En lo que va de 2026 la red acumula <b>${money(sum(d.prod_total))}</b> atenciones. La vigilancia epidemiológica registró alerta en <b>${alertM} de ${LB.length}</b> meses. En el programa cardiovascular la compensación de hipertensos alcanza <b>${hta.toFixed(0)}%</b> (meta ${D.pscv_metas.HTA}%), y en rehabilitación el abandono se ubica en <b>${ab.toFixed(0)}%</b>.`);
+ h+=H3('Lectura salubrista')+P(`El volumen de actividad es consistente con una APS rural resolutiva; sin embargo, conviene leer los indicadores por separado más que como un agregado. ${hta<D.pscv_metas.HTA?'La compensación cardiovascular por debajo de meta y ':''}${ab>15?'un abandono elevado en rehabilitación ':''}son señales que, en contexto de dispersión geográfica y dificultades de traslado, suelen reflejar barreras de acceso y continuidad más que falta de oferta.`);
+ if(c)h+=H3('Proyección')+P(`Si se mantiene el patrón estacional, el cierre 2026 de producción rondaría <b>${money(c.full)}</b> atenciones (${pctxt(c.pct)} respecto de 2025).`);
+ h+=RECS(['Priorizar los módulos en rojo/ámbar del tablero para la próxima reunión de equipo, partiendo por el de mayor impacto poblacional.','Reforzar la continuidad de cuidados de las personas bajo control (recordatorios, rescate telefónico y rondas a Guanaqueros) antes del alza estival de demanda.','Anticipar la temporada respiratoria de invierno con campaña y stock, usando el semáforo epidemiológico como disparador.']);
+ h+=NOTE('Vista de resumen; cada módulo tiene su propio informe con el detalle. El SUR Tongoy participa solo en urgencia.');
+ return h;}
+
+function repProd(){const d=dev();
+ if(isSUR()){let h=repHead();h+=H3('Situación actual')+P(`El SUR Tongoy acumula <b>${money(sum(d.prod_total))}</b> atenciones de urgencia (ene–ago 2026).`);
+  h+=H3('Lectura salubrista')+P('En un balneario rural, la urgencia amortigua la variabilidad estacional: conviene vigilar los meses de verano, cuando la población flotante eleva la demanda, y la coherencia entre la categorización (triage) y las atenciones registradas.');
+  h+=RECS(['Revisar el descuadre entre triage y atenciones por profesional para asegurar calidad del dato.','Planificar refuerzo de turnos para el peak estival.']);return h;}
+ const c=cierre('Producción total');const lead=Object.entries(d.estamentos).map(([k,v])=>[k,sum(v)]).sort((a,b)=>b[1]-a[1])[0];
+ const pap=sum(d.extra['PAP tomados']),emp=sum(d.extra['EMP realizados']);const cob=centro==='consolidado';
+ let h=repHead();
+ h+=H3('Situación actual')+P(`La producción acumulada es de <b>${money(sum(d.prod_total))}</b> atenciones, con predominio del estamento <b>${lead[0]}</b> (${money(lead[1])}). Se registran <b>${money(pap)}</b> PAP y <b>${money(emp)}</b> EMP${cob?` (coberturas de ${(pap/D.poblacion.m_25_64*100).toFixed(0)}% y ${(emp/D.poblacion.e15*100).toFixed(0)}% sobre el percápita)`:''}.`);
+ h+=H3('Lectura salubrista')+P(`La composición por estamento y tramo etario permite dimensionar la carga real del equipo. En territorio rural, sostener la producción exige logística de rondas y estrategias de acercamiento (visita domiciliaria, telesalud); las coberturas de PAP y EMP suelen ser el punto más sensible por la dificultad de captar a población que consulta poco.`);
+ if(c)h+=H3('Proyección')+P(`El cierre 2026 estimado ronda <b>${money(c.full)}</b> atenciones (${pctxt(c.pct)} vs 2025), proyectando los meses de septiembre a diciembre desde el patrón de 2025.`);
+ h+=RECS(['Programar barridos de PAP y EMP en operativos de fin de semana o rondas a Guanaqueros para cerrar brecha de cobertura.','Equilibrar la agenda entre estamentos para proteger la resolutividad médica en los meses de mayor demanda.','Usar la proyección de cierre para ajustar metas realistas con el equipo antes del último trimestre.']);
+ h+=NOTE('Producción desde A04 (consultas y controles) + odontología A09. Coberturas calculadas solo para el Consolidado (percápita unificado).');
+ return h;}
+
+function repCV(){if(isSUR())return P('El programa cardiovascular no aplica a la urgencia.');
+ const p=dev().pscv;const hta=p.hta_bc?p.hta_comp/p.hta_bc*100:0,dm=p.dm_bc?p.dm_comp/p.dm_bc*100:0;
+ let h=repHead();
+ h+=H3('Situación actual')+P(`La población bajo control cardiovascular es de <b>${money(p.pscv_total)}</b> personas (corte ${p.corte}). La compensación es de <b>${hta.toFixed(0)}%</b> en hipertensión (meta ${D.pscv_metas.HTA}%) y <b>${dm.toFixed(0)}%</b> en diabetes (meta ${D.pscv_metas.DM2}%); el <b>${(p.pscv_total?p.rcv_alto/p.pscv_total*100:0).toFixed(0)}%</b> tiene riesgo cardiovascular alto.`);
+ h+=H3('Lectura salubrista')+P(`${hta>=D.pscv_metas.HTA?'La compensación de hipertensos cumple la meta, lo que habla de un seguimiento efectivo.':'La compensación de hipertensos está bajo meta.'} ${dm<D.pscv_metas.DM2?'La diabetes suele ser el eslabón más difícil y aquí también está bajo meta.':''} En zonas rurales, la adherencia se juega en el acceso al fármaco y a los exámenes (HbA1c): la distancia y el costo de traslado son determinantes tanto como la indicación clínica.`);
+ h+=RECS(['Focalizar en los descompensados con mayor riesgo: rescate activo, entrega de fármacos en la posta y, cuando sea posible, telemonitoreo de presión.','Asegurar la toma oportuna de HbA1c coordinando la logística de muestras desde Guanaqueros.','Revisar con enfermería/médico la concentración de controles de los diabéticos descompensados.']);
+ h+=NOTE('PSCV desde Serie P (población bajo control). Metas referenciales editables; reemplazar por Metas Sanitarias (Ley 19.813) vigentes.');
+ return h;}
+
+function repResp(){if(isSUR())return P('El módulo respiratorio usa morbilidad de APS; no aplica a la urgencia.');
+ const d=dev();const inds=Object.keys(D.epi_umbrales);let alertM=0;LB.forEach((_,i)=>{if(inds.some(k=>{const x=d.epi[k][i];return x!=null&&x>D.epi_umbrales[k];}))alertM++;});
+ const c=cierre('IRA alta (respiratorio)');const iraTot=sum(d.epi['IRA Alta']);
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Las infecciones respiratorias altas acumulan <b>${money(iraTot)}</b> casos. En <b>${alertM} de ${LB.length}</b> meses algún indicador superó su umbral provisional.`);
+ h+=H3('Lectura salubrista')+P(`El patrón respiratorio en Chile central es estacional, con peak en invierno (junio–agosto). En una localidad costera y rural, la vigilancia temprana permite anticipar oxígeno, salas IRA y derivación oportuna, evitando que el SUR y la red se saturen. ${c&&c.pct>15?'La actividad 2026 corre por sobre 2025, lo que refuerza la necesidad de preparación.':''}`);
+ if(c)h+=H3('Proyección')+P(`El cierre 2026 de IRA alta se estima en torno a <b>${money(c.full)}</b> casos (${pctxt(c.pct)} vs 2025); la curva desciende naturalmente al salir del invierno.`);
+ h+=RECS(['Mantener el semáforo como disparador operativo: al superar umbral, activar refuerzo de horas y stock de broncodilatadores/oxígeno.','Reforzar vacunación y educación en los meses previos al invierno, priorizando adultos mayores y menores dispersos.','Construir un canal endémico con años previos (re-mapeados) para reemplazar los umbrales provisionales.']);
+ h+=NOTE('Umbrales provisionales (percentil 75 de la serie 2026); no reemplazan un canal endémico formal.');
+ return h;}
+
+function repSM(){if(isSUR())return P('El Programa de Salud Mental es de APS; no aplica a la urgencia.');
+ const key=centro==='consolidado'?'consolidado':centro;const ser=MY.serie,pr=MY.proj;
+ const ing=ser.ingresos[key],ctrl=ser.controles[key];const pbc=SM.corte.pbc_sm[key]['2026'];
+ const conc=SM.corte.concentracion[key]['2026'];const concProj=conc*12/8;
+ const ingProj=pr.ingresos[key];
+ let h=repHead();
+ h+=H3('Situación actual')+P(`El programa tiene <b>${money(pbc)}</b> personas bajo control. En 2026 acumula <b>${money(ing['2026_parcial'])}</b> ingresos y <b>${money(ctrl['2026_parcial'])}</b> controles (concentración de ${conc.toFixed(1)}, proyectada a ${concProj.toFixed(1)} al año). La serie re-mapeada 2022–2026 permite lectura de tendencia.`);
+ h+=H3('Lectura salubrista')+P(`${ing['2026_anualizado']<ingProj['2026_reg']*0.8?'Los ingresos 2026 corren por debajo de lo esperado por la tendencia histórica: puede ser menor pesquisa, brecha de acceso o rezago de registro — vale la pena distinguir cuál.':'El flujo de ingresos se mantiene dentro de lo esperable.'} En ruralidad, la salud mental enfrenta doble barrera: el estigma y la distancia. La teleconsultoría con especialidad y el trabajo comunitario (grupos, PACOM) son las palancas de mayor rendimiento cuando la oferta de psiquiatría es lejana.`);
+ h+=H3('Proyección')+P(`Por regresión sobre los años completos, los ingresos proyectan <b>${money(ingProj['2027_reg'])}</b> para 2027 (banda ±${money(ingProj.band)}) y los controles ${money(pr.controles[key]['2027_reg'])}. El cierre 2026 anualizado de controles es de ${money(ctrl['2026_anualizado'])}.`);
+ h+=RECS(['Si la caída de ingresos es real, activar pesquisa (aplicación de instrumentos en controles de crónicos y en el espacio adolescente) y consejería en la posta.','Sostener la concentración de controles con agenda protegida y rescate de inasistentes; en rural, el rescate telefónico y las rondas son claves.','Aprovechar teleconsultoría y consultoría de salud mental para resolver en el territorio y descomprimir la derivación a especialidad.']);
+ h+=NOTE('Serie 2022–2026 re-mapeada por anclaje de etiqueta (formularios antiguos). Proyecciones estadísticas provisionales.');
+ return h;}
+
+function repCCR(){if(isSUR())return P('El CCR es de APS; no aplica a la urgencia.');
+ const c=dev().ccr;const ing=sum(c.Ingresos),eg=sum(c.Egresos),alta=sum(c['Egresos por alta']),ab=sum(c.Abandono),ses=sum(c.Sesiones),to=sum(c.ses['Terapia Ocupacional']);
+ const abPct=eg?ab/eg*100:0;const cc=cierre('Sesiones CCR (rehab)');
+ let h=repHead();
+ h+=H3('Situación actual')+P(`El CCR acumula <b>${money(ing)}</b> ingresos y <b>${money(ses)}</b> sesiones de rehabilitación, de las cuales <b>${money(to)}</b> (${ses?(to/ses*100).toFixed(0):0}%) son de Terapia Ocupacional. El abandono es de <b>${abPct.toFixed(0)}%</b> (${money(ab)} de ${money(eg)} egresos).`);
+ h+=H3('Lectura salubrista')+P(`${abPct>15?'El abandono está por sobre lo deseable y es el foco a intervenir.':'El abandono está en un rango manejable, pero conviene sostenerlo.'} En rehabilitación rural, el transporte es la principal causa de abandono: cada sesión implica un traslado costoso para el usuario. El aporte de Terapia Ocupacional es central para la funcionalidad y la reinserción, y su registro merece visibilidad.`);
+ if(cc)h+=H3('Proyección')+P(`El cierre 2026 de sesiones se estima en <b>${money(cc.full)}</b> (${pctxt(cc.pct)} vs 2025).`);
+ h+=RECS(['Implementar rescate de inasistentes y agendas que agrupen prestaciones el mismo día para reducir traslados.','Explorar rehabilitación de base comunitaria y domiciliaria en Guanaqueros para acercar la atención.','Monitorear mensualmente el abandono y el aporte de Terapia Ocupacional como indicadores trazadores del CCR.']);
+ h+=NOTE('CCR desde REM-A28. El abandono se calcula sobre egresos del periodo.');
+ return h;}
+
+function repChCC(){if(isSUR()||!dev().dsm)return P('Chile Crece Contigo es de APS (0–9 años); no aplica a la urgencia.');
+ const d=dev().dsm;const test=sum(d.test_aplic),pb=sum(d.pb_aplic),alt=sum(d.pb_alterado);const sala=Object.values(d.sala).reduce((a,v)=>a+sum(v),0);
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Se aplicaron <b>${money(test)}</b> evaluaciones del desarrollo (EEDP/TEPSI) y <b>${money(pb)}</b> pautas breves, con <b>${(pb?alt/pb*100:0).toFixed(0)}%</b> de resultados alterados. Ingresaron <b>${money(sala)}</b> niños/as a Sala de Estimulación.`);
+ h+=H3('Lectura salubrista')+P('La pesquisa temprana del desarrollo es una de las intervenciones de mayor retorno en APS. En ruralidad, la brecha suele estar en la cobertura de la evaluación (captar a los niños dispersos) y en la continuidad hacia la Sala de Estimulación. Un porcentaje de alteración detectado no es una mala noticia: refleja que la pesquisa está funcionando.');
+ h+=RECS(['Asegurar cobertura de EEDP/TEPSI en la agenda del niño sano y en visita domiciliaria para los más alejados.','Garantizar el flujo pesquisa → Sala de Estimulación → reevaluación, evitando pérdidas de seguimiento.','Involucrar a las familias (talleres, pauta de crianza) como extensión de la estimulación en el hogar.']);
+ h+=NOTE('ChCC desde A03 (pesquisa) y A05-F (Sala de Estimulación).');
+ return h;}
+
+function repPacom(){if(isSUR()||!dev().pacom)return P('PACOM/PASMI son de APS; no aplican a la urgencia.');
+ const p=dev().pacom;const ing=sum(p.Ingresos),vis=sum(p['Visitas domiciliarias']),tel=sum(p['Apoyo telefónico (acciones)']);
+ let h=repHead();
+ h+=H3('Situación actual')+P(`El Programa de Acompañamiento Psicosocial registra <b>${money(ing)}</b> ingresos, <b>${money(vis)}</b> visitas domiciliarias y <b>${money(tel)}</b> acciones de apoyo telefónico.`);
+ h+=H3('Lectura salubrista')+P('PACOM y PASMI son, por diseño, programas de terreno y vínculo: en zonas rurales su valor se multiplica porque llevan la atención a donde el usuario no puede llegar. El apoyo telefónico y la visita domiciliaria son sus indicadores más expresivos de cobertura efectiva.');
+ h+=RECS(['Sostener la razón de visitas domiciliarias por ingreso como indicador de cercanía real del programa.','Coordinar con el intersector (educación, protección) para el acompañamiento de las familias más complejas.','Apoyar al equipo psicosocial y al psicólogo/a con registro oportuno para visibilizar esta carga de trabajo.']);
+ h+=NOTE('PACOM (A05-T/A06-D/A26/A32) y PASMI (A06-G/A26-F/A27-G).');
+ return h;}
+
+function repCob(){if(isSUR())return P('Las coberturas percápita son de APS; no aplican a la urgencia.');
+ const d=dev();const pap=sum(d.extra['PAP tomados']),emp=sum(d.extra['EMP realizados']);const cons=centro==='consolidado';
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Se acumulan <b>${money(pap)}</b> PAP y <b>${money(emp)}</b> EMP${cons?`, equivalentes a ${(pap/D.poblacion.m_25_64*100).toFixed(0)}% y ${(emp/D.poblacion.e15*100).toFixed(0)}% del percápita respectivo`:''}. La población bajo control cardiovascular es de ${money(d.pscv.pscv_total)}.`);
+ h+=H3('Lectura salubrista')+P(`${cons?'Las coberturas van en construcción dentro del año; el PAP es trienal, por lo que un avance parcial es esperable.':'Para este dispositivo se muestran valores absolutos: el percápita unificado solo permite calcular cobertura en el Consolidado.'} En ruralidad, la cobertura preventiva es el indicador que más sufre por la dificultad de captar a población sana que consulta poco, y el que más se beneficia de estrategias de acercamiento.`);
+ h+=RECS(['Planificar operativos de PAP y EMP con enfoque de barrido territorial, priorizando sectores dispersos.','Usar cada contacto (control crónico, urgencia, farmacia) como oportunidad de captación preventiva.','Monitorear el avance mensual contra la meta anual/trienal para no llegar al cierre con brecha.']);
+ h+=NOTE('Coberturas sobre percápita unificado de Tongoy (solo Consolidado).');
+ return h;}
+
+function repProy(){const key=centro==='201178'?null:(centro==='consolidado'?'consolidado':centro);
+ if(!key)return P('La proyección interanual usa el Programa de Salud Mental; no aplica a la urgencia.');
+ const ind=proyInd;const s=MY.serie[ind][key],pr=MY.proj[ind][key];const LBL={controles:'controles',ingresos:'ingresos',altas:'altas clínicas'}[ind];
+ const ann=s['2026_anualizado'];
+ let h=repHead();
+ h+=H3('Situación actual')+P(`En <b>${LBL}</b> de salud mental, la serie re-mapeada muestra 2022: ${money(s['2022'])}, 2023: ${money(s['2023'])}, 2024: ${money(s['2024'])}, 2025: ${money(s['2025'])} y un cierre 2026 estimado de <b>${money(ann)}</b>. La tendencia es de ${pr.slope>=0?'crecimiento':'descenso'} (${pr.slope>=0?'+':''}${money(pr.slope)}/año).`);
+ h+=H3('Lectura salubrista')+P(`La comparación interanual, posible gracias al re-mapeo de los formularios antiguos, permite distinguir señal de ruido. ${ann<pr['2026_reg']*0.85?'El cierre 2026 proyectado queda por debajo de la tendencia histórica, lo que amerita revisar acceso y registro.':'El comportamiento 2026 es coherente con la trayectoria de los últimos años.'} En una red rural, sostener estos programas depende de la continuidad del equipo y del vínculo con la comunidad más que de la infraestructura.`);
+ h+=H3('Proyección')+P(`El modelo de regresión estima <b>${money(pr['2027_reg'])}</b> ${LBL} para 2027 (banda ±${money(pr.band)}). Es una estimación estadística provisional, útil para dimensionar recursos, no una meta.`);
+ h+=RECS(['Usar la proyección para planificar horas y cupos del próximo año con base en evidencia local.','Validar cada salto interanual grande contra posibles cambios de registro antes de interpretarlo como cambio real.','Extender el re-mapeo a producción y otros programas para replicar esta lectura interanual en todo el tablero.']);
+ h+=NOTE('Regresión lineal sobre años completos 2022–2025; 2026 anualizado desde ene–ago. Provisional.');
+ return h;}
+
+function repAdol(){const e=exd();if(!e)return P('El Programa Adolescente es de APS; no aplica a la urgencia.');
+ const ctrl=sum(e.adol_ctrl),ea=sum(e.adol_ea),craff=sum(e.adol_craff);const eaPct=ctrl?ea/ctrl*100:0;
+ const pbc=SP.prog['Adolescente'][centro==='consolidado'?'consolidado':centro];
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Se realizaron <b>${money(ctrl)}</b> controles integrales de adolescentes, de los cuales <b>${money(ea)}</b> (${eaPct.toFixed(0)}%) fueron en <b>Espacio Amigable</b>. Se aplicaron <b>${money(craff)}</b> tamizajes CRAFF. La población bajo control adolescente es de <b>${money(pbc[2])}</b> (Serie P9).`);
+ h+=H3('Lectura salubrista')+P(`${eaPct>=40?'La alta proporción de controles en Espacio Amigable habla de una estrategia adolescente-friendly consolidada, algo especialmente valioso en zonas rurales donde el/la joven tiene pocos espacios de atención pertinentes.':'Conviene fortalecer el Espacio Amigable como puerta de entrada: en ruralidad, un espacio adolescente-friendly y confidencial mejora la adherencia y la pesquisa de riesgo (consumo, salud mental, salud sexual).'} El CRAFF y el PHQ-9 son las herramientas de pesquisa clave; sostener su aplicación en cada control es lo que permite intervenir a tiempo.`);
+ h+=RECS(['Sostener y difundir el Espacio Amigable en establecimientos educacionales y con horario protegido, acercándolo a Guanaqueros.','Asegurar la aplicación sistemática de CRAFF y PHQ-9 en el control de salud integral, con flujo claro de derivación ante pesquisa positiva.','Articular con educación y el intersector para captar a adolescentes que no consultan espontáneamente.']);
+ h+=NOTE('Adolescente desde A01 Sección D (incluye Espacio Amigable) y A03 (tamizajes). PBC desde Serie P9.');
+ return h;}
+function repDent(){const e=exd();if(!e)return P('El Programa Dental es de APS; no aplica a la urgencia.');
+ const ctrl=sum(e.dent_ctrl),urg=sum(e.dent_urg),altas=sum(e.dent_altas),activ=sum(e.dent_activ),ingr=sum(e.dent_ingr);
+ const urgR=ctrl?urg/(ctrl+urg)*100:0;
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Salud bucal registra <b>${money(ctrl)}</b> controles, <b>${money(urg)}</b> urgencias GES y <b>${money(activ)}</b> actividades odontológicas, con <b>${money(altas)}</b> altas integrales sobre ${money(ingr)} ingresos con enfoque de riesgo.`);
+ h+=H3('Lectura salubrista')+P(`${urgR>35?'La urgencia GES pesa fuerte respecto de la atención programada, lo que sugiere un patrón de acceso reactivo — se llega al box cuando ya duele.':'La relación entre atención programada y urgencia es razonable.'} En ruralidad, la baja frecuencia de atención dental y la distancia empujan hacia la urgencia; el trabajo preventivo (educación en técnica de higiene, sellantes, fluoruración) y las altas integrales son lo que rompe ese círculo.`);
+ h+=RECS(['Reforzar la atención odontológica programada y preventiva (GES odontológico del adolescente y de la embarazada, altas integrales) para reducir la urgencia evitable.','Llevar educación en higiene y aplicación de flúor a establecimientos educacionales y a Guanaqueros.','Monitorear la razón altas/ingresos como indicador de resolutividad del programa.']);
+ h+=NOTE('Salud bucal desde REM-A09.');
+ return h;}
+function repPart(){const e=exd();if(!e)return P('Participación y Educación son de APS; no aplican a la urgencia.');
+ const consej=sum(e.edu_consej),grupal=sum(e.edu_ingresos),recl=sum(e.par_reclamos),felic=sum(e.par_consultas),social=sum(e.par_social);
+ let h=repHead();
+ h+=H3('Situación actual')+P(`En educación para la salud se registran <b>${money(consej)}</b> consejerías individuales y <b>${money(grupal)}</b> ingresos a educación grupal. En participación (OIRS) hay <b>${money(recl)}</b> reclamos y <b>${money(felic)}</b> felicitaciones/sugerencias; las sesiones de participación social suman <b>${money(social)}</b>.`);
+ h+=H3('Lectura salubrista')+P(`La educación individual es fuerte, pero ${grupal<consej*0.1?'la educación grupal aparece baja: es una oportunidad, porque los talleres rinden mucho por hora-profesional y construyen comunidad':'el balance individual/grupal es adecuado'}. ${social===0?'La participación social formal (consejos, cuentas públicas, diálogos) no registra actividad en el periodo, algo a revisar: en el mundo rural la participación de la comunidad es un determinante directo de la pertinencia y la confianza en el centro.':'La participación social registra actividad, lo que fortalece el vínculo con la comunidad.'} Los reclamos, más que un problema, son información para mejorar el trato y el acceso.`);
+ h+=RECS(['Potenciar la educación grupal (talleres por ciclo vital y área temática) como complemento de la consejería individual.','Reactivar y registrar las instancias de participación social (consejo de desarrollo, cuentas públicas, diálogos ciudadanos), clave para la pertinencia rural.','Cerrar el ciclo de los reclamos OIRS con respuesta oportuna y mejora visible; comunicar los cambios a la comunidad.']);
+ h+=NOTE('Participación desde A19b (OIRS, participación social, satisfacción) y Educación desde A19a (consejerías) y A27 (educación grupal).');
+ return h;}
+function repSP(){const key=centro==='201178'?null:(centro==='consolidado'?'consolidado':centro);
+ if(!key)return P('La Serie P es de APS; no aplica a la urgencia.');
+ const sm=SP.prog['Salud mental'][key],pm=SP.prog['Personas mayores'][key],cv=SP.prog['PSCV'][key];
+ let h=repHead();
+ h+=H3('Situación actual')+P(`Entre los cortes de diciembre 2024 y junio 2026, la población bajo control evolucionó así: Salud Mental ${money(sm[0])}→${money(sm[2])}, Personas Mayores ${money(pm[0])}→${money(pm[2])}, PSCV ${money(cv[0])}→${money(cv[2])}. La comparación mezcla cortes de diciembre (2024, 2025) con uno de junio (2026).`);
+ h+=H3('Lectura salubrista')+P(`El seguimiento interanual de la Serie P muestra la carga crónica del centro y hacia dónde crece. ${sm[2]>sm[1]?'El alza sostenida en salud mental es la señal más fuerte y exige capacidad instalada (horas, teleconsultoría, consultoría).':''} ${pm[2]>pm[1]?'El crecimiento en personas mayores refleja el envejecimiento local y demanda más cuidado domiciliario y manejo de dependencia.':''} En una red rural, cada persona bajo control implica continuidad en el tiempo: el desafío no es solo captar, sino no perder el seguimiento.`);
+ h+=RECS(['Planificar las horas de los programas crónicos según la progresión real de la Serie P, no solo la demanda espontánea.','Estandarizar el corte comparado (usar diciembre con diciembre) para lecturas interanuales limpias.','Anticipar el crecimiento de salud mental y personas mayores con estrategias de continuidad (rescate, domiciliario, telesalud).']);
+ h+=NOTE('Serie P (P1/P2/P4/P5/P6/P9/P13), cortes dic-2024, dic-2025 y jun-2026. 2026 es corte de mitad de año.');
+ return h;}
+
+const REPORT={resumen:repResumen,prod:repProd,cv:repCV,resp:repResp,sm:repSM,ccr:repCCR,chcc:repChCC,pacom:repPacom,cob:repCob,proy:repProy,adol:repAdol,dent:repDent,part:repPart,sp:repSP};
+function openReport(){$('#repTitle').textContent=TITLES[mod][0]+' · '+CN[centro];$('#repBody').innerHTML=REPORT[mod]();$('#repOv').removeAttribute('hidden');}
+
+const RENDER={resumen:mResumen,prod:mProd,cv:mCV,resp:mResp,sm:mSM,ccr:mCCR,chcc:mChCC,pacom:mPacom,cob:mCob,proy:mProy,adol:mAdol,dent:mDent,part:mPart,sp:mSP};
+const TITLES={resumen:['Resumen','Visión general de todos los programas'],prod:['Producción','Cuantificación de atenciones y controles (A04/A08)'],
+ cv:['Programa Cardiovascular','PSCV — compensación y población bajo control (Serie P)'],
+ resp:['Respiratorio / Epidemiología','Vigilancia de morbilidad respiratoria (A04) vs umbral'],
+ sm:['Salud Mental','Programa de Salud Mental — tendencia 2024–2026 y PBC'],
+ ccr:['Rehabilitación CCR','Centro Comunitario de Rehabilitación (A28) — incl. Terapeuta Ocupacional'],
+ chcc:['Chile Crece Contigo','Desarrollo infantil 0–9 — pesquisa EEDP/TEPSI y Sala de Estimulación'],
+ pacom:['PACOM / PASMI','Acompañamiento psicosocial y apoyo a la salud mental infantil'],
+ cob:['Coberturas','PAP, EMP y PSCV sobre el percápita unificado de Tongoy'],
+ proy:['Proyección y comparación interanual','Salud Mental 2022–2026 (formularios re-mapeados) y predicción a 2027'],
+ adol:['Programa Adolescente · Espacios Amigables','Control integral 10–19, Espacio Amigable y tamizajes (A01/A03)'],
+ dent:['Programa Dental','Salud bucal — controles, urgencia GES, altas y prevención (A09)'],
+ part:['Participación y Educación','Mapeo REM de participación social (A19b) y educación para la salud (A19a/A27)'],
+ sp:['Serie P comparativa','Progresión de la población bajo control por programa (2024–2026)']};
+
+function activate(m){
+ mod=m;
+ document.querySelectorAll('.navb').forEach(b=>b.setAttribute('aria-current',b.dataset.mod===m));
+ document.querySelectorAll('.content > section').forEach(sec=>sec.hidden = sec.id!=='m-'+m);
+ $('#modTitle').textContent=TITLES[m][0]; $('#modDesc').textContent=TITLES[m][1];
+ RENDER[m]();
+}
+document.querySelectorAll('.navb').forEach(b=>b.onclick=()=>activate(b.dataset.mod));
+$('#centro').querySelectorAll('button').forEach(b=>b.onclick=()=>{centro=b.dataset.c;
+ $('#centro').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.c===centro));RENDER[mod]();});
+$('#theme').onclick=()=>{const r=document.documentElement,c=r.getAttribute('data-theme');r.setAttribute('data-theme',c==='dark'?'light':(c==='light'?'dark':'light'));RENDER[mod]();};
+$('#btnInforme').onclick=openReport;
+$('#repClose').onclick=()=>$('#repOv').setAttribute('hidden','');
+$('#repOv').onclick=e=>{if(e.target===$('#repOv'))$('#repOv').setAttribute('hidden','');};
+$('#repCopy').onclick=()=>{const t=$('#repBody').innerText;navigator.clipboard&&navigator.clipboard.writeText(t);const b=$('#repCopy');b.textContent='Copiado ✓';setTimeout(()=>b.textContent='Copiar',1500);};
+activate('resumen');
+</script></body></html>
