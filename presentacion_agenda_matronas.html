@@ -1,0 +1,564 @@
+<title>Agenda de Matronas PSSR 2026</title>
+<meta name="description" content="Presentación del proyecto de análisis operativo de la agenda de matronas · CESFAM Tongoy y PSR Guanaqueros">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800;900&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Diapositivas 16:9 escaladas con unidades de contenedor; en móvil se apilan como tarjetas fluidas */
+:root{
+  --bg:#EFE8E5; --slide:#FAF7F5; --surface:#FFFFFF; --soft:#F4ECEA; --line:#E4D6D3;
+  --ink:#2E2423; --ink-2:#5B4F4D; --muted:#6E6664;
+  --vino:#8F3B4D; --terra:#B65C63; --arcilla:#D99A9E; --rg:#A96B70;
+  --ok:#7FA58A; --warn:#D8B56A; --warn-ink:#8E6F25;
+  --ok-bg:#E6EFE8; --warn-bg:#F6EDD8; --bad-bg:#F2DDE1; --dq-bg:#ECE8E7;
+  --cover:#8F3B4D; --cover-ink:#FFF7F5;
+  --f-display:"Libre Franklin","Segoe UI",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141010; --slide:#1E1818; --surface:#271F1F; --soft:#2E2525; --line:#3E3232;
+  --ink:#F3EAE8; --ink-2:#D2C4C1; --muted:#A99D9A;
+  --vino:#D27A8C; --terra:#D0858B; --arcilla:#E3AFB2; --rg:#C08F93;
+  --ok:#8DB797; --warn:#E0C07A; --warn-ink:#E0C07A;
+  --ok-bg:#243128; --warn-bg:#352E1E; --bad-bg:#3A2329; --dq-bg:#2F2929;
+  --cover:#5E2433; --cover-ink:#FFF1EE; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141010; --slide:#1E1818; --surface:#271F1F; --soft:#2E2525; --line:#3E3232;
+  --ink:#F3EAE8; --ink-2:#D2C4C1; --muted:#A99D9A;
+  --vino:#D27A8C; --terra:#D0858B; --arcilla:#E3AFB2; --rg:#C08F93;
+  --ok:#8DB797; --warn:#E0C07A; --warn-ink:#E0C07A;
+  --ok-bg:#243128; --warn-bg:#352E1E; --bad-bg:#3A2329; --dq-bg:#2F2929;
+  --cover:#5E2433; --cover-ink:#FFF1EE; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow:hidden}
+:focus-visible{outline:2px solid var(--vino);outline-offset:2px}
+
+/* ---------- Modo presentación (escritorio / horizontal) ---------- */
+.deck{height:100%;display:grid;grid-template-rows:1fr auto;place-items:center;padding:16px 16px 0}
+.stage{width:min(100%, calc((100dvh - 88px) * 16 / 9));aspect-ratio:16/9;position:relative}
+.slide{position:absolute;inset:0;background:var(--slide);border-radius:10px;box-shadow:0 10px 40px rgba(40,20,20,.16);overflow:hidden;
+  container-type:inline-size;display:grid;grid-template-rows:auto 1fr auto;padding:4.2cqw 5cqw 3cqw;gap:2cqw;
+  opacity:0;visibility:hidden;transition:opacity .25s ease}
+.slide.on{opacity:1;visibility:visible}
+/* escala tipográfica relativa al ancho de la diapositiva */
+.slide{--t-eye:1.05cqw;--t-h:3.3cqw;--t-h-xl:5.6cqw;--t-lead:1.75cqw;--t-body:1.45cqw;--t-small:1.12cqw;--t-num:4.4cqw;--t-num-xl:7cqw;--g:1.6cqw}
+.eyebrow{font-family:var(--f-display);font-weight:700;font-size:var(--t-eye);letter-spacing:.14em;text-transform:uppercase;color:var(--rg)}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;color:var(--ink)}
+h2{font-size:var(--t-h);font-weight:800;line-height:1.1;letter-spacing:-.01em}
+h3{font-size:calc(var(--t-body) * 1.12);font-weight:700;line-height:1.2}
+p,dl{margin:0}
+.lead{font-size:var(--t-lead);color:var(--ink-2);line-height:1.4;max-width:62ch}
+.body{font-size:var(--t-body);line-height:1.45;color:var(--ink-2)}
+.small{font-size:var(--t-small);color:var(--muted);line-height:1.4}
+.head{display:grid;gap:.8cqw}
+.content{min-height:0;display:grid;gap:var(--g);align-content:start}
+.foot{display:flex;justify-content:space-between;align-items:center;font-size:var(--t-small);color:var(--muted);border-top:1px solid var(--line);padding-top:1cqw}
+.foot b{color:var(--ink-2);font-weight:600}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+.cols{display:grid;gap:var(--g);grid-template-columns:repeat(var(--c,2),minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:.8cqw;padding:1.5cqw 1.7cqw;display:grid;gap:.7cqw;align-content:start;min-width:0}
+.tile .n{font-family:var(--f-display);font-weight:800;font-size:var(--t-num);line-height:1;font-variant-numeric:tabular-nums}
+.tile .l{font-size:var(--t-small);color:var(--muted);font-weight:600;letter-spacing:.02em}
+.tile .s{font-size:var(--t-small);color:var(--ink-2)}
+.at{color:var(--terra)} .in{color:var(--vino)} .pr{color:var(--rg)}
+.qa{display:grid;gap:1cqw}
+.qa > div{display:grid;grid-template-columns:9.5cqw 1fr;gap:1.2cqw;font-size:var(--t-body);line-height:1.4;color:var(--ink-2)}
+.qa dt{font-family:var(--f-display);font-size:var(--t-eye);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--vino);padding-top:.25cqw}
+.qa dd{margin:0}
+.chip{display:inline-flex;align-items:center;gap:.4em;font-size:var(--t-small);font-weight:700;padding:.2em .7em;border-radius:99px;white-space:nowrap}
+.chip::before{content:"";width:.55em;height:.55em;border-radius:50%;background:currentColor}
+.c-ok{background:var(--ok-bg);color:var(--ok)} .c-warn{background:var(--warn-bg);color:var(--warn-ink)} .c-bad{background:var(--bad-bg);color:var(--vino)} .c-dq{background:var(--dq-bg);color:var(--muted)}
+ul.l{margin:0;padding-left:1.2em;display:grid;gap:.6cqw;font-size:var(--t-body);line-height:1.4;color:var(--ink-2)}
+ul.l b{color:var(--ink)}
+
+/* barras horizontales */
+.bars{display:grid;gap:.75cqw}
+.bar{display:grid;grid-template-columns:var(--lw,15cqw) 1fr 6.5cqw;align-items:center;gap:1cqw;font-size:var(--t-small)}
+.bar .lab{color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .track{height:1.7cqw;background:var(--soft);border-radius:.3cqw;position:relative;overflow:hidden}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--vino);border-radius:0 .3cqw .3cqw 0}
+.bar .fill.at{background:var(--terra)} .bar .fill.hl{background:var(--vino)} .bar .fill.mu{background:var(--arcilla)}
+.bar .val{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);font-size:var(--t-small)}
+.bar .val small{color:var(--muted)}
+/* columnas verticales */
+.vbars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:end;gap:1cqw;height:var(--vh,16cqw);border-bottom:1px solid var(--line);padding-top:2cqw}
+.vbar{display:grid;grid-template-rows:auto 1fr;align-items:end;height:100%;text-align:center;gap:.4cqw}
+.vbar .v{font-family:var(--f-mono);font-size:var(--t-small);color:var(--ink-2)}
+.vbar .b{background:var(--terra);border-radius:.35cqw .35cqw 0 0;width:70%;justify-self:center}
+.vbar .b.in{background:var(--vino)}
+.vlabels{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:1cqw;text-align:center;font-size:var(--t-small);color:var(--muted);margin-top:.4cqw}
+
+/* flujo */
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1cqw;counter-reset:st}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:.8cqw;padding:1.3cqw;display:grid;gap:.5cqw;align-content:start;position:relative;counter-increment:st}
+.step::before{content:counter(st);font-family:var(--f-display);font-weight:800;font-size:var(--t-lead);color:var(--vino)}
+.step h3{font-size:var(--t-body)}
+.step p{font-size:var(--t-small);color:var(--ink-2);line-height:1.35}
+
+table{border-collapse:collapse;width:100%;font-size:var(--t-small)}
+th,td{text-align:left;padding:.6cqw .8cqw;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+th{font-family:var(--f-display);font-size:calc(var(--t-small) * .9);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--soft)}
+td.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+td b{color:var(--ink)}
+.sim{font-family:var(--f-display);font-size:var(--t-eye);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--warn-ink);background:var(--warn-bg);padding:.3em .8em;border-radius:.3cqw;justify-self:start}
+
+/* portada y cierre */
+.slide.cover{background:var(--cover);color:var(--cover-ink);grid-template-rows:auto 1fr auto}
+.cover .eyebrow,.cover h1,.cover h2,.cover .lead,.cover .small,.cover .foot{color:var(--cover-ink)}
+.cover .foot{border-top-color:rgba(255,255,255,.25)}
+.cover h1{font-size:var(--t-h-xl);font-weight:900;line-height:1.02;letter-spacing:-.02em;max-width:18ch}
+.cover .lead{opacity:.9}
+.cover .meta{display:flex;flex-wrap:wrap;gap:.6cqw 3cqw;font-size:var(--t-body)}
+.cover .meta span{opacity:.85}
+.cover .meta b{font-weight:700;opacity:1}
+.cover .content{align-content:center;gap:2.2cqw}
+.cover .stamp{font-family:var(--f-mono);font-size:var(--t-small);opacity:.8}
+.big-quote{font-family:var(--f-display);font-weight:800;font-size:calc(var(--t-h) * 1.15);line-height:1.12;color:var(--ink);max-width:24ch}
+.big-quote em{font-style:normal;color:var(--vino)}
+.link-btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--f-display);font-weight:700;font-size:var(--t-body);background:var(--vino);color:#fff;text-decoration:none;padding:.7em 1.2em;border-radius:.5cqw;justify-self:start}
+.cover .link-btn{background:var(--cover-ink);color:var(--cover)}
+
+/* barra de navegación */
+.nav{width:min(100%, calc((100dvh - 88px) * 16 / 9));display:flex;align-items:center;gap:12px;padding-block:10px 12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.nav button{font:600 .9rem var(--f-body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer;min-height:34px}
+.nav button:hover{border-color:var(--rg)}
+.nav button:disabled{opacity:.4;cursor:default}
+.progress{flex:1;height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--vino);width:0;transition:width .25s}
+.count{font:500 .85rem var(--f-mono);color:var(--muted);min-width:4.5em;text-align:center}
+.hint{font-size:.8rem;color:var(--muted)}
+
+/* ---------- Modo apilado (móvil / vertical) ---------- */
+@media (max-width:760px), (orientation:portrait) and (max-width:1100px){
+  body{overflow:auto}
+  .deck{display:block;height:auto;padding:14px 14px 32px}
+  .stage{width:100%;aspect-ratio:auto;display:grid;gap:14px}
+  .slide{position:relative;inset:auto;opacity:1;visibility:visible;transition:none;box-shadow:0 2px 10px rgba(40,20,20,.08);
+    padding:22px 18px 16px;gap:16px;border-radius:12px;
+    --t-eye:.7rem;--t-h:1.4rem;--t-h-xl:2.2rem;--t-lead:1.02rem;--t-body:.95rem;--t-small:.8rem;--t-num:1.7rem;--g:12px}
+  .cols{grid-template-columns:1fr}
+  .cols.keep2{grid-template-columns:1fr 1fr}
+  .card{padding:12px 14px;border-radius:8px;gap:6px}
+  .qa > div{grid-template-columns:1fr;gap:2px}
+  .flow{grid-template-columns:1fr 1fr;gap:8px}
+  .step{padding:10px;border-radius:8px}
+  .bar{--lw:34%;grid-template-columns:var(--lw) 1fr 3.8rem;gap:8px}
+  .bar .track{height:12px}
+  .bar .lab{white-space:normal;line-height:1.2}
+  .vbars{height:140px!important}
+  .vbars{height:140px;gap:6px;padding-top:18px}
+  .vlabels{gap:6px}
+  .foot{padding-top:8px}
+  .tbl{overflow-x:auto}
+  th,td{padding:6px 8px}
+  .link-btn{border-radius:8px}
+  .nav{display:none}
+  .cover h1{max-width:none}
+}
+@media (max-width:380px){.cols.keep2{grid-template-columns:1fr}.flow{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.slide,.progress i{transition:none}}
+</style>
+
+<div class="deck">
+<div class="stage" id="stage">
+
+<!-- 1 Portada -->
+<section class="slide cover" id="s1" aria-label="Portada">
+  <div class="head"><span class="eyebrow">Programa de Salud Sexual y Reproductiva · APS Coquimbo</span></div>
+  <div class="content">
+    <h1>Gestión de Agenda de Matronas</h1>
+    <p class="lead">Análisis operativo de producción, inasistencia y continuidad para decidir con evidencia cómo usar mejor la agenda.</p>
+    <div class="meta"><span><b>CESFAM Tongoy</b> · <b>PSR Guanaqueros</b></span><span>Periodo: 01-01 a 28-09-2026</span><span>Presentación del proyecto · 29-09-2026</span></div>
+  </div>
+  <div class="foot"><span>Dirección CESFAM · Coordinación PSSR · Referentes comunales de gestión</span><span class="stamp">Uso interno · datos anonimizados</span></div>
+</section>
+
+<!-- 2 Propósito -->
+<section class="slide" id="s2" aria-label="Propósito">
+  <div class="head"><span class="eyebrow">Propósito</span><h2>Mirar la agenda como un sistema de oferta, demanda y continuidad</h2></div>
+  <div class="content">
+    <p class="lead">El proyecto responde, para cada resultado, tres preguntas que ordenan la toma de decisiones.</p>
+    <div class="cols" style="--c:3">
+      <div class="card"><span class="eyebrow">1</span><h3>¿Qué se observa?</h3><p class="body">Volumen, tasas y patrones en prestaciones, días, bloques, agendas y personas.</p></div>
+      <div class="card"><span class="eyebrow">2</span><h3>¿Por qué importa para la gestión?</h3><p class="body">Capacidad perdida, oportunidad de atención y riesgo de perder la continuidad.</p></div>
+      <div class="card"><span class="eyebrow">3</span><h3>¿Qué acción concreta se puede tomar?</h3><p class="body">Con responsable, plazo, recurso, riesgo, indicador y criterio de éxito.</p></div>
+    </div>
+    <p class="small">La inasistencia se analiza como un fenómeno multifactorial de la agenda (acceso, horarios, traslado, comunicación, registro), no como un problema individual de las usuarias.</p>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Propósito</span><span class="mono">02</span></div>
+</section>
+
+<!-- 3 Método -->
+<section class="slide" id="s3" aria-label="Método">
+  <div class="head"><span class="eyebrow">Cómo se construyó</span><h2>Dos reportes del sistema, un proceso reproducible</h2></div>
+  <div class="content">
+    <div class="flow">
+      <div class="step"><h3>Carga</h3><p>Reporte de atenciones (4.032 filas) y de inasistentes (782 filas). Se detecta el encabezado automáticamente.</p></div>
+      <div class="step"><h3>Protección</h3><p>La columna con RUN se elimina al cargar. Texto libre y país de origen se agrupan.</p></div>
+      <div class="step"><h3>Normalización</h3><p>Fechas, horas y agendas. 38 prestaciones se homologan en 19 familias, conservando el nombre original.</p></div>
+      <div class="step"><h3>Cruce</h3><p>Base de eventos por IDKEY, matrona, fecha y hora. LEFT y FULL JOIN con auditoría.</p></div>
+      <div class="step"><h3>Indicadores</h3><p>Tasas con denominador válido, capacidad perdida, continuidad, criticidad y escenarios.</p></div>
+      <div class="step"><h3>Tablero</h3><p>Vista filtrable, informe ejecutivo, Excel y app Streamlit para actualizar cada mes.</p></div>
+    </div>
+    <div class="cols" style="--c:2">
+      <div class="card"><h3>Regla de denominadores</h3><p class="body">La tasa de inasistencia se calcula solo en las <b>8 prestaciones</b> presentes en ambos reportes: inasistencias ÷ (atendidas + inasistentes). Cuando no hay denominador válido, se informa el volumen y se explica por qué.</p></div>
+      <div class="card"><h3>Lenguaje prudente</h3><p class="body">Se describen asociaciones, no causas. Ninguna categoría de continuidad significa abandono. Todo umbral o ponderación es una propuesta analítica y debe validarse con el equipo.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Método</span><span class="mono">03</span></div>
+</section>
+
+<!-- 4 Calidad -->
+<section class="slide" id="s4" aria-label="Calidad de datos">
+  <div class="head"><span class="eyebrow">Calidad de datos</span><h2>Antes de mirar resultados: lo que los datos permiten y lo que no</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:2">
+      <div class="card">
+        <h3>Alertas principales</h3>
+        <ul class="l">
+          <li><span class="chip c-bad">Rojo</span> El archivo de atenciones traía <b>RUN</b>. Se eliminó al cargar; hay que regenerar la fuente.</li>
+          <li><span class="chip c-bad">Rojo</span> <b>278 inasistencias (36 %) sin IDKEY</b>: se cuentan como citas, no como personas.</li>
+          <li><span class="chip c-bad">Rojo</span> <b>Sin cupos, cancelaciones ni reprogramaciones</b> en la exportación.</li>
+          <li><span class="chip c-bad">Rojo</span> <b>98 % de las inasistencias</b> sin un motivo específico.</li>
+          <li><span class="chip c-warn">Amarillo</span> El centro de las atenciones es inferido (cobertura parcial).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Indicadores que no se pueden calcular hoy</h3>
+        <ul class="l">
+          <li>Utilización de agenda y ocupación de cupos</li>
+          <li>Tasas de cancelación y de reprogramación</li>
+          <li>Antigüedad de la citación y confirmación de hora</li>
+          <li>Lista de espera y brecha oferta–producción</li>
+        </ul>
+        <p class="small">Se resuelven exportando la agenda completa: cupos creados, bloqueados, otorgados, confirmados, cancelados y reprogramados, con fecha de asignación.</p>
+      </div>
+    </div>
+    <p class="small">Cruce: los 345 IDKEY de inasistentes existen en atenciones (100 % de coincidencia). Hay 3 citas registradas como atendidas e inasistentes a la misma hora, pendientes de revisión.</p>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Calidad de datos</span><span class="mono">04</span></div>
+</section>
+
+<!-- 5 Cifras -->
+<section class="slide" id="s5" aria-label="Cifras clave">
+  <div class="head"><span class="eyebrow">Cifras clave · enero a septiembre 2026</span><h2>La agenda produce mucho y tiene espacio para recuperar capacidad</h2></div>
+  <div class="content">
+    <div class="cols keep2" style="--c:3">
+      <div class="card tile"><span class="l">Atenciones realizadas</span><span class="n at">3.994</span><span class="s">20,2 por día con actividad</span></div>
+      <div class="card tile"><span class="l">Personas atendidas</span><span class="n">1.657</span><span class="s">2,4 atenciones por persona</span></div>
+      <div class="card tile"><span class="l">Citas inasistentes</span><span class="n in">782</span><span class="s">345 personas identificables</span></div>
+      <div class="card tile"><span class="l">Tasa aprox. de inasistencia</span><span class="n in">26,3 %</span><span class="s">782 de 2.972 citas con resultado</span></div>
+      <div class="card tile"><span class="l">Capacidad perdida estimada</span><span class="n in">406 h</span><span class="s">≈ 45 horas de agenda por mes</span></div>
+      <div class="card tile"><span class="l">Personas con inasistencia reiterada</span><span class="n pr">102</span><span class="s">explican el 52 % de las inasistencias con IDKEY</span></div>
+    </div>
+    <div>
+      <div class="vbars" style="--vh:6.5cqw" aria-label="Atenciones por mes">
+        <div class="vbar"><span class="v">472</span><span class="b" style="height:81%"></span></div>
+        <div class="vbar"><span class="v">344</span><span class="b" style="height:59%"></span></div>
+        <div class="vbar"><span class="v">528</span><span class="b" style="height:91%"></span></div>
+        <div class="vbar"><span class="v">493</span><span class="b" style="height:85%"></span></div>
+        <div class="vbar"><span class="v">579</span><span class="b" style="height:100%"></span></div>
+        <div class="vbar"><span class="v">438</span><span class="b" style="height:76%"></span></div>
+        <div class="vbar"><span class="v">461</span><span class="b" style="height:80%"></span></div>
+        <div class="vbar"><span class="v">303</span><span class="b" style="height:52%"></span></div>
+        <div class="vbar"><span class="v">376</span><span class="b" style="height:65%"></span></div>
+      </div>
+      <div class="vlabels"><span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Sep*</span></div>
+      <p class="small" style="margin-top:.6cqw">Atenciones realizadas por mes. *Septiembre hasta el día 28. En agosto no hay registros de una de las tres agendas (probable ausencia programada).</p>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Cifras clave</span><span class="mono">05</span></div>
+</section>
+
+<!-- 6 Prestaciones -->
+<section class="slide" id="s6" aria-label="Hallazgo prestaciones">
+  <div class="head"><span class="eyebrow">Hallazgo 1 · Prestaciones</span><h2>Las inasistencias se concentran en prestaciones específicas</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:2">
+      <div class="card">
+        <h3>Tasa aproximada de inasistencia por tipo de atención</h3>
+        <div class="bars">
+          <div class="bar"><span class="lab">Salud adolescente</span><span class="track"><span class="fill" style="width:94%"></span></span><span class="val">46,9 % <small>n=81</small></span></div>
+          <div class="bar"><span class="lab">Climaterio</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="val">37,1 % <small>n=97</small></span></div>
+          <div class="bar"><span class="lab">Regulación de fertilidad</span><span class="track"><span class="fill" style="width:71%"></span></span><span class="val">35,4 % <small>n=520</small></span></div>
+          <div class="bar"><span class="lab">Control ginecológico</span><span class="track"><span class="fill" style="width:54%"></span></span><span class="val">26,9 % <small>n=1.428</small></span></div>
+          <div class="bar"><span class="lab">Preconcepcional</span><span class="track"><span class="fill" style="width:52%"></span></span><span class="val">26,1 % <small>n=69</small></span></div>
+          <div class="bar"><span class="lab">Control prenatal</span><span class="track"><span class="fill" style="width:34%"></span></span><span class="val">17,0 % <small>n=643</small></span></div>
+          <div class="bar"><span class="lab">Puerperio y díada</span><span class="track"><span class="fill" style="width:19%"></span></span><span class="val">9,7 % <small>n=134</small></span></div>
+        </div>
+        <p class="small">n = citas con resultado (atendidas + inasistentes).</p>
+      </div>
+      <dl class="qa card">
+        <div><dt>Se observa</dt><dd>Control ginecológico (384) y regulación de fertilidad (184) suman el <b>73 % de las inasistencias</b>. Salud adolescente y climaterio tienen las tasas más altas, pero con volúmenes menores.</dd></div>
+        <div><dt>Importa</dt><dd>En esas dos prestaciones se pierden <b>284 horas</b>. Son controles programables, así que la confirmación y la reasignación son factibles.</dd></div>
+        <div><dt>Acción</dt><dd>Confirmar activamente, 48–72 h antes, las citas de estas prestaciones y derivar las horas liberadas a una lista de espera. En adolescentes, revisar horarios y canal de contacto.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Volumen no es lo mismo que tasa</span><span class="mono">06</span></div>
+</section>
+
+<!-- 7 Días y bloques -->
+<section class="slide" id="s7" aria-label="Hallazgo días y bloques">
+  <div class="head"><span class="eyebrow">Hallazgo 2 · Días y bloques horarios</span><h2>La inasistencia se concentra al inicio de la semana</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:2">
+      <div class="card">
+        <h3>Tasa aproximada por día de la semana</h3>
+        <div class="bars" style="--lw:9cqw">
+          <div class="bar"><span class="lab">Lunes</span><span class="track"><span class="fill hl" style="width:100%"></span></span><span class="val">32,9 %</span></div>
+          <div class="bar"><span class="lab">Martes</span><span class="track"><span class="fill hl" style="width:94%"></span></span><span class="val">30,8 %</span></div>
+          <div class="bar"><span class="lab">Miércoles</span><span class="track"><span class="fill mu" style="width:64%"></span></span><span class="val">21,1 %</span></div>
+          <div class="bar"><span class="lab">Jueves</span><span class="track"><span class="fill mu" style="width:61%"></span></span><span class="val">20,2 %</span></div>
+          <div class="bar"><span class="lab">Viernes</span><span class="track"><span class="fill mu" style="width:71%"></span></span><span class="val">23,2 %</span></div>
+          <div class="bar"><span class="lab">Sábado</span><span class="track"><span class="fill mu" style="width:81%"></span></span><span class="val">26,5 %</span></div>
+        </div>
+        <h3 style="margin-top:.6cqw">Bloques con mayor índice de criticidad</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>Bloque</th><th>Citas</th><th>Inasist.</th><th>Tasa</th><th>Índice</th></tr></thead>
+          <tbody>
+            <tr><td><b>Lunes 10:00</b></td><td class="n">124</td><td class="n">49</td><td class="n">39,5 %</td><td class="n">0,73</td></tr>
+            <tr><td><b>Lunes 08:00</b></td><td class="n">102</td><td class="n">45</td><td class="n">44,1 %</td><td class="n">0,68</td></tr>
+            <tr><td><b>Martes 09:00</b></td><td class="n">139</td><td class="n">42</td><td class="n">30,2 %</td><td class="n">0,65</td></tr>
+          </tbody></table></div>
+      </div>
+      <dl class="qa card">
+        <div><dt>Se observa</dt><dd>Lunes y martes concentran el <b>54 % de las inasistencias</b>. En CESFAM Tongoy el lunes suma 197. En PSR Guanaqueros el patrón es distinto: se concentra miércoles y viernes.</dd></div>
+        <div><dt>Importa</dt><dd>Son bloques de mañana con alta demanda. Cada hora vacía es oferta que otra usuaria podría haber ocupado.</dd></div>
+        <div><dt>Acción</dt><dd>Confirmación reforzada el viernes y el lunes temprano para esos bloques, y un piloto de reasignación con lista de espera. Tongoy y Guanaqueros se analizan por separado.</dd></div>
+        <p class="small">No se recomienda mover horarios solo por volumen: primero hay que considerar demanda, acceso y continuidad.</p>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Índice = 43,75 % tasa + 31,25 % horas perdidas + 25 % reincidencia</span><span class="mono">07</span></div>
+</section>
+
+<!-- 8 Continuidad -->
+<section class="slide" id="s8" aria-label="Hallazgo continuidad">
+  <div class="head"><span class="eyebrow">Hallazgo 3 · Continuidad</span><h2>La continuidad requiere seguimiento focalizado en un grupo acotado</h2></div>
+  <div class="content">
+    <div class="cols keep2" style="--c:4">
+      <div class="card tile"><span class="l">Volvieron a atenderse</span><span class="n" style="color:var(--ok)">220</span><span class="s">de 345 (64 %) · mediana 20 días</span></div>
+      <div class="card tile"><span class="l">Sin atención posterior</span><span class="n in">125</span><span class="s">seguimiento pendiente</span></div>
+      <div class="card tile"><span class="l">Prioridad 1 de rescate</span><span class="n in">63</span><span class="s">listado anonimizado por IDKEY</span></div>
+      <div class="card tile"><span class="l">Gestantes sin control reciente</span><span class="n pr">17</span><span class="s">más de 60 días, requiere validación</span></div>
+    </div>
+    <div class="cols" style="--c:2">
+      <div class="card">
+        <h3>Tiempo hasta volver a atenderse después de una inasistencia</h3>
+        <div class="bars" style="--lw:13cqw">
+          <div class="bar"><span class="lab">≤7 días</span><span class="track"><span class="fill" style="width:41%;background:var(--ok)"></span></span><span class="val">51</span></div>
+          <div class="bar"><span class="lab">8–30 días</span><span class="track"><span class="fill" style="width:71%;background:var(--ok)"></span></span><span class="val">89</span></div>
+          <div class="bar"><span class="lab">31–90 días</span><span class="track"><span class="fill" style="width:44%;background:var(--ok)"></span></span><span class="val">55</span></div>
+          <div class="bar"><span class="lab">&gt;90 días</span><span class="track"><span class="fill" style="width:20%;background:var(--ok)"></span></span><span class="val">25</span></div>
+          <div class="bar"><span class="lab">Sin atención posterior</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">125</span></div>
+        </div>
+      </div>
+      <dl class="qa card">
+        <div><dt>Importa</dt><dd>102 personas con dos o más inasistencias explican la mitad de las inasistencias identificables. En gestación y puerperio, la oportunidad del control tiene consecuencias clínicas.</dd></div>
+        <div><dt>Acción</dt><dd>Rescate en 7 días como máximo para prioridad 1, validado por la matrona tratante. Registrar el contacto y medir la atención efectiva a 30 días.</dd></div>
+        <p class="small">«Seguimiento pendiente» o «posible interrupción» no significan abandono: puede haber parto, traslado o atención en otro nivel.</p>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Continuidad</span><span class="mono">08</span></div>
+</section>
+
+<!-- 9 Capacidad -->
+<section class="slide" id="s9" aria-label="Hallazgo capacidad">
+  <div class="head"><span class="eyebrow">Hallazgo 4 · Capacidad</span><h2>Existe una oportunidad de recuperar capacidad asistencial</h2></div>
+  <div class="content">
+    <span class="sim">Simulación · no es resultado observado</span>
+    <div class="tbl"><table>
+      <thead><tr><th>Escenario</th><th>Citas recuperables</th><th>Por mes</th><th>Horas</th><th>Supuesto</th></tr></thead>
+      <tbody>
+        <tr><td><b>Reducir inasistencias 5 %</b></td><td class="n">39</td><td class="n">4,3</td><td class="n">20,2</td><td>Reducción relativa del volumen observado</td></tr>
+        <tr><td><b>Reducir inasistencias 10 %</b></td><td class="n">78</td><td class="n">8,7</td><td class="n">40,5</td><td>Requiere confirmación sistemática</td></tr>
+        <tr><td><b>Confirmación activa en ginecológico y regulación</b></td><td class="n">114</td><td class="n">12,7</td><td class="n">59,2</td><td>Se evita 20 % de sus inasistencias con confirmación 48–72 h</td></tr>
+        <tr><td><b>Reasignación de horas liberadas</b></td><td class="n">117</td><td class="n">13,0</td><td class="n">60,7</td><td>15 % de las horas se reasigna si hay aviso ≥24 h</td></tr>
+        <tr><td><b>Reprogramación prioritaria de reincidentes</b></td><td class="n">78</td><td class="n">8,7</td><td class="n">40,5</td><td>30 % de sus inasistencias se evita con contacto personalizado</td></tr>
+        <tr><td><b>Rescate de gestantes y puérperas</b></td><td class="n">61</td><td class="n">6,8</td><td class="n">31,7</td><td>50 % se recupera con rescate en ≤7 días</td></tr>
+      </tbody></table></div>
+    <p class="body">Hoy se estiman <b>406 horas perdidas</b> por inasistencia y solo <b>28 horas</b> (49 horas de cita) se reutilizaron con otra persona. Recuperar una fracción equivale a ampliar la oferta sin contratar más horas profesionales.</p>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Escenarios no aditivos entre sí</span><span class="mono">09</span></div>
+</section>
+
+<!-- 10 Datos y carga -->
+<section class="slide" id="s10" aria-label="Hallazgos datos y carga">
+  <div class="head"><span class="eyebrow">Hallazgos 5 y 6 · Datos y carga</span><h2>La agenda puede optimizarse con mejor evidencia</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:2">
+      <dl class="qa card">
+        <h3>Registro</h3>
+        <div><dt>Se observa</dt><dd>36 % de las inasistencias no tiene IDKEY, el 98 % no tiene un motivo útil y la exportación no trae cupos ni estados de la hora.</dd></div>
+        <div><dt>Importa</dt><dd>Sin denominadores no se pueden medir la utilización ni la ocupación, que son la base para redistribuir la oferta.</dd></div>
+        <div><dt>Acción</dt><dd>Exportar la agenda completa, usar una lista cerrada de motivos e incluir el centro y el IDKEY en todos los registros.</dd></div>
+      </dl>
+      <dl class="qa card">
+        <h3>Carga asistencial</h3>
+        <div><dt>Se observa</dt><dd>Participación por agenda de 42 %, 30 % y 28 %. La producción diaria varía mucho (CV 50 %), con operativos de hasta 76 atenciones en un día.</dd></div>
+        <div><dt>Importa</dt><dd>Las diferencias de tasa entre agendas reflejan territorio (PSR rural) y población más que desempeño individual.</dd></div>
+        <div><dt>Acción</dt><dd>Planificar los operativos con cupos protegidos para controles y revisar la agenda rural con criterios de acceso y traslado.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Datos y carga</span><span class="mono">10</span></div>
+</section>
+
+<!-- 11 Matriz -->
+<section class="slide" id="s11" aria-label="Matriz de priorización">
+  <div class="head"><span class="eyebrow">Priorización</span><h2>Cada tipo de atención pide una estrategia distinta</h2></div>
+  <div class="content">
+    <div class="tbl"><table>
+      <thead><tr><th>Situación</th><th>Prestaciones</th><th>Evidencia</th><th>Estrategia</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip c-bad">Pérdida de capacidad</span></td><td><b>Control ginecológico · Regulación de fertilidad</b></td><td>Volumen alto, tasa 27–35 %</td><td>Confirmación activa y reasignación</td></tr>
+        <tr><td><span class="chip c-warn">Brecha de acceso</span></td><td><b>Salud adolescente · Climaterio</b></td><td>Tasa 37–47 %, volumen bajo</td><td>Revisar horario, canal y pertinencia</td></tr>
+        <tr><td><span class="chip c-warn">Continuidad vulnerable</span></td><td><b>Control prenatal · Preconcepcional</b></td><td>≥65 % de las inasistencias son de personas reincidentes</td><td>Rescate focalizado</td></tr>
+        <tr><td><span class="chip c-ok">Proteger</span></td><td><b>Puerperio y díada</b></td><td>Tasa ≈10 %</td><td>Mantener la práctica actual</td></tr>
+        <tr><td><span class="chip c-dq">No evaluable</span></td><td><b>Alta presión · capacidad ociosa</b></td><td>Sin cupos ni lista de espera</td><td>Mejorar la exportación de agenda</td></tr>
+      </tbody></table></div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Matriz de priorización</span><span class="mono">11</span></div>
+</section>
+
+<!-- 12 Recomendaciones -->
+<section class="slide" id="s12" aria-label="Recomendaciones">
+  <div class="head"><span class="eyebrow">Recomendaciones priorizadas</span><h2>Acciones concretas para los próximos tres meses</h2></div>
+  <div class="content">
+    <div class="tbl"><table>
+      <thead><tr><th>Prioridad</th><th>Acción</th><th>Responsable</th><th>Plazo</th><th>Indicador · criterio de éxito</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip c-bad">Alta</span></td><td><b>Confirmación activa 48–72 h</b> en ginecológico y regulación</td><td>SOME + matronas</td><td>30 días</td><td>Tasa por prestación · baja ≥5 puntos en 3 meses</td></tr>
+        <tr><td><span class="chip c-bad">Alta</span></td><td><b>Rescate focalizado</b> de las 63 personas en prioridad 1</td><td>Matrona tratante + apoyo administrativo</td><td>7 días por caso</td><td>≥80 % contactadas · ≥60 % atendidas en 30 días</td></tr>
+        <tr><td><span class="chip c-bad">Alta</span></td><td><b>Revisión de bloques críticos</b> lunes 08–11 y martes 09–11</td><td>Jefatura + coordinación PSSR</td><td>60 días</td><td>Índice del bloque · baja un nivel de criticidad</td></tr>
+        <tr><td><span class="chip c-bad">Alta</span></td><td><b>Mejora del registro</b>: agenda completa, motivos, IDKEY, archivo sin RUN</td><td>Estadísticas + encargado de sistema</td><td>30 días</td><td>% de registros completos · ≥95 %</td></tr>
+        <tr><td><span class="chip c-warn">Media</span></td><td><b>Lista de espera activa</b> y reasignación de horas liberadas</td><td>SOME</td><td>60 días</td><td>Horas reasignadas / liberadas · ≥15 %</td></tr>
+        <tr><td><span class="chip c-warn">Media</span></td><td><b>Estrategia de acceso adolescente</b> y agenda rural diferenciada</td><td>Coordinación PSSR + jefatura</td><td>90 días</td><td>Tasa en adolescentes y en PSR · tendencia a la baja</td></tr>
+      </tbody></table></div>
+    <p class="small">Las metas son propuestas para discutir con el equipo y no son metas normativas. El detalle completo (recurso, riesgo) está en el tablero.</p>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Recomendaciones</span><span class="mono">12</span></div>
+</section>
+
+<!-- 13 Tablero -->
+<section class="slide" id="s13" aria-label="Tablero">
+  <div class="head"><span class="eyebrow">Producto 1 · Tablero</span><h2>Un tablero que el equipo clínico puede usar sin un analista</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:3">
+      <div class="card"><h3>Filtros</h3><ul class="l"><li>Periodo, profesional, tipo de atención, estado, centro y tipo de paciente</li><li><b>Jornada, día y bloque horario con casillas</b>, por ejemplo para excluir el sábado</li></ul></div>
+      <div class="card"><h3>Vistas</h3><ul class="l"><li>17 indicadores de agenda, incluidos los no disponibles</li><li>Mapas de calor día × hora, matrona × mes y prestación × mes</li><li>Calendario, embudo, carga vs inasistencia</li></ul></div>
+      <div class="card"><h3>Gestión</h3><ul class="l"><li>Listado de rescate por IDKEY</li><li>Ranking de bloques críticos</li><li>Escenarios, recomendaciones, gobernanza y calidad</li></ul></div>
+    </div>
+    <p class="body">Cada gráfico incluye un apartado «Cómo leerlo» con métrica, denominador, interpretación, acción y advertencia. Funciona en computadores, tablets y celulares, en modo claro y oscuro.</p>
+    <a class="link-btn" href="https://claude.ai/artifact/GCi6p38MVg74nk7JnsUnvP" target="_blank" rel="noopener">Abrir el tablero Gestión de Agenda de Matronas ↗</a>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Tablero</span><span class="mono">13</span></div>
+</section>
+
+<!-- 14 Técnico -->
+<section class="slide" id="s14" aria-label="Producto técnico">
+  <div class="head"><span class="eyebrow">Producto 2 · Código reproducible</span><h2>Cada mes se actualiza con dos comandos</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:2">
+      <div class="card">
+        <h3>Estructura del proyecto</h3>
+        <pre class="mono small" style="margin:0;white-space:pre-wrap;color:var(--ink-2)">proyecto_matronas_ssr/
+├─ app.py              app Streamlit
+├─ src/  limpieza · integracion · indicadores
+│        visualizaciones · pipeline · tablero
+├─ dashboard/          plantilla del tablero
+├─ outputs/            Excel y CSV anonimizados
+└─ reports/            tablero HTML</pre>
+      </div>
+      <div class="card">
+        <h3>Rutina de actualización</h3>
+        <pre class="mono small" style="margin:0;white-space:pre-wrap;color:var(--ink)">python -m src.pipeline --corte AAAA-MM-DD
+python -m src.construir_dashboard</pre>
+        <ul class="l">
+          <li>Detección automática de columnas, con selección manual si falla</li>
+          <li>Supuestos editables en un solo archivo (config.py)</li>
+          <li>Mensajes de error claros si falta una columna obligatoria</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Python, pandas, Streamlit, ECharts</span><span class="mono">14</span></div>
+</section>
+
+<!-- 15 Gobernanza -->
+<section class="slide" id="s15" aria-label="Gobernanza">
+  <div class="head"><span class="eyebrow">Gobernanza y validación</span><h2>Quién actualiza, quién valida y quién decide</h2></div>
+  <div class="content">
+    <div class="cols" style="--c:3">
+      <div class="card"><h3>Roles</h3><ul class="l"><li><b>Actualiza:</b> referente de estadísticas, cierre el día 5</li><li><b>Valida:</b> coordinación PSSR y matronas</li><li><b>Decide:</b> dirección y jefatura del programa</li></ul></div>
+      <div class="card"><h3>Rutina</h3><ul class="l"><li><b>Semanal:</b> bloques críticos y rescate P1</li><li><b>Mensual:</b> producción e inasistencia</li><li><b>Trimestral:</b> distribución de la oferta</li><li><b>Anual:</b> programación 2027</li></ul></div>
+      <div class="card"><h3>Validar con el equipo</h3><ul class="l"><li>Homologación de prestaciones</li><li>Definiciones de atención realizada e inasistencia</li><li>Duración estándar y rendimientos</li><li>Criterios de prioridad para el rescate</li></ul></div>
+    </div>
+    <p class="small">Resguardo: solo se circulan archivos sin RUN. El cruce IDKEY ↔ identidad lo hace el equipo tratante en el sistema clínico.</p>
+  </div>
+  <div class="foot"><span><b>Gestión de Agenda de Matronas</b> · Gobernanza</span><span class="mono">15</span></div>
+</section>
+
+<!-- 16 Cierre -->
+<section class="slide cover" id="s16" aria-label="Cierre">
+  <div class="head"><span class="eyebrow">Próximos pasos</span></div>
+  <div class="content">
+    <p class="big-quote" style="color:var(--cover-ink)">Tres decisiones para esta reunión</p>
+    <ul class="l" style="color:var(--cover-ink);font-size:var(--t-lead)">
+      <li>Iniciar la <b style="color:var(--cover-ink)">confirmación activa</b> en ginecológico y regulación de fertilidad.</li>
+      <li>Asignar responsables del <b style="color:var(--cover-ink)">rescate de prioridad 1</b> (63 personas).</li>
+      <li>Solicitar la <b style="color:var(--cover-ink)">exportación completa de agenda</b> para medir la utilización desde el próximo corte.</li>
+    </ul>
+    <p class="small" style="opacity:.85">Marco de referencia: Manual REM 2026 (DEIS) · Orientaciones para la Planificación y Programación en Red 2025 · Normas de Regulación de la Fertilidad 2018 · Guía Perinatal 2015 · Política Nacional de SSyR 2018.</p>
+  </div>
+  <div class="foot"><span>Gestión de Agenda de Matronas · PSSR CESFAM Tongoy y PSR Guanaqueros</span><span class="stamp">16</span></div>
+</section>
+
+</div>
+<div class="nav" id="nav" aria-label="Navegación">
+  <button type="button" id="prev" aria-label="Diapositiva anterior">←</button>
+  <span class="count" id="count">1 / 16</span>
+  <button type="button" id="next" aria-label="Diapositiva siguiente">→</button>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  <span class="hint">Flechas o espacio para avanzar</span>
+  <button type="button" id="fs">Pantalla completa</button>
+</div>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll(".slide")], N=slides.length;
+  let i=0;
+  const fromHash=()=>{const m=/^#s(\d+)$/.exec(location.hash);return m?Math.min(N,Math.max(1,+m[1]))-1:0};
+  function go(k,push=true){
+    i=Math.max(0,Math.min(N-1,k));
+    slides.forEach((s,j)=>{s.classList.toggle("on",j===i);s.setAttribute("aria-hidden",j===i?"false":"true")});
+    document.getElementById("count").textContent=(i+1)+" / "+N;
+    document.getElementById("bar").style.width=((i+1)/N*100)+"%";
+    document.getElementById("prev").disabled=i===0;
+    document.getElementById("next").disabled=i===N-1;
+    if(push){try{history.replaceState(null,"","#s"+(i+1))}catch(e){}}
+  }
+  const stacked=()=>getComputedStyle(document.getElementById("nav")).display==="none";
+  document.getElementById("prev").onclick=()=>go(i-1);
+  document.getElementById("next").onclick=()=>go(i+1);
+  document.addEventListener("keydown",e=>{
+    if(stacked()||e.target.closest("input,textarea,select"))return;
+    if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(["ArrowLeft","PageUp","Backspace"].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==="Home")go(0); else if(e.key==="End")go(N-1);
+  });
+  let x0=null;
+  document.getElementById("stage").addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+  document.getElementById("stage").addEventListener("touchend",e=>{if(x0==null||stacked())return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(i+(dx<0?1:-1));x0=null});
+  document.getElementById("fs").onclick=()=>{const d=document.documentElement;try{(document.fullscreenElement?document.exitFullscreen():d.requestFullscreen()).catch(()=>{})}catch(e){}};
+  window.addEventListener("hashchange",()=>go(fromHash(),false));
+  go(fromHash(),false);
+})();
+</script>
