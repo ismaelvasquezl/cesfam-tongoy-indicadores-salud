@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mental Health Program · Tongoy CESFAM (Chile) · Jul 2025 – Aug 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pizarra:#22303A; --pizarra-2:#1A252D; --grafito:#3D4852;
+  --verde:#1B6B45; --ambar:#9A6400; --rojo:#9E2B25;
+  --teal:#1F6F78; --teal-d:#123E46; --teal-l:#E4ECED;
+  --paper:#F5F8F9; --card:#FFFFFF; --line:#D6DFE2; --line-2:#E7EDEF;
+  --ink:#22303A; --muted:#5C6D75; --muted-2:#83949C;
+  --shadow:0 1px 2px rgba(24,40,48,.06), 0 8px 24px rgba(24,40,48,.06);
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--pizarra-2); color:var(--ink);
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow:hidden;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  font-feature-settings:"tnum" 1; font-variant-numeric:tabular-nums;}
+.lab{font-family:"Barlow Condensed",system-ui,sans-serif; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase;}
+h1,h2,h3,.disp{font-family:"Archivo",system-ui,sans-serif; font-weight:800; letter-spacing:-.015em;}
+
+/* ---------- Deck shell ---------- */
+#deck{position:fixed; inset:0;}
+.slide{
+  position:absolute; inset:0; display:none;
+  padding:clamp(28px,4.2vw,70px) clamp(26px,5vw,90px);
+  background:var(--paper);
+}
+.slide.active{display:flex; flex-direction:column;}
+.slide .inner{width:100%; max-width:var(--maxw); margin:0 auto;
+  flex:1; display:flex; flex-direction:column; min-height:0;}
+
+/* Header row on content slides */
+.eyebrow{color:var(--teal); font-size:clamp(12px,1.15vw,15px);}
+.eyebrow .idx{color:var(--muted); }
+.s-title{font-size:clamp(26px,3.5vw,46px); line-height:1.04; margin:.18em 0 0; color:var(--pizarra);}
+.s-sub{color:var(--muted); font-size:clamp(14px,1.35vw,18px); margin:.5em 0 0; max-width:70ch; line-height:1.45;}
+.hr-teal{height:4px; width:64px; background:var(--teal); border-radius:2px; margin:.9em 0 0;}
+.body{margin-top:clamp(18px,2.4vw,34px); flex:1; min-height:0;}
+
+/* Reveal (una entrada orquestada por lámina) */
+.slide.active .rv{animation:rv .62s cubic-bezier(.2,.7,.2,1) both;}
+.slide.active .rv2{animation-delay:.10s}
+.slide.active .rv3{animation-delay:.20s}
+.slide.active .rv4{animation-delay:.30s}
+@keyframes rv{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.active .rv{animation:none}}
+
+/* ---------- Cover / closing (dark) ---------- */
+.slide.dark{background:
+  radial-gradient(1200px 700px at 82% -8%, #2A3B46 0%, rgba(42,59,70,0) 60%),
+  linear-gradient(180deg,#22303A 0%, #1A252D 100%); color:#EAF1F2;}
+.slide.dark .inner{justify-content:center;}
+.cover-k{color:#9FC3C8; font-size:clamp(13px,1.4vw,17px);}
+.cover-t{font-size:clamp(40px,6.4vw,86px); line-height:.98; margin:.14em 0 0; color:#fff;}
+.cover-t .accent{color:#5FB0B8;}
+.cover-s{color:#C4D3D7; font-size:clamp(16px,1.8vw,24px); margin:.7em 0 0; font-weight:500;}
+.cover-meta{margin-top:clamp(26px,4vw,54px); display:flex; gap:clamp(20px,3vw,48px); flex-wrap:wrap;}
+.cover-meta .m .k{color:#8FB0B6; font-size:12px;}
+.cover-meta .m .v{color:#EAF1F2; font-size:clamp(15px,1.5vw,19px); margin-top:2px;}
+.cover-rule{height:5px; width:92px; background:#3E9AA3; border-radius:3px; margin:clamp(20px,2.6vw,34px) 0 0;}
+
+/* ---------- KPI grid ---------- */
+.kgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.kpi{background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:clamp(14px,1.5vw,22px); box-shadow:var(--shadow);}
+.kpi .n{font-family:"Archivo",sans-serif; font-weight:800; color:var(--pizarra);
+  font-size:clamp(24px,3.1vw,40px); line-height:1; letter-spacing:-.02em;}
+.kpi .n.ok{color:var(--verde)} .kpi .n.tl{color:var(--teal-d)} .kpi .n.amb{color:var(--ambar)}
+.kpi .l{color:var(--grafito); font-weight:600; font-size:clamp(12px,1.1vw,15px); margin-top:.5em;}
+.kpi .s{color:var(--muted); font-size:clamp(11px,.95vw,13px); margin-top:.2em;}
+
+/* ---------- Two-column split ---------- */
+.split{display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,2.4vw,40px); height:100%;}
+.panel{background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:clamp(16px,2vw,28px); box-shadow:var(--shadow); display:flex; flex-direction:column;}
+.panel h3{font-size:clamp(16px,1.6vw,21px); margin:0 0 .2em; color:var(--pizarra);}
+.panel .cap{color:var(--muted); font-size:13px; margin-bottom:1em; line-height:1.4;}
+.panel.accent-ok{border-left:5px solid var(--verde);}
+.panel.accent-no{border-left:5px solid var(--rojo);}
+.plist{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.7em;}
+.plist li{display:flex; gap:.6em; align-items:flex-start; font-size:clamp(14px,1.25vw,17px); line-height:1.4; color:var(--grafito);}
+.plist li .dot{flex:0 0 auto; width:9px; height:9px; border-radius:50%; margin-top:.5em;}
+.dot.ok{background:var(--verde)} .dot.no{background:var(--rojo)} .dot.tl{background:var(--teal)}
+
+/* ---------- Bars ---------- */
+.bars{display:flex; flex-direction:column; gap:.55em;}
+.bar{display:grid; grid-template-columns:150px 1fr auto; align-items:center; gap:12px;}
+.bar .bl{color:var(--grafito); font-size:14px; font-weight:500;}
+.bar .bt{height:16px; background:var(--line-2); border-radius:8px; overflow:hidden;}
+.bar .bf{height:100%; width:0; border-radius:8px; transition:width 1s cubic-bezier(.2,.7,.2,1);
+  background:linear-gradient(90deg,var(--teal),var(--teal-d));}
+.bar .bf.g{background:linear-gradient(90deg,#2E8B5E,var(--verde));}
+.bar .bf.p{background:linear-gradient(90deg,#33484F,var(--pizarra));}
+.bar .bv{font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--pizarra); font-weight:500; white-space:nowrap;}
+@media (prefers-reduced-motion:reduce){.bar .bf{transition:none}}
+
+/* ---------- Heatmap ---------- */
+.heatwrap{overflow:auto;}
+.heat{border-collapse:separate; border-spacing:5px; width:100%;}
+.heat th{font-family:"Barlow Condensed",sans-serif; font-weight:600; text-transform:uppercase;
+  letter-spacing:.04em; color:var(--grafito); font-size:clamp(11px,1vw,14px); padding:2px 6px; text-align:center;}
+.heat th.row{text-align:right; color:var(--muted); font-weight:600; width:210px; white-space:nowrap;}
+.heat td{border-radius:8px; text-align:center; padding:clamp(9px,1.2vw,16px) 6px;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:clamp(12px,1.15vw,16px);}
+.legend{display:flex; align-items:center; gap:10px; margin-top:14px; color:var(--muted); font-size:12px;}
+.legend .ramp{height:12px; width:180px; border-radius:6px;
+  background:linear-gradient(90deg,var(--teal-l),var(--teal-d));}
+
+/* ---------- Step / principle cards ---------- */
+.steps{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+.step{background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:clamp(16px,1.9vw,26px); box-shadow:var(--shadow); position:relative; display:flex; flex-direction:column;}
+.step .num{font-family:"Archivo",sans-serif; font-weight:800; font-size:clamp(22px,2.4vw,32px);
+  color:var(--teal); line-height:1; }
+.step .st{font-size:clamp(15px,1.5vw,20px); color:var(--pizarra); margin:.35em 0 .3em; font-family:"Archivo",sans-serif; font-weight:700; letter-spacing:-.01em;}
+.step .sd{color:var(--grafito); font-size:clamp(13px,1.2vw,16px); line-height:1.45;}
+.step.warn{border-left:5px solid var(--ambar);} .step.warn .num{color:var(--ambar);}
+.step.crit{border-left:5px solid var(--rojo);} .step.crit .num{color:var(--rojo);}
+.step.ok{border-left:5px solid var(--verde);} .step.ok .num{color:var(--verde);}
+
+/* ---------- Chips / semáforo ---------- */
+.chip{display:inline-flex; align-items:center; gap:.45em; font-family:"Barlow Condensed",sans-serif;
+  font-weight:600; text-transform:uppercase; letter-spacing:.05em; font-size:13px;
+  padding:.2em .6em; border-radius:999px; border:1px solid;}
+.chip.ok{color:var(--verde); border-color:#BADBC9; background:#EBF5EF;}
+.chip.warn{color:var(--ambar); border-color:#E8D3A6; background:#FBF3E2;}
+.chip.crit{color:var(--rojo); border-color:#E4B7B4; background:#FaeceB;}
+.chip.tl{color:var(--teal-d); border-color:#B9D2D5; background:#E9F1F2;}
+
+/* ---------- Findings / recs ---------- */
+.rows{display:flex; flex-direction:column; gap:12px;}
+.frow{display:grid; grid-template-columns:34px 1fr; gap:14px; align-items:start;
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:clamp(12px,1.4vw,18px) clamp(14px,1.6vw,22px); box-shadow:var(--shadow);}
+.frow .fi{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  font-family:"Archivo",sans-serif; font-weight:800; color:#fff; font-size:16px;}
+.fi.ok{background:var(--verde)} .fi.warn{background:var(--ambar)} .fi.crit{background:var(--rojo)} .fi.tl{background:var(--teal)}
+.frow .ft{font-size:clamp(14px,1.3vw,18px); color:var(--pizarra); font-weight:600; line-height:1.3;}
+.frow .fd{font-size:clamp(12.5px,1.15vw,15.5px); color:var(--muted); margin-top:.25em; line-height:1.4;}
+
+/* ---------- Horizon columns ---------- */
+.horizons{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; height:100%;}
+.hz{background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; overflow:hidden;}
+.hz .hd{padding:clamp(12px,1.4vw,18px); color:#fff;}
+.hz.h1 .hd{background:var(--rojo)} .hz.h2 .hd{background:var(--ambar)} .hz.h3 .hd{background:var(--teal-d)}
+.hz .hd .t{font-family:"Archivo",sans-serif; font-weight:800; font-size:clamp(15px,1.5vw,20px);}
+.hz .hd .w{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.06em;
+  font-size:12px; opacity:.9; margin-top:2px;}
+.hz ul{list-style:none; margin:0; padding:clamp(12px,1.5vw,18px); display:flex; flex-direction:column; gap:.75em;}
+.hz li{font-size:clamp(13px,1.2vw,16px); color:var(--grafito); line-height:1.4; padding-left:1.1em; position:relative;}
+.hz li::before{content:""; position:absolute; left:0; top:.55em; width:7px; height:7px; border-radius:50%; background:var(--teal);}
+
+/* mini monthly trend */
+.trend{display:flex; align-items:flex-end; gap:5px; height:150px; padding-top:6px;}
+.trend .col{flex:1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:5px;}
+.trend .tb{width:100%; max-height:calc(100% - 40px); background:linear-gradient(180deg,var(--teal),var(--teal-d)); border-radius:4px 4px 0 0;
+  height:0; transition:height .9s cubic-bezier(.2,.7,.2,1);}
+.trend .tl{font-family:"IBM Plex Mono",monospace; font-size:9px; color:var(--muted); transform:rotate(-90deg); transform-origin:center; white-space:nowrap; height:34px;}
+@media (prefers-reduced-motion:reduce){.trend .tb{transition:none}}
+
+.note{color:var(--muted); font-size:clamp(12px,1.05vw,14px); line-height:1.45; margin-top:1em; border-left:3px solid var(--teal-l); padding-left:.8em;}
+.big{font-size:clamp(30px,4.4vw,60px); font-family:"Archivo",sans-serif; font-weight:800; color:var(--pizarra); letter-spacing:-.02em; line-height:1;}
+.big.tl{color:var(--teal-d)} .big.amb{color:var(--ambar)} .big.ok{color:var(--verde)}
+
+/* ---------- Chrome: progress, nav, counter, overview ---------- */
+#prog{position:fixed; top:0; left:0; height:4px; background:var(--teal); width:0; z-index:40; transition:width .35s ease;}
+.navz{position:fixed; top:0; bottom:0; width:16%; z-index:20; cursor:pointer; background:transparent;}
+#navprev{left:0} #navnext{right:0}
+#counter{position:fixed; right:18px; bottom:14px; z-index:30;
+  font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--muted);
+  background:rgba(255,255,255,.82); border:1px solid var(--line); border-radius:999px; padding:.3em .8em;}
+.slide.dark ~ #counter{}
+#hint{position:fixed; left:18px; bottom:14px; z-index:30; color:var(--muted); font-size:12px;
+  background:rgba(255,255,255,.82); border:1px solid var(--line); border-radius:999px; padding:.3em .8em;
+  transition:opacity .5s ease;}
+#arrows{position:fixed; right:64px; bottom:12px; z-index:30; display:flex; gap:8px;}
+#arrows button{width:38px; height:32px; border:1px solid var(--line); background:rgba(255,255,255,.9);
+  border-radius:8px; cursor:pointer; color:var(--grafito); font-size:15px; line-height:1;}
+#arrows button:hover{background:#fff; border-color:var(--teal); color:var(--teal-d);}
+#arrows button:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+.brand{position:fixed; left:20px; top:14px; z-index:15;
+  font-family:"Barlow Condensed",sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
+  font-size:12px; color:var(--muted);}
+.slide.dark ~ .brand, .brand.on-dark{color:#9FC3C8}
+
+/* Overview grid */
+#ov{position:fixed; inset:0; z-index:50; background:rgba(20,32,38,.96); display:none;
+  padding:4vh 4vw; overflow:auto;}
+#ov.show{display:block}
+#ov h4{color:#EAF1F2; font-family:"Archivo",sans-serif; margin:0 0 3vh; font-size:20px;}
+#ovgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px;}
+.ovc{background:#2A3B46; border:1px solid #3A4C57; border-radius:10px; padding:14px; cursor:pointer; color:#D8E4E7;}
+.ovc:hover{border-color:#5FB0B8; background:#31424D;}
+.ovc .on{font-family:"IBM Plex Mono",monospace; color:#7FB3B9; font-size:12px;}
+.ovc .ot{font-family:"Archivo",sans-serif; font-weight:700; font-size:14px; margin-top:4px; line-height:1.2;}
+
+@media (max-width:820px){
+  .kgrid{grid-template-columns:repeat(2,1fr)}
+  .split,.steps,.horizons{grid-template-columns:1fr}
+  .bar{grid-template-columns:110px 1fr auto}
+}
+@media print{
+  body{overflow:visible} .slide{display:flex!important; position:relative; page-break-after:always; min-height:100vh}
+  #prog,.navz,#counter,#hint,#arrows,.brand,#ov{display:none!important}
+}
+</style>
+</head><body>
+<div id="prog"></div>
+<div class="brand">Tongoy CESFAM · Mental Health</div>
+<div id="deck">
+<section class="slide dark"><div class="inner">
+<p class="cover-k lab rv">Technical Unit · Tongoy CESFAM</p>
+<h1 class="cover-t rv rv2">Mental Health<br><span class="accent">Program</span></h1>
+<p class="cover-s rv rv3">Analysis of recorded activity · July 2025 – August 2026</p>
+<div class="cover-rule rv rv3"></div>
+<div class="cover-meta rv rv4">
+  <div class="m"><div class="k lab">Services</div><div class="v mono">9,890</div></div>
+  <div class="m"><div class="k lab">Unique users</div><div class="v mono">2,452</div></div>
+  <div class="m"><div class="k lab">Professionals</div><div class="v mono">31</div></div>
+  <div class="m"><div class="k lab">Nature</div><div class="v">Anonymized data · management support</div></div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Scope of the analysis <span class="idx">· 02</span></p><h2 class="s-title">What this report is —and is not—</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Before reading a single figure: establish what this dataset can and cannot support.</p>
+<div class="body split">
+  <div class="panel accent-ok rv rv3">
+    <h3>This analysis describes</h3>
+    <p class="cap">The activity actually recorded in the system.</p>
+    <ul class="plist">
+      <li><span class="dot ok"></span>Volume and composition of encounters by discipline.</li>
+      <li><span class="dot ok"></span>Distribution of recorded supply by hour and day.</li>
+      <li><span class="dot ok"></span>Aggregate profile of the people seen and their continuity.</li>
+      <li><span class="dot ok"></span>Points of operational dependence and data quality.</li>
+    </ul>
+  </div>
+  <div class="panel accent-no rv rv4">
+    <h3>This analysis does not measure</h3>
+    <p class="cap">Without other sources, these questions are out of scope.</p>
+    <ul class="plist">
+      <li><span class="dot no"></span>Real demand or unmet need in the territory.</li>
+      <li><span class="dot no"></span>Population coverage (there is no validated denominator).</li>
+      <li><span class="dot no"></span>Schedule availability or idle capacity.</li>
+      <li><span class="dot no"></span>Clinical quality or people's health outcomes.</li>
+    </ul>
+  </div>
+</div>
+<p class="note rv rv4"><strong>Ethical safeguards applied:</strong> work is done only with anonymized data; professionals are identified by codes (MED_/PSI_/AS_) whose key is kept separately; no individual comments or diagnoses are reproduced, and no person is labeled.</p></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Methodology · 1 of 2 <span class="idx">· 03</span></p><h2 class="s-title">From spreadsheet to reliable data</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Four steps turn two spreadsheets into an analyzable, traceable dataset.</p>
+<div class="body steps">
+  <div class="step rv rv2"><div class="num">1</div><div class="st">Single, verified source</div>
+    <div class="sd">Two sheets from the institutional record: <strong>MD</strong> (medicine, 1,288) and <strong>PS</strong> (psychology and social work, 8,602). Period, 25-column structure and the absence of hidden sheets were validated.</div></div>
+  <div class="step rv rv2"><div class="num">2</div><div class="st">Cleaning and standardization</div>
+    <div class="sd">Case, accents and spaces were unified; sectors and categories written in different ways were consolidated; encoding problems were fixed. This stops the same value from being counted twice.</div></div>
+  <div class="step rv rv3"><div class="num">3</div><div class="st">Professional pseudonymization</div>
+    <div class="sd">Each professional received a stable code by category (MED_/PSI_/AS_). The report never shows names; the lookup is delivered in a separate, access-restricted file.</div></div>
+  <div class="step rv rv3"><div class="num">4</div><div class="st">Defined unit of analysis</div>
+    <div class="sd">Each row corresponds to one <strong>service</strong> with quantity 1: for this report, 1 row ≈ 1 service ≈ 1 encounter. Users are counted by anonymized identifier (IDKEY).</div></div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Methodology · 2 of 2 <span class="idx">· 04</span></p><h2 class="s-title">Four principles that frame the reading</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Explicit rules so the figures are read rigorously and without over-reading.</p>
+<div class="body steps">
+  <div class="step ok rv rv2"><div class="num">A</div><div class="st">The record is not reality</div>
+    <div class="sd">Every figure describes what was recorded. Absence of a record does not equal absence of care, demand or availability.</div></div>
+  <div class="step ok rv rv2"><div class="num">B</div><div class="st">Denominator discipline</div>
+    <div class="sd">Coverage or gaps are not asserted without a validated population denominator. Where there is none, the result is declared only indicative.</div></div>
+  <div class="step ok rv rv3"><div class="num">C</div><div class="st">Each unit in its place</div>
+    <div class="sd">Encounter, service, user and professional are counted separately and not mixed. One user may generate many encounters.</div></div>
+  <div class="step crit rv rv3"><div class="num">D</div><div class="st">Honest exclusion: duration</div>
+    <div class="sd">The “close time” behaves as an administrative close, not a clinical end. That is why <strong>encounter duration is not computed</strong> and is excluded from the analysis.</div></div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Overview <span class="idx">· 05</span></p><h2 class="s-title">The program's activity in figures</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Fourteen months of operation, with a clear predominance of the psychosocial component.</p>
+<div class="body">
+  <div class="kgrid rv rv2">
+    <div class="kpi"><div class="n  mono" data-count="9890" data-dec="0" data-suf="">0</div><div class="l">Recorded services</div><div class="s">Jul 2025 – Aug 2026</div></div>
+    <div class="kpi"><div class="n tl mono" data-count="2452" data-dec="0" data-suf="">0</div><div class="l">Unique users</div><div class="s">distinct identifiers</div></div>
+    <div class="kpi"><div class="n  mono" data-count="31" data-dec="0" data-suf="">0</div><div class="l">Professionals</div><div class="s">16 medicine · 7 psychology · 8 social work</div></div>
+    <div class="kpi"><div class="n ok mono" data-count="454" data-dec="0" data-suf="">0</div><div class="l">Users with MD + PS</div><div class="s">18.5% of total</div></div>
+  </div>
+  <div class="split rv rv3" style="margin-top:16px">
+    <div class="panel">
+      <h3>Activity by discipline</h3>
+      <p class="cap">Psychology and social work account for most encounters.</p>
+      <div class="bars">
+        <div class="bar"><div class="bl">Psychology</div><div class="bt"><div class="bf " data-w="48.0"></div></div><div class="bv">4,752 · 48%</div></div>
+        <div class="bar"><div class="bl">Social work</div><div class="bt"><div class="bf " data-w="38.9"></div></div><div class="bv">3,850 · 39%</div></div>
+        <div class="bar"><div class="bl">Medicine</div><div class="bt"><div class="bf p" data-w="13.0"></div></div><div class="bv">1,288 · 13%</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Encounters by month</h3>
+      <p class="cap">Sustained output; the Jul-2026 dip is a point to review in recording.</p>
+      <div class="trend"><div class="col"><div class="tb" data-h="100"></div><div class="tl mono">25·07</div></div><div class="col"><div class="tb" data-h="78"></div><div class="tl mono">25·08</div></div><div class="col"><div class="tb" data-h="82"></div><div class="tl mono">25·09</div></div><div class="col"><div class="tb" data-h="82"></div><div class="tl mono">25·10</div></div><div class="col"><div class="tb" data-h="98"></div><div class="tl mono">25·11</div></div><div class="col"><div class="tb" data-h="70"></div><div class="tl mono">25·12</div></div><div class="col"><div class="tb" data-h="86"></div><div class="tl mono">26·01</div></div><div class="col"><div class="tb" data-h="66"></div><div class="tl mono">26·02</div></div><div class="col"><div class="tb" data-h="90"></div><div class="tl mono">26·03</div></div><div class="col"><div class="tb" data-h="81"></div><div class="tl mono">26·04</div></div><div class="col"><div class="tb" data-h="81"></div><div class="tl mono">26·05</div></div><div class="col"><div class="tb" data-h="72"></div><div class="tl mono">26·06</div></div><div class="col"><div class="tb" data-h="48"></div><div class="tl mono">26·07</div></div><div class="col"><div class="tb" data-h="90"></div><div class="tl mono">26·08</div></div></div>
+    </div>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Profile of the people <span class="idx">· 06</span></p><h2 class="s-title">Who receives care</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">A program that reaches the whole life course, with a majority of women.</p>
+<div class="body split">
+  <div class="panel rv rv2">
+    <h3>Age group</h3>
+    <p class="cap">An even distribution across childhood, adolescence, adulthood and older people.</p>
+    <div class="bars">
+      <div class="bar"><div class="bl">0 – 9 years</div><div class="bt"><div class="bf " data-w="18.5"></div></div><div class="bv">1,834 · 18.5%</div></div>
+      <div class="bar"><div class="bl">10 – 19 years</div><div class="bt"><div class="bf " data-w="18.6"></div></div><div class="bv">1,843 · 18.6%</div></div>
+      <div class="bar"><div class="bl">20 – 44 years</div><div class="bt"><div class="bf " data-w="23.6"></div></div><div class="bv">2,331 · 23.6%</div></div>
+      <div class="bar"><div class="bl">45 – 64 years</div><div class="bt"><div class="bf " data-w="21.4"></div></div><div class="bv">2,114 · 21.4%</div></div>
+      <div class="bar"><div class="bl">65 and over</div><div class="bt"><div class="bf " data-w="17.9"></div></div><div class="bv">1,768 · 17.9%</div></div>
+    </div>
+  </div>
+  <div class="panel rv rv3">
+    <h3>Recorded sex</h3>
+    <p class="cap">Female predominance, consistent with typical demand in primary-care mental health.</p>
+    <div class="bars">
+      <div class="bar"><div class="bl">Women</div><div class="bt"><div class="bf g" data-w="62.5"></div></div><div class="bv">6,185 · 62.5%</div></div>
+      <div class="bar"><div class="bl">Men</div><div class="bt"><div class="bf p" data-w="37.5"></div></div><div class="bv">3,705 · 37.5%</div></div>
+    </div>
+    <p class="note">The “social gender” field is mostly “not disclosed” (71%); it is not used to segment, and very small categories are grouped to protect against identifiability.</p>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Hours · primary objective <span class="idx">· 07</span></p><h2 class="s-title">When each discipline provides care</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">The start time is recorded in 100% of cases: it is the basis of this analysis.</p>
+<div class="body">
+  <div class="kgrid rv rv2" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="l" style="margin-top:0">Social work</div>
+      <div class="n tl mono" style="font-size:clamp(20px,2.4vw,30px)">08:00</div>
+      <div class="s">67% in the morning · starts early</div></div>
+    <div class="kpi"><div class="l" style="margin-top:0">Psychology</div>
+      <div class="n tl mono" style="font-size:clamp(20px,2.4vw,30px)">10:00</div>
+      <div class="s">57% in the morning · mid-morning</div></div>
+    <div class="kpi"><div class="l" style="margin-top:0">Medicine</div>
+      <div class="n tl mono" style="font-size:clamp(20px,2.4vw,30px)">11:00</div>
+      <div class="s">54% morning · 34% afternoon · more extended</div></div>
+  </div>
+  <div class="panel rv rv3" style="margin-top:16px">
+    <h3>Peak-activity block: <span class="chip tl">10:00 – 10:59</span></h3>
+    <p class="cap">Morning / midday / afternoon split by discipline (over encounters with a valid time).</p>
+    <div class="bars">
+      <div class="bar"><div class="bl">Social work — morning</div><div class="bt"><div class="bf g" data-w="67.2"></div></div><div class="bv">67.2%</div></div>
+      <div class="bar"><div class="bl">Psychology — morning</div><div class="bt"><div class="bf g" data-w="57.0"></div></div><div class="bv">57.0%</div></div>
+      <div class="bar"><div class="bl">Medicine — morning</div><div class="bt"><div class="bf g" data-w="53.5"></div></div><div class="bv">53.5%</div></div>
+      <div class="bar"><div class="bl">Medicine — afternoon</div><div class="bt"><div class="bf p" data-w="34.1"></div></div><div class="bv">34.1%</div></div>
+      <div class="bar"><div class="bl">Midday (all)</div><div class="bt"><div class="bf " data-w="12.0"></div></div><div class="bv">≈ 11–12%</div></div>
+    </div>
+  </div>
+  <p class="note rv rv4">Reading: this describes <strong>recorded supply</strong>, not schedule availability. A block “with no recorded encounters” does not mean an “available hour”.</p>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Hours · heat map <span class="idx">· 08</span></p><h2 class="s-title">Concentration by day and block</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Thursday first thing is the densest point; midday, the cross-cutting trough.</p>
+<div class="body rv rv2">
+  <div class="heatwrap"><table class="heat"><thead><tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead><tbody><tr><th class="row">Early morning (&lt;10)</th><td style="background:color-mix(in srgb, var(--teal-d) 39%, var(--teal-l)); color:var(--teal-d)">375</td><td style="background:color-mix(in srgb, var(--teal-d) 43%, var(--teal-l)); color:var(--teal-d)">408</td><td style="background:color-mix(in srgb, var(--teal-d) 46%, var(--teal-l)); color:#fff">438</td><td style="background:color-mix(in srgb, var(--teal-d) 100%, var(--teal-l)); color:#fff">959</td><td style="background:color-mix(in srgb, var(--teal-d) 77%, var(--teal-l)); color:#fff">741</td></tr><tr><th class="row">Mid-morning (10–11:59)</th><td style="background:color-mix(in srgb, var(--teal-d) 56%, var(--teal-l)); color:#fff">539</td><td style="background:color-mix(in srgb, var(--teal-d) 60%, var(--teal-l)); color:#fff">579</td><td style="background:color-mix(in srgb, var(--teal-d) 51%, var(--teal-l)); color:#fff">490</td><td style="background:color-mix(in srgb, var(--teal-d) 78%, var(--teal-l)); color:#fff">744</td><td style="background:color-mix(in srgb, var(--teal-d) 73%, var(--teal-l)); color:#fff">698</td></tr><tr><th class="row">Midday (12–13:59)</th><td style="background:color-mix(in srgb, var(--teal-d) 23%, var(--teal-l)); color:var(--teal-d)">220</td><td style="background:color-mix(in srgb, var(--teal-d) 24%, var(--teal-l)); color:var(--teal-d)">227</td><td style="background:color-mix(in srgb, var(--teal-d) 16%, var(--teal-l)); color:var(--teal-d)">150</td><td style="background:color-mix(in srgb, var(--teal-d) 24%, var(--teal-l)); color:var(--teal-d)">234</td><td style="background:color-mix(in srgb, var(--teal-d) 27%, var(--teal-l)); color:var(--teal-d)">257</td></tr><tr><th class="row">Early afternoon (14–15:59)</th><td style="background:color-mix(in srgb, var(--teal-d) 59%, var(--teal-l)); color:#fff">569</td><td style="background:color-mix(in srgb, var(--teal-d) 56%, var(--teal-l)); color:#fff">539</td><td style="background:color-mix(in srgb, var(--teal-d) 40%, var(--teal-l)); color:var(--teal-d)">385</td><td style="background:color-mix(in srgb, var(--teal-d) 38%, var(--teal-l)); color:var(--teal-d)">361</td><td style="background:color-mix(in srgb, var(--teal-d) 31%, var(--teal-l)); color:var(--teal-d)">300</td></tr><tr><th class="row">Mid-afternoon (16–17:59)</th><td style="background:color-mix(in srgb, var(--teal-d) 18%, var(--teal-l)); color:var(--teal-d)">169</td><td style="background:color-mix(in srgb, var(--teal-d) 16%, var(--teal-l)); color:var(--teal-d)">158</td><td style="background:color-mix(in srgb, var(--teal-d) 17%, var(--teal-l)); color:var(--teal-d)">166</td><td style="background:color-mix(in srgb, var(--teal-d) 12%, var(--teal-l)); color:var(--teal-d)">114</td><td style="background:color-mix(in srgb, var(--teal-d) 2%, var(--teal-l)); color:var(--teal-d)">22</td></tr><tr><th class="row">Evening (≥18)</th><td style="background:color-mix(in srgb, var(--teal-d) 1%, var(--teal-l)); color:var(--teal-d)">5</td><td style="background:color-mix(in srgb, var(--teal-d) 1%, var(--teal-l)); color:var(--teal-d)">6</td><td style="background:color-mix(in srgb, var(--teal-d) 1%, var(--teal-l)); color:var(--teal-d)">13</td><td style="background:color-mix(in srgb, var(--teal-d) 1%, var(--teal-l)); color:var(--teal-d)">6</td><td style="background:color-mix(in srgb, var(--teal-d) 0%, var(--teal-l)); color:var(--teal-d)">3</td></tr></tbody></table></div><div class="legend"><span>Fewer</span><span class="ramp"></span><span>More recorded encounters</span> · max. 959 (Thursday, early morning)</div>
+</div>
+<p class="note rv rv3">Clear patterns for planning: <strong>Thursday</strong> is the day of greatest activity, especially before 10:00; the <strong>midday (12–14 h)</strong> drops across all disciplines; <strong>Friday afternoon</strong> drops sharply. These are inputs for reviewing how supply is distributed, not judgments about the team.</p></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Operational dependence <span class="idx">· 09</span></p><h2 class="s-title">A few people sustain much of the supply</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">In psychology and social work, activity depends heavily on three professionals.</p>
+<div class="body">
+  <div class="kgrid rv rv2" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="n amb mono" data-count="82.2" data-dec="1" data-suf="%">0%</div>
+      <div class="l">Psychology</div><div class="s">3 of 7 professionals account for this share of encounters</div></div>
+    <div class="kpi"><div class="n amb mono" data-count="71.4" data-dec="1" data-suf="%">0%</div>
+      <div class="l">Social work</div><div class="s">3 of 8 professionals</div></div>
+    <div class="kpi"><div class="n ok mono" data-count="44.7" data-dec="1" data-suf="%">0%</div>
+      <div class="l">Medicine</div><div class="s">3 of 16 · more distributed activity</div></div>
+  </div>
+  <div class="panel rv rv3" style="margin-top:16px">
+    <h3>Share of the three busiest professionals, by discipline</h3>
+    <div class="bars">
+      <div class="bar"><div class="bl">Psychology (top 3)</div><div class="bt"><div class="bf p" data-w="82.2"></div></div><div class="bv">82.2%</div></div>
+      <div class="bar"><div class="bl">Social work (top 3)</div><div class="bt"><div class="bf p" data-w="71.4"></div></div><div class="bv">71.4%</div></div>
+      <div class="bar"><div class="bl">Medicine (top 3)</div><div class="bt"><div class="bf " data-w="44.7"></div></div><div class="bv">44.7%</div></div>
+    </div>
+    <p class="note"><span class="chip warn">Continuity risk</span> With leave, time off or turnover in psychology or social work, a significant part of the supply may be affected. This is a risk-management fact, not a performance assessment.</p>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Continuity <span class="idx">· 10</span></p><h2 class="s-title">Many single contacts and a high-use core</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Half of users attend only once; a small group accounts for much of the activity.</p>
+<div class="body">
+  <div class="kgrid rv rv2">
+    <div class="kpi"><div class="n tl mono" data-count="2" data-dec="0" data-suf="">0</div><div class="l">Median encounters</div><div class="s">per user · mean 4.0</div></div>
+    <div class="kpi"><div class="n  mono" data-count="45.3" data-dec="1" data-suf="%">0%</div><div class="l">With a single encounter</div><div class="s">of 2,452 users</div></div>
+    <div class="kpi"><div class="n  mono" data-count="46.4" data-dec="1" data-suf="%">0%</div><div class="l">Encounters of the top-10% users</div><div class="s">concentration of activity</div></div>
+    <div class="kpi"><div class="n ok mono" data-count="39.8" data-dec="1" data-suf="%">0%</div><div class="l">With encounters in more than one month</div><div class="s">follow-up over time</div></div>
+  </div>
+  <div class="panel rv rv3" style="margin-top:16px">
+    <h3>Users by encounter band</h3>
+    <p class="cap">More encounters per person means fewer people but more accumulated load.</p>
+    <div class="bars">
+      <div class="bar"><div class="bl">1 encounter</div><div class="bt"><div class="bf p" data-w="45.3"></div></div><div class="bv">1,110 users · 45%</div></div>
+      <div class="bar"><div class="bl">2 – 3</div><div class="bt"><div class="bf " data-w="25.4"></div></div><div class="bv">622 · 25%</div></div>
+      <div class="bar"><div class="bl">4 – 6</div><div class="bt"><div class="bf " data-w="13.0"></div></div><div class="bv">319 · 13%</div></div>
+      <div class="bar"><div class="bl">7 – 12</div><div class="bt"><div class="bf " data-w="10.2"></div></div><div class="bv">250 · 10%</div></div>
+      <div class="bar"><div class="bl">More than 12</div><div class="bt"><div class="bf g" data-w="6.2"></div></div><div class="bv">151 · 6% (3,587 encounters)</div></div>
+    </div>
+    <p class="note">Severity, diagnosis and adherence are not inferred from frequency. These bands are an input for <strong>continuity review by the team</strong>.</p>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Interdisciplinary work <span class="idx">· 11</span></p><h2 class="s-title">Coordination between medicine and psychosocial care</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Nearly one in five users receives both medical and psychosocial care in the period.</p>
+<div class="body">
+  <div class="kgrid rv rv2" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="n p mono" data-count="300" data-dec="0" data-suf="">0</div><div class="l">Medicine only</div><div class="s">medical care only</div></div>
+    <div class="kpi"><div class="n  mono" data-count="1698" data-dec="0" data-suf="">0</div><div class="l">Psychosocial only</div><div class="s">psychology and/or social work</div></div>
+    <div class="kpi"><div class="n ok mono" data-count="454" data-dec="0" data-suf="">0</div><div class="l">Medicine + psychosocial</div><div class="s">18.5% of users</div></div>
+  </div>
+  <div class="panel rv rv3" style="margin-top:16px">
+    <div style="display:flex; gap:26px; align-items:center; flex-wrap:wrap">
+      <div><div class="big ok" data-count="8.3" data-dec="1" data-suf="%">0%</div>
+        <div class="l" style="color:var(--grafito); font-weight:600; margin-top:.3em">Care from all three disciplines<br>(medicine + psychology + social work): 203 users</div></div>
+      <div style="flex:1; min-width:260px">
+        <p style="color:var(--grafito); line-height:1.5; font-size:clamp(14px,1.25vw,17px); margin:0">
+        There is genuine co-occurrence of encounters, compatible with interdisciplinary follow-up. However, the dataset <strong>does not contain</strong> referral, back-referral or care-plan fields, so <strong>it cannot be stated that formal clinical coordination occurred</strong>. The finding must be validated with clinical records or team meetings.</p>
+      </div>
+    </div>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Rural territory <span class="idx">· 12</span></p><h2 class="s-title">Distribution by sector: signal and limit</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">Differences between sectors are observed, but a recording gap prevents firm conclusions.</p>
+<div class="body split">
+  <div class="panel rv rv2">
+    <h3>Encounters by sector</h3>
+    <p class="cap">Over records with an identifiable sector.</p>
+    <div class="bars">
+      <div class="bar"><div class="bl">Red</div><div class="bt"><div class="bf p" data-w="100.0"></div></div><div class="bv">1,021</div></div>
+      <div class="bar"><div class="bl">Tongoy (no color)</div><div class="bt"><div class="bf " data-w="73.0"></div></div><div class="bv">746</div></div>
+      <div class="bar"><div class="bl">Blue</div><div class="bt"><div class="bf " data-w="65.0"></div></div><div class="bv">667</div></div>
+      <div class="bar"><div class="bl">Green</div><div class="bt"><div class="bf " data-w="53.0"></div></div><div class="bv">541</div></div>
+      <div class="bar"><div class="bl">Other center / external</div><div class="bt"><div class="bf " data-w="35.0"></div></div><div class="bv">356</div></div>
+    </div>
+  </div>
+  <div class="panel accent-no rv rv3">
+    <h3>The limit that must be stated</h3>
+    <div style="margin:.3em 0 .6em"><span class="big amb" data-count="66.3" data-dec="1" data-suf="%">0%</span></div>
+    <p style="color:var(--grafito); line-height:1.5; font-size:clamp(14px,1.25vw,17px); margin:0">
+      of services have no usable sector. That is why the territorial analysis is <strong>only indicative</strong>: without population denominators by sector, coverage or gaps cannot be estimated. It is, above all, a record-improvement task.</p>
+    <p class="note">Also, “Patient Center” refers to the user's enrollment center, not the place where care was provided.</p>
+  </div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Data quality <span class="idx">· 13</span></p><h2 class="s-title">Transparency about the limitations</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">A good report states its weaknesses; these are the ones that condition the reading.</p>
+<div class="body rows">
+  <div class="frow rv rv2"><div class="fi crit">!</div><div>
+    <div class="ft">Encounter duration: not computable</div>
+    <div class="fd">The close time works as an administrative close (medians of 1.3 to 3.9 h). All duration calculation is excluded until the real end time is recorded.</div></div></div>
+  <div class="frow rv rv2"><div class="fi warn">◧</div><div>
+    <div class="ft">Incomplete territorial sector (66% with no usable data)</div>
+    <div class="fd">Limits sector analysis to an indicative level and without denominators.</div></div></div>
+  <div class="frow rv rv3"><div class="fi warn">◧</div><div>
+    <div class="ft">Social gender mostly “not disclosed” (71%)</div>
+    <div class="fd">Sex is available; social gender does not allow robust segmentation.</div></div></div>
+  <div class="frow rv rv3"><div class="fi tl">≈</div><div>
+    <div class="ft">Encounter modality inferred, not recorded</div>
+    <div class="fd">In-person / remote / home are inferred from the description text; it is an approximation, not a formal field.</div></div></div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Synthesis <span class="idx">· 14</span></p><h2 class="s-title">Prioritized findings for management</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">What the leadership team should take away from this analysis.</p>
+<div class="body rows">
+  <div class="frow rv rv2"><div class="fi tl">1</div><div>
+    <div class="ft">Activity is morning-based with sharp peaks (Thursdays and 10:00 h)</div>
+    <div class="fd">A solid basis for planning slots, reinforcements and room coordination by block and day.</div></div></div>
+  <div class="frow rv rv2"><div class="fi warn">2</div><div>
+    <div class="ft">Strong dependence on a few professionals in psychology and social work</div>
+    <div class="fd">Continuity risk with absences or turnover; back-up planning is advisable.</div></div></div>
+  <div class="frow rv rv3"><div class="fi tl">3</div><div>
+    <div class="ft">High share of single contacts alongside a high-use core</div>
+    <div class="fd">45% attend once; the top-10% users account for 46%: input for reviewing continuity and scheduling.</div></div></div>
+  <div class="frow rv rv3"><div class="fi ok">4</div><div>
+    <div class="ft">Medical–psychosocial coordination exists, not yet verifiable as formal coordination</div>
+    <div class="fd">18.5% with both disciplines; referral and care-plan recording is still missing to confirm it.</div></div></div>
+  <div class="frow rv rv4"><div class="fi crit">5</div><div>
+    <div class="ft">Two recording gaps condition everything: duration and sector</div>
+    <div class="fd">Resolving them immediately raises the program's analytical capacity.</div></div></div>
+</div></div></section>
+<section class="slide"><div class="inner"><div class="rv"><p class="eyebrow lab">Recommendations <span class="idx">· 15</span></p><h2 class="s-title">A plan across three horizons</h2><div class="hr-teal"></div></div><p class="s-sub rv rv2">From immediate recording fixes to medium-term analytical capabilities.</p>
+<div class="body horizons">
+  <div class="hz h1 rv rv2"><div class="hd"><div class="t">Immediate</div><div class="w">0–3 months · recording</div></div>
+    <ul>
+      <li>Record the <strong>real end time</strong> of each encounter.</li>
+      <li>Standardize and require the user's <strong>sector</strong> at intake.</li>
+      <li>Distinguish in the system the <strong>modality</strong> (in-person / remote / home).</li>
+    </ul></div>
+  <div class="hz h2 rv rv3"><div class="hd"><div class="t">Short term</div><div class="w">3–6 months · operations</div></div>
+    <ul>
+      <li>Match slots and reinforcements to the <strong>blocks and days of highest recorded demand</strong>.</li>
+      <li>Plan <strong>back-up</strong> for the disciplines with high dependence.</li>
+      <li>Review as a team the <strong>high-use core</strong> and the single contacts.</li>
+    </ul></div>
+  <div class="hz h3 rv rv4"><div class="hd"><div class="t">Medium term</div><div class="w">6–12 months · capabilities</div></div>
+    <ul>
+      <li>Add <strong>referral and care-plan fields</strong> to measure coordination.</li>
+      <li>Build <strong>validated denominators</strong> by sector (true coverage).</li>
+      <li>Institutionalize this report as a <strong>regular dashboard</strong> for management.</li>
+    </ul></div>
+</div></div></section>
+<section class="slide dark"><div class="inner">
+<p class="cover-k lab rv">In closing</p>
+<h1 class="cover-t rv rv2" style="font-size:clamp(30px,5vw,64px)">What this dataset<br><span class="accent">still cannot answer</span></h1>
+<div class="cover-meta rv rv3" style="margin-top:clamp(24px,3vw,40px); gap:clamp(16px,2.4vw,36px)">
+  <div class="m" style="max-width:280px"><div class="k lab">Unmet demand</div>
+    <div class="v" style="font-weight:500">How many people need care and do not receive it.</div></div>
+  <div class="m" style="max-width:280px"><div class="k lab">Actual availability</div>
+    <div class="v" style="font-weight:500">How much schedule is free versus how much is used.</div></div>
+  <div class="m" style="max-width:280px"><div class="k lab">Clinical appropriateness</div>
+    <div class="v" style="font-weight:500">Whether the care provided resolves the health problem.</div></div>
+</div>
+<div class="cover-rule rv rv3"></div>
+<p class="cover-s rv rv4" style="margin-top:clamp(20px,2.6vw,34px); max-width:64ch">
+  This report is a <strong>management-support document</strong>: it rigorously describes what was recorded and transparently states its limits. Decisions on scheduling, staffing and continuity also require the treating team's view.</p>
+<p class="cover-k lab rv rv4" style="margin-top:1.4em">Technical Unit, Tongoy CESFAM · Jul 2025 – Aug 2026</p></div></section>
+
+</div>
+<div class="navz" id="navprev" aria-label="Previous"></div>
+<div class="navz" id="navnext" aria-label="Next"></div>
+<div id="arrows"><button id="bp" title="Previous (←)">‹</button><button id="bn" title="Next (→)">›</button></div>
+<div id="counter" class="mono">01 / 16</div>
+<div id="hint">← → to move · <strong>O</strong> overview · <strong>F</strong> fullscreen</div>
+<div id="ov"><h4>Presentation contents</h4><div id="ovgrid"><div class="ovc" data-i="0"><div class="on">01</div><div class="ot">Cover</div></div><div class="ovc" data-i="1"><div class="on">02</div><div class="ot">Scope & safeguards</div></div><div class="ovc" data-i="2"><div class="on">03</div><div class="ot">Methodology · data</div></div><div class="ovc" data-i="3"><div class="on">04</div><div class="ot">Methodology · principles</div></div><div class="ovc" data-i="4"><div class="on">05</div><div class="ot">Overview</div></div><div class="ovc" data-i="5"><div class="on">06</div><div class="ot">User profile</div></div><div class="ovc" data-i="6"><div class="on">07</div><div class="ot">Hours by discipline</div></div><div class="ovc" data-i="7"><div class="on">08</div><div class="ot">Heat map</div></div><div class="ovc" data-i="8"><div class="on">09</div><div class="ot">Operational dependence</div></div><div class="ovc" data-i="9"><div class="on">10</div><div class="ot">Continuity</div></div><div class="ovc" data-i="10"><div class="on">11</div><div class="ot">Coordination</div></div><div class="ovc" data-i="11"><div class="on">12</div><div class="ot">Territory</div></div><div class="ovc" data-i="12"><div class="on">13</div><div class="ot">Data quality</div></div><div class="ovc" data-i="13"><div class="on">14</div><div class="ot">Findings</div></div><div class="ovc" data-i="14"><div class="on">15</div><div class="ot">Recommendations</div></div><div class="ovc" data-i="15"><div class="on">16</div><div class="ot">Closing</div></div></div></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+const prog=document.getElementById('prog');
+const counter=document.getElementById('counter');
+const brand=document.querySelector('.brand');
+function activate(fill){
+  const s=slides[i];
+  s.querySelectorAll('.bf').forEach(b=>{b.style.width=(fill?(b.dataset.w+'%'):'0')});
+  s.querySelectorAll('.tb').forEach(b=>{b.style.height=(fill?(b.dataset.h+'%'):'0')});
+  s.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.dataset.count, dec=+(el.dataset.dec||0), suf=el.dataset.suf||'';
+    if(!fill){el.textContent='0'+suf;return;}
+    const red=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(red){el.textContent=fmt(target,dec)+suf;return;}
+    let t0=null, dur=900;
+    function step(ts){if(!t0)t0=ts; let p=Math.min((ts-t0)/dur,1); p=1-Math.pow(1-p,3);
+      el.textContent=fmt(target*p,dec)+suf; if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  });
+}
+function fmt(n,dec){return dec? n.toFixed(dec) : Math.round(n).toLocaleString('en-US');}
+function show(n){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  slides[i].classList.remove('active');
+  activate(false);
+  i=n; const s=slides[i]; s.classList.add('active');
+  prog.style.width=((i)/(slides.length-1)*100)+'%';
+  counter.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  brand.classList.toggle('on-dark', s.classList.contains('dark'));
+  // reflow then fill (so transitions run)
+  requestAnimationFrame(()=>requestAnimationFrame(()=>activate(true)));
+  location.hash=i+1;
+}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('navnext').onclick=next;
+document.getElementById('navprev').onclick=prev;
+document.getElementById('bn').onclick=next;
+document.getElementById('bp').onclick=prev;
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ' ){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+  else if(e.key==='Home'){show(0)} else if(e.key==='End'){show(slides.length-1)}
+  else if(e.key==='o'||e.key==='O'){toggleOv()}
+  else if(e.key==='Escape'){document.getElementById('ov').classList.remove('show')}
+  else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  else if(/^[0-9]$/.test(e.key)){/* noop */}
+});
+// overview
+const ov=document.getElementById('ov');
+function toggleOv(){ov.classList.toggle('show');}
+document.querySelectorAll('.ovc').forEach(c=>c.onclick=()=>{show(+c.dataset.i); ov.classList.remove('show');});
+// hint auto-fade
+setTimeout(()=>{const h=document.getElementById('hint'); if(h)h.style.opacity='0';},4200);
+// deep link
+const start=(location.hash.match(/\d+/)||[1])[0];
+show(Math.max(0,Math.min(slides.length-1, +start-1)));
+</script>
+</body></html>
