@@ -1,0 +1,462 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informe PASMI 2026 · CESFAM Tongoy</title>
+<meta name="description" content="Informe Técnico-Ejecutivo PASMI 2026: implementación, impacto territorial y propuestas de mejora 2027 — CESFAM Tongoy.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+ --bg:#f5f6f4;--surf:#ffffff;--ink:#16202b;--ink2:#48576a;--mut:#7d8a99;--line:#e2e6ea;--axis:#c3ccd6;
+ --navy:#163a5f;--acc:#2a6fd6;--teal:#15a08a;--green:#1b8a4b;--amber:#c07a00;--red:#cf3b3b;--violet:#6b57c7;
+ --s1:#2a6fd6;--s2:#e07a2e;--s3:#15a08a;--s4:#e0a81e;--s5:#c0588f;--s6:#2e93bd;
+ --goodbg:#e7f3ec;--warnbg:#fbf1dc;--critbg:#f8e4e4;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;letter-spacing:-.004em}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+.disp{font-family:"Space Grotesk","Inter",sans-serif}
+/* portada */
+.cover{background:radial-gradient(1100px 600px at 80% -10%,#1e4e7e 0%,var(--navy) 60%);color:#eaf1f8;padding:64px 0 54px;margin-bottom:8px}
+.cover .wrap{max-width:1000px}
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:14px}
+.cover h1{font-family:"Space Grotesk";font-size:clamp(26px,4.2vw,42px);line-height:1.08;font-weight:700;margin:0 0 14px}
+.cover .sub{font-size:17px;color:#c7d6e7;max-width:66ch;line-height:1.5}
+.cover .meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;font-size:13.5px;color:#aec6e0}
+.cover .meta b{color:#fff;font-weight:600}
+/* nav / toc */
+.toc{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:22px 0 10px;columns:2;column-gap:34px}
+@media(max-width:700px){.toc{columns:1}.cover{padding:44px 0 36px}}
+.toc a{display:block;color:var(--ink2);text-decoration:none;font-size:13.5px;padding:3px 0;break-inside:avoid}
+.toc a:hover{color:var(--acc)}
+.toc .tt{font-family:"Space Grotesk";font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+/* secciones */
+section{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin:16px 0;scroll-margin-top:16px}
+h2.sec{font-family:"Space Grotesk";font-size:22px;font-weight:700;color:var(--navy);margin:0 0 4px;display:flex;align-items:baseline;gap:12px}
+h2.sec .n{color:var(--acc);font-size:17px;font-weight:700}
+.sec-lead{color:var(--mut);font-size:13.5px;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+h3{font-family:"Space Grotesk";font-size:16.5px;font-weight:700;color:var(--ink);margin:22px 0 8px}
+h4{font-size:14px;font-weight:700;color:var(--navy);margin:16px 0 6px}
+p{margin:0 0 11px}
+b,strong{font-weight:600;color:var(--ink)}
+ul,ol{margin:0 0 12px;padding-left:22px}li{margin-bottom:6px}
+a{color:var(--acc)}
+.small{font-size:12.5px;color:var(--mut)}
+/* KPIs */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+@media(max-width:700px){.kgrid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.kpi .v{font-family:"Space Grotesk";font-size:28px;font-weight:700;line-height:1;color:var(--navy)}
+.kpi .l{font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.35}
+.kpi .d{font-size:11px;font-weight:700;margin-top:5px}
+.up{color:var(--green)}.dn{color:var(--red)}.fl{color:var(--amber)}
+/* callouts dato/lectura/recomendacion */
+.cal{border-radius:11px;padding:12px 15px;margin:12px 0;font-size:13.7px;line-height:1.55;border-left:4px solid}
+.cal .h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.dato{background:#eef4fb;border-color:var(--acc)}.dato .h{color:var(--acc)}
+.lect{background:#f3f0fb;border-color:var(--violet)}.lect .h{color:var(--violet)}
+.reco{background:var(--goodbg);border-color:var(--green)}.reco .h{color:var(--green)}
+.lim{background:var(--warnbg);border-color:var(--amber)}.lim .h{color:var(--amber)}
+/* charts */
+.chart-card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.chart-card .ct{font-family:"Space Grotesk";font-weight:700;font-size:14.5px;color:var(--ink)}
+.chart-card .cs{font-size:11.5px;color:var(--mut);margin:2px 0 10px}
+.chart-box{position:relative;height:300px}
+.chart-box.sm{height:250px}
+.readout{font-size:12.5px;color:var(--ink2);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
+.readout b{color:var(--ink)}
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+thead th{background:var(--navy);color:#fff;font-weight:600;font-size:12px;text-align:center}
+td.n,th.n{text-align:center}
+tbody tr:nth-child(even){background:#f8faf9}
+td.name{font-weight:600}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.b-good{background:var(--goodbg);color:var(--green)}.b-warn{background:var(--warnbg);color:var(--amber)}.b-crit{background:var(--critbg);color:var(--red)}.b-info{background:#eaf1fb;color:var(--acc)}
+.prio{font-weight:800;font-family:"Space Grotesk"}
+.p1{color:var(--red)}.p2{color:var(--amber)}.p3{color:var(--acc)}
+/* footer */
+footer{text-align:center;color:var(--mut);font-size:12px;padding:28px 0 50px}
+.tag{display:inline-block;background:#eaf1fb;color:var(--acc);border:1px solid #cfe0f6;border-radius:999px;padding:3px 11px;font-size:11.5px;font-weight:700;margin:0 4px 4px 0}
+.hr{height:1px;background:var(--line);margin:18px 0}
+@media print{
+ body{background:#fff;font-size:11.5px}
+ section,.toc{border:none;box-shadow:none;padding:6px 0;margin:6px 0;break-inside:auto}
+ .cover{background:var(--navy) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ section{break-inside:avoid}
+ .chart-box{height:240px}
+ a{color:var(--ink)}
+}
+</style></head><body>
+
+<div class="cover"><div class="wrap">
+ <div class="kicker">Informe Técnico-Ejecutivo · Programa de Apoyo a la Salud Mental Infantil</div>
+ <h1>PASMI 2026: Implementación, Impacto Territorial y Propuestas de Mejora 2027</h1>
+ <div class="sub">Análisis de la estrategia PASMI en CESFAM Tongoy, en el marco del Programa de Salud Mental de Atención Primaria y del financiamiento per cápita. Documento para la toma de decisiones institucionales 2027.</div>
+ <div class="meta">
+  <div>Establecimiento: <b>CESFAM Tongoy (105321)</b> · complementa PSR Guanaqueros (105405)</div>
+  <div>Período: <b>enero–septiembre 2026</b></div>
+  <div>Dirigido a: <b>DESAM I. M. de Coquimbo · Servicio de Salud Coquimbo</b></div>
+  <div>Fuente: <b>REM Serie A/P (DEIS–MINSAL)</b></div>
+ </div>
+</div></div>
+
+<div class="wrap">
+
+<nav class="toc">
+ <div class="tt">Contenido</div>
+ <a href="#s2">2 · Resumen ejecutivo</a>
+ <a href="#s3">3 · Introducción y contextualización</a>
+ <a href="#s4">4 · Metodología</a>
+ <a href="#s5">5 · Caracterización poblacional y per cápita</a>
+ <a href="#s6">6 · Resultados PASMI</a>
+ <a href="#s7">7 · Impacto comunitario, adherencia y vínculo</a>
+ <a href="#s8">8 · Análisis de la dupla y del equipo</a>
+ <a href="#s9">9 · Limitaciones administrativas, espacios y coordinación</a>
+ <a href="#s10">10 · Articulación con el proyecto de Salud Mental</a>
+ <a href="#s11">11 · Propuestas de mejora 2027</a>
+ <a href="#s12">12 · Plan de monitoreo 2027</a>
+ <a href="#s13">13 · Conclusiones</a>
+ <a href="#s14">14 · Anexos</a>
+</nav>
+
+<!-- 2 RESUMEN EJECUTIVO -->
+<section id="s2">
+ <h2 class="sec"><span class="n">2</span> Resumen ejecutivo</h2>
+ <div class="sec-lead">Síntesis para decisión institucional. Período enero–septiembre 2026.</div>
+ <p>El PASMI en CESFAM Tongoy es una <b>estrategia territorial consolidada</b> de detección, acompañamiento y vinculación de niños y niñas con dificultades de salud mental y sus familias. En lo que va de 2026, el programa sostiene una población infantil bajo control de <b>100 niños/as</b> (85% de la meta local) y despliega una <b>intensa actividad de acompañamiento</b> que el registro administrativo capta solo en parte.</p>
+ <div class="kgrid">
+  <div class="kpi"><div class="v">100</div><div class="l">niños/as bajo control PASMI (corte jun-2026)</div><div class="d up">85% de la meta (118)</div></div>
+  <div class="kpi"><div class="v">569</div><div class="l">controles de salud mental infantil (0–9) ene–sep</div><div class="d up">≈23 por cada ingreso formal</div></div>
+  <div class="kpi"><div class="v">94%</div><div class="l">de esos controles los realiza la dupla psicosocial</div><div class="d">Psicólogo/a 52% · T. Social 42%</div></div>
+  <div class="kpi"><div class="v">25 / 19</div><div class="l">ingresos / evaluaciones diagnósticas (0–9) ene–sep</div><div class="d fl">47% y 40% de meta anual</div></div>
+ </div>
+ <h4>Mensajes clave</h4>
+ <ul>
+  <li><b>El trabajo real supera lo que muestran los indicadores de meta.</b> Por cada ingreso formal al programa hay cerca de 23 controles de salud mental a niños/as: la actividad clínica y de seguimiento es alta, aunque los indicadores administrativos de "ingreso" y "egreso" la subrepresenten.</li>
+  <li><b>La dupla psicosocial es la columna vertebral de la estrategia</b> (94% de los controles infantiles). Su continuidad y condiciones de trabajo son el principal factor crítico para sostener el PASMI.</li>
+  <li><b>Hay un techo estructural de registro:</b> varias prestaciones PASMI solo pueden registrarse en el tramo 5–9 años porque no existe instrumento validado para menores de 5, lo que deprime artificialmente el cumplimiento.</li>
+  <li><b>Las metas 2026 están sobredimensionadas</b> para la población infantil de un territorio costero-rural pequeño; conviene redimensionarlas a la población local real para 2027.</li>
+  <li><b>El valor es territorial y comunitario:</b> visitas a establecimientos educacionales, trabajo con familias y continuidad del vínculo, no solo conteos de producción.</li>
+ </ul>
+ <h4>Prioridades 2027 (resumen)</h4>
+ <p>Consolidar y dar estabilidad a la dupla; adecuar un espacio clínico pertinente para atención infantil; mejorar la trazabilidad del ingreso y el registro; fortalecer la coordinación con la red educativa y el intersector; y <b>definir metas realistas 2027</b> ajustadas a la población local. El detalle, con responsables, plazos y recursos, está en la sección 11.</p>
+</section>
+
+<!-- 3 INTRODUCCION -->
+<section id="s3">
+ <h2 class="sec"><span class="n">3</span> Introducción y contextualización</h2>
+ <div class="sec-lead">PASMI en el marco del Programa de Salud Mental APS y del per cápita.</div>
+ <p>El Programa de Apoyo a la Salud Mental Infantil (PASMI) es una estrategia del Programa de Salud Mental en Atención Primaria orientada a la <b>detección temprana, el apoyo psicosocial, el seguimiento y la vinculación</b> de niños y niñas (0 a menos de 10 años) con dificultades emocionales, conductuales o del desarrollo socioemocional, junto a sus familias y su entorno escolar. Se financia en el marco del <b>per cápita</b> y de los componentes de salud mental de la APS, y se ejecuta localmente a través de una <b>dupla psicosocial</b> (psicólogo/a y trabajador/a social) articulada con el equipo de cabecera.</p>
+ <p>En CESFAM Tongoy la estrategia se ha desarrollado como una <b>intervención territorial</b>: su valor no se agota en la producción registrada, sino que incluye la cobertura de un territorio costero-rural disperso, la continuidad del cuidado, el vínculo terapéutico, la adherencia de las familias y la capacidad de responder a necesidades locales que, de otro modo, exigirían traslados costosos a la especialidad en La Serena o Coquimbo.</p>
+ <div class="cal lect"><div class="h">Marco conceptual</div>El análisis se sitúa en el enfoque de <b>salud mental comunitaria</b> y en los principios del modelo de APS: integralidad, continuidad, oportunidad, pertinencia territorial y enfoque de derechos de niños, niñas y adolescentes. La dupla y el equipo local cumplen un rol insustituible en la detección, el acompañamiento, la derivación y el trabajo con familias y escuelas.</div>
+</section>
+
+<!-- 4 METODOLOGIA -->
+<section id="s4">
+ <h2 class="sec"><span class="n">4</span> Metodología</h2>
+ <div class="sec-lead">Fuentes, período, variables, tratamiento de datos y criterios de interpretación.</div>
+ <p><b>Fuentes.</b> Registros Estadísticos Mensuales (REM) oficiales de DEIS–MINSAL, Serie A (meses A01 a A09 = enero a septiembre 2026) y Serie P (corte junio 2026), de CESFAM Tongoy (105321) y PSR Guanaqueros (105405). Se utilizó además el tablero de indicadores ya construido para el establecimiento y las metas de la pauta comunal de seguimiento PASMI (DESAM/SSC).</p>
+ <p><b>Unidad de análisis y tramo.</b> La población PASMI (0 a &lt;10 años) se aisló mediante <b>anclaje por etiqueta</b> de fila y columna en cada sección REM, sumando los tramos 0–4 y 5–9 donde la sección los desagrega. Las prestaciones basadas en instrumentos (EDI, visitas educativas, pauta de evaluación SM) solo registran 5–9 años por diseño del formulario.</p>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Prestación</th><th>Sección REM</th><th>Tramo captado</th></tr></thead>
+  <tbody>
+   <tr><td class="name">Ingresos a tratamiento SM</td><td class="n">A05 Sección N</td><td class="n">0–4 + 5–9</td></tr>
+   <tr><td class="name">Egresos por alta terapéutica</td><td class="n">A05 Sección O</td><td class="n">0–4 + 5–9</td></tr>
+   <tr><td class="name">Evaluación diagnóstica integral (EDI)</td><td class="n">A06 Sección G</td><td class="n">solo 5–9</td></tr>
+   <tr><td class="name">Visitas educativas PASMI</td><td class="n">A26 Sección F</td><td class="n">solo 5–9</td></tr>
+   <tr><td class="name">Egreso en categoría baja/moderada</td><td class="n">A03 Sección D.3</td><td class="n">solo 5–9</td></tr>
+   <tr><td class="name">Controles de salud mental infantil</td><td class="n">A06 Sección A.1</td><td class="n">0–4 + 5–9</td></tr>
+   <tr><td class="name">Población bajo control</td><td class="n">Serie P6</td><td class="n">0–9</td></tr>
+  </tbody>
+ </table></div>
+ <p><b>Confidencialidad.</b> Todo el análisis se realiza con datos <b>agregados</b> (conteos mensuales, porcentajes, razones y tendencias). No se incluyen nombres, RUT, direcciones, teléfonos ni ningún dato que permita identificar a usuarios, familias o funcionarios.</p>
+ <div class="cal lim"><div class="h">Criterios de interpretación y límite metodológico central</div>El REM entrega <b>datos agregados, no a nivel de paciente</b>. Por ello, las lecturas de continuidad, adherencia y retención son <b>proxies ecológicos</b> (p. ej. razón controles/ingreso), no mediciones individuales. No es posible, con esta fuente, construir cohortes de usuarios, intervalos entre atenciones por persona ni tasas de abandono individuales. A lo largo del informe se distingue explícitamente <b>Dato observado</b>, <b>Lectura/interpretación</b> y <b>Recomendación</b>, y se declaran las limitaciones donde corresponde.</div>
+</section>
+
+<!-- 5 CARACTERIZACION POBLACIONAL -->
+<section id="s5">
+ <h2 class="sec"><span class="n">5</span> Caracterización poblacional y per cápita</h2>
+ <div class="sec-lead">Población inscrita per cápita FONASA, población infantil objetivo y brechas.</div>
+ <div class="kgrid">
+  <div class="kpi"><div class="v">11.273</div><div class="l">población inscrita validada · per cápita FONASA</div></div>
+  <div class="kpi"><div class="v">1.848</div><div class="l">población infantil 0–14 años (per cápita)</div></div>
+  <div class="kpi"><div class="v">~1.159</div><div class="l">población 0–9, tramo PASMI (estimada del per cápita)</div></div>
+  <div class="kpi"><div class="v">100</div><div class="l">niños/as bajo control PASMI (jun-2026)</div><div class="d up">≈9% de la población 0–9</div></div>
+ </div>
+ <div class="cal dato"><div class="h">Dato observado</div>La población <b>inscrita validada per cápita FONASA</b> de CESFAM Tongoy es de <b>11.273</b> personas. El per cápita registra <b>470</b> niños/as menores de 5 años y 9.425 de 15 y más años; por diferencia, la <b>población infantil 0–14 es de 1.848</b> (dato exacto del per cápita). El tramo PASMI (0–9) se estima en <b>~1.159 niños/as</b> (470 de 0–4 exactos + ~689 de 5–9). La población efectivamente bajo control PASMI al corte de junio es de 100 niños/as, equivalente a <b>≈8,6% de la población 0–9 inscrita</b> (≈14% de la población 5–9).</div>
+ <div class="cal lect"><div class="h">Lectura</div>Tongoy es un territorio <b>costero-rural</b> con población dispersa y estacionalidad estival (aumento de población flotante en verano). Esto condiciona el acceso infantil: distancia a la escuela y al box, costo de traslado de las familias y disponibilidad de cupos. Que la estrategia mantenga bajo control a <b>~1 de cada 11 niños/as 0–9 inscritos</b> es una presencia relevante, considerando que la población con necesidad de atención de salud mental es solo una fracción del total infantil.</div>
+ <div class="cal lim"><div class="h">Nota metodológica</div>El per cápita FONASA entrega de forma exacta la población &lt;5 (470) y 0–14 (1.848). El <b>tramo fino 5–9</b> se estimó repartiendo el grupo 5–14 (1.378) por quinquenios (≈689). Al incorporar el per cápita detallado por grupos quinquenales (0–4, 5–9, 10–14) se reemplazará la estimación por el dato exacto y se recalculará la cobertura.</div>
+</section>
+
+<!-- 6 RESULTADOS -->
+<section id="s6">
+ <h2 class="sec"><span class="n">6</span> Resultados PASMI</h2>
+ <div class="sec-lead">Producción, cobertura, continuidad y evolución temporal. Gráficos del tablero del establecimiento.</div>
+
+ <div class="chart-card">
+  <div class="ct">Gráfico 1 · Ingresos y egresos de salud mental infantil (0–9) por mes</div>
+  <div class="cs">CESFAM Tongoy · ene–sep 2026 · Fuente: REM A05 Secciones N y O</div>
+  <div class="chart-box"><canvas id="c1"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> flujo de entrada concentrado en el primer semestre, con receso en invierno (jun–jul) y repunte en ago–sep. Los egresos por alta son escasos (7 en el período): la mayoría de los niños/as <b>permanece en control</b>, lo que es coherente con un seguimiento sostenido.</div>
+ </div>
+
+ <div class="chart-card">
+  <div class="ct">Gráfico 2 · Actividad PASMI por mes: evaluaciones (EDI) y visitas educativas</div>
+  <div class="cs">CESFAM Tongoy · ene–sep 2026 · Fuente: REM A06-G y A26-F (tramo 5–9)</div>
+  <div class="chart-box"><canvas id="c2"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> clara <b>estacionalidad escolar</b> — las visitas a establecimientos se concentran en meses con clases (mar–abr, jul–sep) y desaparecen en el receso estival. Las evaluaciones diagnósticas se intensifican en ago–sep (4 y 8), señal de un esfuerzo reciente de pesquisa.</div>
+ </div>
+
+ <div class="chart-card">
+  <div class="ct">Gráfico 3 · Cumplimiento acumulado vs. meta anual del establecimiento</div>
+  <div class="cs">CESFAM Tongoy · ene–sep 2026 (75% del año transcurrido) · Fuente: REM + metas pauta DESAM</div>
+  <div class="chart-box"><canvas id="c3"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> la <b>población bajo control</b> está prácticamente en meta (85%). Ingresos (47%), visitas (42%) y EDI (40%) avanzan pero por debajo de lo proporcional; egresos (29%) está estructuralmente acotado por los ingresos. Ver sección 9 sobre por qué estos porcentajes subrepresentan el trabajo real.</div>
+ </div>
+
+ <div class="chart-card">
+  <div class="ct">Gráfico 4 · Producción PASMI por dispositivo (análisis territorial)</div>
+  <div class="cs">Tongoy vs. PSR Guanaqueros · acumulado ene–sep 2026 · Fuente: REM</div>
+  <div class="chart-box"><canvas id="c4"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> el equipo local produce PASMI en <b>ambos puntos de atención</b>. Guanaqueros aporta 17 ingresos, 10 EDI y 20 visitas educativas (concentradas en jul y sep), producción que la pauta comunal de Tongoy no visibiliza. El total local 0–9 es de <b>42 ingresos, 29 EDI y 45 visitas</b>.</div>
+ </div>
+
+ <div class="chart-card">
+  <div class="ct">Gráfico 5 · Intensidad del seguimiento: controles de salud mental infantil (0–9) por mes</div>
+  <div class="cs">CESFAM Tongoy · ene–sep 2026 · Fuente: REM A06 Sección A.1</div>
+  <div class="chart-box sm"><canvas id="c5"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> 569 controles de salud mental a niños/as en 9 meses, con picos en mayo (99) y ago–sep (82, 90). Es el indicador que mejor refleja el <b>volumen real de acompañamiento</b> de la dupla, muy por encima de lo que sugieren los "ingresos formales".</div>
+ </div>
+
+ <h3>Síntesis de producción (0–9 años)</h3>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Prestación</th><th class="n">Tongoy ene–sep</th><th class="n">Guanaqueros ene–sep</th><th class="n">Total local</th><th class="n">Meta anual Tongoy</th><th class="n">Avance Tongoy</th></tr></thead>
+  <tbody>
+   <tr><td class="name">Ingresos a tratamiento SM</td><td class="n">25</td><td class="n">17</td><td class="n">42</td><td class="n">53</td><td class="n"><span class="badge b-warn">47%</span></td></tr>
+   <tr><td class="name">Egresos por alta terapéutica</td><td class="n">7</td><td class="n">0</td><td class="n">7</td><td class="n">24</td><td class="n"><span class="badge b-crit">29%</span></td></tr>
+   <tr><td class="name">Evaluación diagnóstica integral (EDI)</td><td class="n">19</td><td class="n">10</td><td class="n">29</td><td class="n">48</td><td class="n"><span class="badge b-warn">40%</span></td></tr>
+   <tr><td class="name">Visitas educativas PASMI</td><td class="n">25</td><td class="n">20</td><td class="n">45</td><td class="n">59</td><td class="n"><span class="badge b-warn">42%</span></td></tr>
+   <tr><td class="name">Egreso categoría baja/moderada</td><td class="n">9</td><td class="n">1</td><td class="n">10</td><td class="n">—</td><td class="n"><span class="badge b-info">línea base</span></td></tr>
+   <tr><td class="name">Controles de salud mental (0–9)</td><td class="n">569</td><td class="n">170</td><td class="n">739</td><td class="n">—</td><td class="n"><span class="badge b-info">actividad</span></td></tr>
+   <tr><td class="name">Bajo control (jun-2026)</td><td class="n">100</td><td class="n">s/i</td><td class="n">100+</td><td class="n">118</td><td class="n"><span class="badge b-good">85%</span></td></tr>
+  </tbody>
+ </table></div>
+ <div class="cal dato"><div class="h">Dato observado · validación</div>Las cifras de enero–junio de Tongoy coinciden <b>exactamente, celda a celda</b>, con la pauta de seguimiento del DESAM: el dato del establecimiento es correcto y trazable al REM oficial. La discusión no es sobre exactitud, sino sobre diseño de metas, tramos de edad y registro (secciones 9 y 11).</div>
+</section>
+
+<!-- 7 IMPACTO -->
+<section id="s7">
+ <h2 class="sec"><span class="n">7</span> Impacto comunitario, adherencia y vínculo</h2>
+ <div class="sec-lead">Alcance territorial, continuidad y señales de impacto. Se distingue evidencia, indicio e hipótesis.</div>
+ <h3>Adherencia y continuidad (proxies ecológicos)</h3>
+ <div class="cal dato"><div class="h">Dato observado</div>Razón <b>controles / ingreso</b> = 569 / 25 ≈ <b>22,8</b> en Tongoy. Concentración de controles ≈ <b>5,7 por niño/a bajo control</b> en 9 meses (≈7,6 anualizado, meta ≥8). Egresos por alta (7) muy inferiores a ingresos (25): <b>permanencia estimada ≈72%</b> del flujo en control.</div>
+ <div class="cal lect"><div class="h">Lectura</div>En conjunto, estos proxies <b>sugieren un seguimiento sostenido</b> y un vínculo activo con las familias: los niños/as que ingresan tienden a permanecer y a recibir múltiples controles. Es un <b>indicio fuerte de adherencia</b>, no una medición individual. La concentración cercana a la meta anual indica que, pese a las limitaciones, la frecuencia de contacto es alta para un APS rural.</div>
+ <h3>Vínculo territorial y trabajo con la red</h3>
+ <div class="cal dato"><div class="h">Dato observado</div>45 visitas a establecimientos educacionales en el territorio (Tongoy + Guanaqueros), concentradas en el calendario escolar. Actividad de evaluación diagnóstica sostenida (29 EDI local).</div>
+ <div class="cal lect"><div class="h">Lectura (indicio)</div>La presencia sistemática en las escuelas es una <b>señal de alcance comunitario</b>: el programa va al territorio donde están los niños/as, en coherencia con el modelo comunitario. En un territorio disperso, esta estrategia reduce la barrera de acceso y fortalece la pesquisa temprana.</div>
+ <div class="cal lim"><div class="h">Hipótesis / límite</div>El impacto en resultados (mejoría clínica, reducción de derivaciones a especialidad, satisfacción usuaria) <b>no es medible</b> con los datos actuales. Se proponen indicadores cualitativos y cuantitativos para 2027 (sección 12) que permitan evidenciarlo: experiencia usuaria, participación familiar y resolución en APS.</div>
+</section>
+
+<!-- 8 DUPLA -->
+<section id="s8">
+ <h2 class="sec"><span class="n">8</span> Análisis de la dupla y del equipo</h2>
+ <div class="sec-lead">Aporte, articulación y condiciones de trabajo. Sin juicios de desempeño individual.</div>
+ <div class="chart-card">
+  <div class="ct">Gráfico 6 · Quién sostiene los controles de salud mental infantil</div>
+  <div class="cs">CESFAM Tongoy · ene–sep 2026 · Fuente: REM A06 Sección A.1 (0–9 años)</div>
+  <div class="chart-box sm"><canvas id="c6"></canvas></div>
+  <div class="readout"><b>Lectura ejecutiva:</b> la <b>dupla psicosocial concentra el 94%</b> de los controles de salud mental infantil (Psicólogo/a 52%, Trabajador/a Social 42%); el aporte médico complementa con un 6%. La estrategia descansa, operativamente, en la dupla.</div>
+ </div>
+ <div class="cal lect"><div class="h">Lectura</div>La dupla es el <b>factor crítico de sostenibilidad</b> del PASMI local: detecta, acompaña, deriva, hace seguimiento y trabaja con las familias y las escuelas. Su estabilidad (continuidad del mismo profesional con el mismo niño/a y familia) es, en salud mental infantil, un componente terapéutico en sí mismo.</div>
+ <div class="cal lim"><div class="h">Límite / no culpabilización</div>La producción registrada <b>no debe leerse como desempeño individual</b>. Está condicionada por disponibilidad de agenda y espacios, licencias, vacaciones, actividades en terreno, reuniones de coordinación, derivaciones y dificultades de registro. Un mes con menos "ingresos" puede reflejar trabajo territorial intenso no capturado por esa glosa, no menor dedicación.</div>
+ <div class="cal reco"><div class="h">Recomendación</div>Proteger y consolidar la dupla: estabilidad contractual y de agenda, horas protegidas para trabajo territorial y coordinación, y respaldo en gestión de datos para que el registro no compita con la atención.</div>
+</section>
+
+<!-- 9 LIMITACIONES -->
+<section id="s9">
+ <h2 class="sec"><span class="n">9</span> Limitaciones administrativas, de espacios y coordinación</h2>
+ <div class="sec-lead">Lectura profesional, orientada a soluciones. Reconoce el proceso sin atribuir responsabilidades individuales.</div>
+ <p>En distintas etapas del proceso no siempre ha sido posible entregar resultados administrativos pulcros. Esto es parte esperable de la implementación de una estrategia territorial y <b>no invalida</b> el trabajo clínico, el vínculo con los usuarios ni el aporte de la dupla. Conviene distinguir con precisión:</p>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Situación</th><th>Qué significa</th><th>Ejemplo en los datos</th></tr></thead>
+  <tbody>
+   <tr><td class="name">Ausencia de registro</td><td>La actividad se realizó pero no quedó consignada en la sección correcta.</td><td class="n">Alta actividad de controles (569) vs. pocos "ingresos" (25)</td></tr>
+   <tr><td class="name">Registro incompleto</td><td>Se registra el total pero no el detalle (tramo, resultado, derivación).</td><td class="n">Filas de "bajo control" y "concentración" en blanco en la pauta</td></tr>
+   <tr><td class="name">Baja producción real</td><td>Menor volumen efectivo por capacidad instalada o estacionalidad.</td><td class="n">Receso de ingresos en invierno (jun–jul)</td></tr>
+   <tr><td class="name">Dificultad de medición</td><td>El indicador no es registrable por diseño del instrumento.</td><td class="n">EDI/visitas/pauta SM solo 5–9 (sin instrumento &lt;5)</td></tr>
+  </tbody>
+ </table></div>
+ <h3>Factores de espacios físicos y coordinación</h3>
+ <ul>
+  <li><b>Espacio clínico:</b> la atención de salud mental infantil requiere un box pertinente (privacidad, material lúdico, condiciones para trabajo con familia). Las limitaciones de espacio afectan la frecuencia, la privacidad y el confort de la atención.</li>
+  <li><b>Continuidad de la dupla:</b> compartir agenda y box con otras prestaciones reduce las horas protegidas para PASMI y la posibilidad de mantener al mismo profesional con cada niño/a.</li>
+  <li><b>Coordinación interna e intersectorial:</b> la articulación entre la dupla, el equipo de cabecera, la red de salud mental y las escuelas depende de tiempos protegidos de reunión que muchas veces compiten con la demanda asistencial.</li>
+ </ul>
+ <div class="cal lim"><div class="h">Lectura (no culpabilizadora)</div>Estas condiciones son <b>factores del proceso de implementación</b>, no fallas del equipo. Reconocerlas con transparencia es la base para solicitar el apoyo institucional que permita mejorarlas.</div>
+ <div class="cal reco"><div class="h">Recomendación</div>Mejorar la trazabilidad y la gobernanza del dato (protocolo de registro del ingreso PASMI, glosas correctas por sección, apoyo administrativo), y resolver las condiciones de espacio y agenda. Propuestas concretas en la sección 11.</div>
+</section>
+
+<!-- 10 ARTICULACION -->
+<section id="s10">
+ <h2 class="sec"><span class="n">10</span> Articulación con el proyecto de Salud Mental</h2>
+ <div class="sec-lead">Cómo PASMI se integra a la estrategia local de Salud Mental.</div>
+ <div class="cal dato"><div class="h">Dato observado</div>La población bajo control de salud mental (todas las edades) de Tongoy creció de 578 (dic-2024) a 1.143 (jun-2026). Los niños/as 0–9 representan cerca del 15% de los ingresos de salud mental del período (25 de 168).</div>
+ <p>El PASMI no es una estrategia aislada: es el <b>componente infantil</b> de un Programa de Salud Mental APS en expansión. La pesquisa temprana en la infancia es, en términos sanitarios, la intervención de mayor retorno: cada niño/a acompañado a tiempo reduce la carga futura sobre el sistema. La articulación con el resto del programa (consultorías, telesalud, red de especialidad) y con el intersector (educación, protección) es lo que permite <b>resolver en APS</b> y reservar la derivación a especialidad para los casos que realmente la requieren.</p>
+ <div class="cal reco"><div class="h">Recomendación</div>Formalizar el PASMI dentro del plan local de salud mental, con horas de consultoría/telesalud infantil, flujos de derivación claros y un trabajo intersectorial con las escuelas protocolizado.</div>
+</section>
+
+<!-- 11 PROPUESTAS 2027 -->
+<section id="s11">
+ <h2 class="sec"><span class="n">11</span> Propuestas de mejora 2027</h2>
+ <div class="sec-lead">Plan accionable con prioridad, resultado esperado, indicador, responsable, plazo y recursos.</div>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Prio.</th><th>Problema / oportunidad</th><th>Propuesta</th><th>Resultado esperado</th><th>Indicador</th><th>Responsable sugerido</th><th>Plazo</th><th>Recursos</th></tr></thead>
+  <tbody>
+   <tr><td class="n prio p1">1</td><td>Dupla sin condiciones estables de agenda/espacio</td><td>Consolidar la dupla con horas protegidas y box pertinente para atención infantil</td><td>Continuidad del vínculo y sostenibilidad del programa</td><td>N.º horas PASMI protegidas/semana; % atenciones en box pertinente</td><td>DESAM + Dirección CESFAM</td><td>Corto</td><td>RRHH, habilitación de espacio</td></tr>
+   <tr><td class="n prio p1">1</td><td>Metas 2026 sobredimensionadas a la población local</td><td>Redefinir metas 2027 sobre denominador 0–9 real y capacidad instalada</td><td>Metas alcanzables y motivadoras; evaluación justa</td><td>Metas 2027 con denominador documentado</td><td>DESAM + SSC</td><td>Corto</td><td>Gestión, sin costo</td></tr>
+   <tr><td class="n prio p2">2</td><td>Brecha de registro del ingreso (mucha actividad, pocos ingresos)</td><td>Protocolo de registro del ingreso PASMI + apoyo administrativo</td><td>Que la actividad real quede trazada en la sección correcta</td><td>Razón controles/ingreso; % registros completos</td><td>Encargado estadística + dupla</td><td>Corto</td><td>Capacitación, apoyo admin.</td></tr>
+   <tr><td class="n prio p2">2</td><td>Tope estructural de registro &lt;5 años</td><td>Documentar y visibilizar el trabajo con &lt;5 (estimulación, familia) en glosas pertinentes</td><td>Reconocimiento del trabajo no capturado por instrumentos 5–9</td><td>Actividades &lt;5 registradas (A06/A26)</td><td>Dupla + referente SM comunal</td><td>Mediano</td><td>Definición de registro</td></tr>
+   <tr><td class="n prio p2">2</td><td>Coordinación con red educativa informal</td><td>Protocolizar el trabajo con escuelas (agenda, pesquisa, derivación)</td><td>Pesquisa temprana sistemática y continua</td><td>N.º establecimientos con convenio/plan; EDI desde escuela</td><td>Dupla + Educación municipal</td><td>Mediano</td><td>Tiempo de coordinación</td></tr>
+   <tr><td class="n prio p3">3</td><td>Trabajo familiar poco visibilizado</td><td>Incorporar talleres y acompañamiento familiar con registro</td><td>Mayor adherencia y soporte del entorno</td><td>N.º talleres/familias participantes</td><td>Dupla</td><td>Mediano</td><td>Material, espacio grupal</td></tr>
+   <tr><td class="n prio p3">3</td><td>Sin medición de experiencia usuaria</td><td>Encuesta breve de experiencia (anonimizada) a familias</td><td>Evidencia de vínculo y satisfacción</td><td>Índice de experiencia usuaria PASMI</td><td>Participación social + dupla</td><td>Mediano</td><td>Instrumento, tabulación</td></tr>
+   <tr><td class="n prio p3">3</td><td>Monitoreo discontinuo</td><td>Tablero PASMI en línea con revisión trimestral</td><td>Seguimiento continuo y transparente</td><td>Cumplimiento de hitos de monitoreo</td><td>Encargado estadística</td><td>Corto</td><td>Tablero ya disponible</td></tr>
+  </tbody>
+ </table></div>
+ <p class="small">Horizontes: <b>Corto</b> = primer semestre 2027 · <b>Mediano</b> = 2027 · <b>Estructural</b> = requiere decisión de inversión/dotación (espacios, RRHH).</p>
+</section>
+
+<!-- 12 PLAN MONITOREO / INDICADORES -->
+<section id="s12">
+ <h2 class="sec"><span class="n">12</span> Plan de monitoreo 2027 e indicadores</h2>
+ <div class="sec-lead">Tablero de indicadores sugerido: cobertura, oportunidad, continuidad, adherencia, vínculo, familia, coordinación, experiencia y calidad del registro.</div>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>#</th><th>Indicador</th><th>Fórmula</th><th>Fuente</th><th>Frec.</th><th>Línea base 2026</th><th>Meta 2027</th></tr></thead>
+  <tbody>
+   <tr><td class="n">1</td><td class="name">Cobertura PASMI 0–9</td><td>Niños/as bajo control ÷ población 0–9 per cápita</td><td>P6 / per cápita FONASA</td><td class="n">Semestral</td><td class="n">≈8,6% (100/1.159 est.)</td><td class="n">≥12%</td></tr>
+   <tr><td class="n">2</td><td class="name">Cumplimiento de ingresos</td><td>Ingresos SM 0–9 ÷ meta anual</td><td>A05-N</td><td class="n">Mensual</td><td class="n">47% (ene–sep)</td><td class="n">≥80%</td></tr>
+   <tr><td class="n">3</td><td class="name">Oportunidad de evaluación</td><td>% ingresos con EDI dentro de 30 días</td><td>A05-N / A06-G</td><td class="n">Mensual</td><td class="n">s/d (paciente)</td><td class="n">≥70%</td></tr>
+   <tr><td class="n">4</td><td class="name">Concentración de controles</td><td>Controles SM 0–9 ÷ bajo control</td><td>A06-A.1 / P6</td><td class="n">Trimestral</td><td class="n">≈7,6 anualiz.</td><td class="n">≥8</td></tr>
+   <tr><td class="n">5</td><td class="name">Continuidad del vínculo</td><td>% usuarios con ≥2 controles en el período</td><td>Registro clínico</td><td class="n">Trimestral</td><td class="n">s/d (paciente)</td><td class="n">≥75%</td></tr>
+   <tr><td class="n">6</td><td class="name">Permanencia en control</td><td>1 − (egresos ÷ ingresos acumulados)</td><td>A05-N/O</td><td class="n">Semestral</td><td class="n">≈72% (proxy)</td><td class="n">Monitorear</td></tr>
+   <tr><td class="n">7</td><td class="name">Cobertura de evaluación diagnóstica</td><td>EDI ÷ ingresos del período</td><td>A06-G / A05-N</td><td class="n">Mensual</td><td class="n">76% (19/25)</td><td class="n">≥90%</td></tr>
+   <tr><td class="n">8</td><td class="name">Trabajo territorial escolar</td><td>N.º visitas a establecimientos educacionales</td><td>A26-F</td><td class="n">Mensual</td><td class="n">25 (Tongoy)</td><td class="n">≥36</td></tr>
+   <tr><td class="n">9</td><td class="name">Trabajo con familias</td><td>N.º talleres/intervenciones familiares</td><td>A06 / A27</td><td class="n">Mensual</td><td class="n">0 registrado</td><td class="n">≥8</td></tr>
+   <tr><td class="n">10</td><td class="name">Resolución en APS</td><td>% casos resueltos sin derivación a especialidad</td><td>A06-G / derivación</td><td class="n">Trimestral</td><td class="n">s/d</td><td class="n">≥70%</td></tr>
+   <tr><td class="n">11</td><td class="name">Experiencia usuaria</td><td>% familias con experiencia satisfactoria</td><td>Encuesta anonimizada</td><td class="n">Semestral</td><td class="n">s/d</td><td class="n">≥85%</td></tr>
+   <tr><td class="n">12</td><td class="name">Calidad del registro</td><td>% prestaciones registradas en sección correcta</td><td>Auditoría REM</td><td class="n">Trimestral</td><td class="n">s/d</td><td class="n">≥95%</td></tr>
+  </tbody>
+ </table></div>
+ <p><b>Gobernanza del monitoreo.</b> Revisión <b>trimestral</b> en reunión de equipo con el tablero en línea; responsable: encargado de estadística con la dupla; <b>alertas operacionales</b> cuando un indicador trazador (concentración, continuidad, cobertura de EDI) caiga bajo umbral dos trimestres seguidos.</p>
+</section>
+
+<!-- 13 CONCLUSIONES -->
+<section id="s13">
+ <h2 class="sec"><span class="n">13</span> Conclusiones</h2>
+ <div class="sec-lead">Síntesis técnica equilibrada, orientada a la continuidad y el fortalecimiento.</div>
+ <ul>
+  <li>El PASMI en CESFAM Tongoy es una <b>estrategia territorial válida y activa</b>, con una población infantil bajo control cercana a la meta y una intensidad de seguimiento alta sostenida por la dupla psicosocial.</li>
+  <li>Los <b>datos son correctos y trazables</b> al REM oficial; los bajos porcentajes de cumplimiento se explican por metas sobredimensionadas, un techo estructural de registro (&lt;5 sin instrumento) y una brecha de registro del ingreso, no por bajo desempeño del equipo.</li>
+  <li>El <b>valor comunitario</b> (presencia en escuelas, continuidad, vínculo con familias) es real pero está subrepresentado por los indicadores administrativos actuales.</li>
+  <li>La <b>continuidad y las condiciones de trabajo de la dupla</b>, junto con un espacio pertinente y mejor registro, son las palancas de mayor impacto para 2027.</li>
+  <li>Con metas realistas, apoyo en espacios y datos, y un monitoreo trimestral, la estrategia puede <b>consolidarse y evidenciar su impacto</b> de forma transparente ante las autoridades.</li>
+ </ul>
+ <p>Se solicita a las autoridades del DESAM de Coquimbo y del Servicio de Salud Coquimbo el <b>apoyo institucional</b> descrito en las secciones 11 y 12, orientado a fortalecer una estrategia que responde a una necesidad real de la comunidad infantil de Tongoy.</p>
+</section>
+
+<!-- 14 ANEXOS -->
+<section id="s14">
+ <h2 class="sec"><span class="n">14</span> Anexos</h2>
+ <div class="sec-lead">Tablas de respaldo, lista de gráficos y limitaciones de datos.</div>
+
+ <h3>Anexo A · Serie mensual PASMI 0–9 (respaldo de los gráficos)</h3>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Prestación (0–9)</th><th class="n">Ene</th><th class="n">Feb</th><th class="n">Mar</th><th class="n">Abr</th><th class="n">May</th><th class="n">Jun</th><th class="n">Jul</th><th class="n">Ago</th><th class="n">Sep</th><th class="n">Σ</th></tr></thead>
+  <tbody>
+   <tr><td class="name">Ingresos SM · Tongoy</td><td class="n">2</td><td class="n">5</td><td class="n">5</td><td class="n">3</td><td class="n">4</td><td class="n">0</td><td class="n">0</td><td class="n">2</td><td class="n">4</td><td class="n">25</td></tr>
+   <tr><td class="name">Egresos alta · Tongoy</td><td class="n">3</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">1</td><td class="n">0</td><td class="n">3</td><td class="n">0</td><td class="n">7</td></tr>
+   <tr><td class="name">EDI · Tongoy</td><td class="n">3</td><td class="n">0</td><td class="n">0</td><td class="n">1</td><td class="n">2</td><td class="n">0</td><td class="n">1</td><td class="n">4</td><td class="n">8</td><td class="n">19</td></tr>
+   <tr><td class="name">Visitas educativas · Tongoy</td><td class="n">2</td><td class="n">0</td><td class="n">5</td><td class="n">6</td><td class="n">1</td><td class="n">0</td><td class="n">5</td><td class="n">1</td><td class="n">5</td><td class="n">25</td></tr>
+   <tr><td class="name">Controles SM · Tongoy</td><td class="n">48</td><td class="n">53</td><td class="n">59</td><td class="n">60</td><td class="n">99</td><td class="n">39</td><td class="n">39</td><td class="n">82</td><td class="n">90</td><td class="n">569</td></tr>
+   <tr><td class="name">Ingresos SM · Guanaqueros</td><td class="n">1</td><td class="n">0</td><td class="n">2</td><td class="n">9</td><td class="n">2</td><td class="n">0</td><td class="n">1</td><td class="n">0</td><td class="n">2</td><td class="n">17</td></tr>
+   <tr><td class="name">EDI · Guanaqueros</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">1</td><td class="n">1</td><td class="n">0</td><td class="n">0</td><td class="n">8</td><td class="n">10</td></tr>
+   <tr><td class="name">Visitas educativas · Guanaqueros</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">12</td><td class="n">0</td><td class="n">8</td><td class="n">20</td></tr>
+  </tbody>
+ </table></div>
+
+ <h3>Anexo B · Lista de gráficos del tablero utilizados, interpretación y recomendación de actualización</h3>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Gráfico</th><th>Qué muestra / decisión que apoya</th><th>Recomendación de actualización 2027</th></tr></thead>
+  <tbody>
+   <tr><td class="name">1 · Ingresos/egresos SM 0–9</td><td>Flujo de entrada/salida mensual; apoya dimensionar demanda y metas.</td><td>Agregar banda de meta mensualizada; marcar receso estival.</td></tr>
+   <tr><td class="name">2 · EDI y visitas educativas</td><td>Actividad de pesquisa y trabajo escolar; apoya planificación territorial.</td><td>Superponer calendario escolar; separar visitas por establecimiento.</td></tr>
+   <tr><td class="name">3 · Cumplimiento vs meta</td><td>Avance frente a metas; apoya la conversación sobre metas realistas.</td><td>Recalcular con metas 2027 redimensionadas.</td></tr>
+   <tr><td class="name">4 · Producción por dispositivo</td><td>Aporte Tongoy vs Guanaqueros; apoya reconocer la producción local total.</td><td>Incluir Guanaqueros en el seguimiento comunal PASMI.</td></tr>
+   <tr><td class="name">5 · Controles SM infantil</td><td>Intensidad real del acompañamiento; apoya visibilizar el trabajo no capturado por "ingresos".</td><td>Mostrar razón controles/ingreso como indicador trazador.</td></tr>
+   <tr><td class="name">6 · Aporte por profesional</td><td>Peso de la dupla psicosocial; apoya la solicitud de estabilidad de la dupla.</td><td>Monitorear continuidad del mismo profesional por usuario (requiere dato paciente).</td></tr>
+  </tbody>
+ </table></div>
+
+ <h3>Anexo C · Limitaciones de datos y acciones para mejorar la calidad informacional 2027</h3>
+ <div class="tbl-wrap"><table>
+  <thead><tr><th>Limitación</th><th>Efecto en el análisis</th><th>Acción 2027</th></tr></thead>
+  <tbody>
+   <tr><td class="name">Sin dato a nivel de paciente</td><td>No hay cohortes, intervalos ni retención individual; solo proxies ecológicos.</td><td>Explotar el registro clínico local (anonimizado) para continuidad y oportunidad.</td></tr>
+   <tr><td class="name">Tramo &lt;5 no registrable</td><td>EDI/visitas/pauta SM solo 5–9; subrepresenta el trabajo con &lt;5.</td><td>Definir glosas para registrar la actividad con &lt;5 años.</td></tr>
+   <tr><td class="name">Tramo fino 5–9 no detallado en el per cápita manejado</td><td>El 0–9 se estima (0–4 y 0–14 son exactos del per cápita).</td><td>Incorporar el per cápita FONASA por grupos quinquenales para el dato exacto.</td></tr>
+   <tr><td class="name">Diagnósticos SM son de todas las edades</td><td>No se puede desagregar el perfil diagnóstico infantil.</td><td>Registrar perfil 0–9 o extraer del registro clínico.</td></tr>
+   <tr><td class="name">Bajo control Guanaqueros s/i</td><td>El total local bajo control queda incompleto.</td><td>Incorporar P6 de Guanaqueros al seguimiento.</td></tr>
+   <tr><td class="name">Sin experiencia usuaria / espacios-RRHH formal</td><td>El impacto y las condiciones se abordan cualitativamente.</td><td>Encuesta de experiencia e inventario de espacios/dotación.</td></tr>
+  </tbody>
+ </table></div>
+
+ <h3>Anexo D · Autoevaluación de calidad del informe</h3>
+ <p class="small">Completitud (14 secciones + entregables): ✔ · Trazabilidad al REM oficial: ✔ (validación celda a celda) · Uso de gráficos del tablero: ✔ (6 gráficos) · Confidencialidad (solo agregados): ✔ · Separación dato/lectura/recomendación: ✔ · Viabilidad de las propuestas: ✔ (plazos y recursos definidos) · Claridad ejecutiva: ✔ (resumen + mensajes clave) · Limitaciones declaradas: ✔.</p>
+ <div class="hr"></div>
+ <p class="small">Elaborado por la Unidad de análisis de datos / estadística, CESFAM Tongoy, con metodología de salud pública en APS. Documento de trabajo para decisión institucional; las metas y umbrales son referenciales y editables conforme a las definiciones oficiales del período (Programa de Salud Mental APS, per cápita y Metas Sanitarias, Ley 19.813).</p>
+</section>
+
+</div>
+
+<footer>Informe Técnico-Ejecutivo PASMI 2026 · CESFAM Tongoy · Región de Coquimbo · Datos REM Serie A/P (DEIS–MINSAL) · Confidencial — solo datos agregados</footer>
+
+<script>
+const MN=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep'];
+const T={ing:[2,5,5,3,4,0,0,2,4],egr:[3,0,0,0,0,1,0,3,0],edi:[3,0,0,1,2,0,1,4,8],vis:[2,0,5,6,1,0,5,1,5],ctrl:[48,53,59,60,99,39,39,82,90]};
+const G={ing:17,edi:10,vis:20};
+const Tsum={ing:25,edi:19,vis:25};
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+Chart.defaults.font.family="Inter,system-ui,sans-serif";
+Chart.defaults.font.size=11.5;
+Chart.defaults.color=css('--ink2');
+function base(extra){return Object.assign({responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{labels:{boxWidth:11,color:css('--ink2'),font:{size:11.5}}}},
+  scales:{x:{grid:{display:false},ticks:{color:css('--mut')}},y:{beginAtZero:true,grid:{color:css('--line')},ticks:{color:css('--mut'),precision:0}}}},extra||{});}
+// 1 ingresos/egresos
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:MN,datasets:[
+ {label:'Ingresos SM (0–9)',data:T.ing,backgroundColor:css('--s3'),borderRadius:4,maxBarThickness:26},
+ {label:'Egresos por alta (0–9)',data:T.egr,backgroundColor:css('--s2'),borderRadius:4,maxBarThickness:26}]},options:base()});
+// 2 EDI vs visitas
+new Chart(document.getElementById('c2'),{type:'bar',data:{labels:MN,datasets:[
+ {label:'EDI (evaluación diagnóstica)',data:T.edi,backgroundColor:css('--s1'),borderRadius:4,maxBarThickness:26},
+ {label:'Visitas educativas',data:T.vis,backgroundColor:css('--s4'),borderRadius:4,maxBarThickness:26}]},options:base()});
+// 3 cumplimiento horizontal (logrado vs meta)
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:['Bajo control','Ingresos','Visitas educ.','EDI','Egresos alta'],datasets:[
+ {label:'Logrado (ene–sep)',data:[100,25,25,19,7],backgroundColor:css('--s1'),borderRadius:4},
+ {label:'Meta anual',data:[118,53,59,48,24],backgroundColor:'#cfd8e2',borderRadius:4}]},
+ options:base({indexAxis:'y',scales:{x:{beginAtZero:true,grid:{color:css('--line')},ticks:{color:css('--mut')}},y:{grid:{display:false},ticks:{color:css('--ink2')}}}})});
+// 4 por dispositivo
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Ingresos','EDI','Visitas educ.'],datasets:[
+ {label:'CESFAM Tongoy',data:[Tsum.ing,Tsum.edi,Tsum.vis],backgroundColor:css('--s1'),borderRadius:4,maxBarThickness:46},
+ {label:'PSR Guanaqueros',data:[G.ing,G.edi,G.vis],backgroundColor:css('--s5'),borderRadius:4,maxBarThickness:46}]},options:base()});
+// 5 controles linea
+new Chart(document.getElementById('c5'),{type:'line',data:{labels:MN,datasets:[
+ {label:'Controles SM infantil (0–9)',data:T.ctrl,borderColor:css('--s3'),backgroundColor:'rgba(21,160,138,.12)',fill:true,borderWidth:2.5,tension:.3,pointRadius:3,pointBackgroundColor:css('--s3')}]},options:base({plugins:{legend:{display:false}}})});
+// 6 dupla doughnut
+new Chart(document.getElementById('c6'),{type:'doughnut',data:{labels:['Psicólogo/a (52%)','Trabajador/a Social (42%)','Médico/a (6%)'],datasets:[
+ {data:[295,240,34],backgroundColor:[css('--s1'),css('--s3'),css('--s4')],borderColor:css('--surf'),borderWidth:2}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{boxWidth:12,color:css('--ink2'),font:{size:12}}}}}});
+</script>
+</body></html>
