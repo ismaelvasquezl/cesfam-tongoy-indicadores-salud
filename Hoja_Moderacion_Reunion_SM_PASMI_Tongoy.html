@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoja de moderación · Reunión SM y PASMI · CESFAM Tongoy</title>
+<style>
+  :root{
+    --ink:#132f35; --petroleo:#0d4f5c; --petroleo-d:#0a3b45; --petroleo-dd:#082e37;
+    --teal:#1b8a9b; --teal-l:#e3f1f3;
+    --verde:#2e9e5b; --verde-l:#e6f5ec;
+    --ambar:#c98424; --ambar-l:#fbf0dc;
+    --rojo:#cf4b5e; --rojo-l:#fae7ea;
+    --bg:#eef4f5; --card:#fff; --line:#d7e3e5; --muted:#5a7076;
+    --shadow:0 5px 18px rgba(10,59,69,.08);
+    --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px}
+
+  header{background:linear-gradient(150deg,var(--petroleo-d),var(--petroleo-dd));color:#fff;border-radius:16px;padding:22px 26px;margin-bottom:16px}
+  header .eyebrow{color:#7fd3dd;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem}
+  header h1{font-size:clamp(1.3rem,3.2vw,1.8rem);margin:.25em 0;letter-spacing:-.01em}
+  header p{color:#cfe7ea;font-size:.92rem;max-width:66ch}
+  header .meta{margin-top:.8em;font-size:.82rem;color:#aed7dc}
+
+  .roles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .role{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);border-top:5px solid}
+  .role.f{border-top-color:var(--teal)} .role.i{border-top-color:var(--petroleo)}
+  .role .tag{display:inline-flex;align-items:center;gap:.4em;font-weight:800;font-size:.95rem}
+  .role.f .tag{color:var(--teal)} .role.i .tag{color:var(--petroleo)}
+  .role .chip{width:24px;height:24px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:.8rem;font-weight:800}
+  .role.f .chip{background:var(--teal)} .role.i .chip{background:var(--petroleo)}
+  .role p{font-size:.86rem;color:#36494e;margin-top:.4em}
+
+  h2{font-size:1.05rem;color:var(--petroleo-d);margin:1.2em 0 .5em;display:flex;align-items:center;gap:.5em}
+  h2::before{content:"";width:20px;height:3px;border-radius:3px;background:var(--teal)}
+
+  .pre{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--ambar);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow)}
+  .pre ul{list-style:none} .pre li{position:relative;padding-left:1.8em;margin:.35em 0;font-size:.88rem}
+  .pre li::before{content:"☐";position:absolute;left:0;color:var(--ambar);font-weight:700}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:.86rem}
+  th,td{padding:.6em .7em;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--petroleo);color:#fff;font-weight:700;font-size:.82em}
+  tbody tr:last-child td{border-bottom:none}
+  td.min{font-weight:800;color:var(--petroleo);text-align:center;width:46px;font-variant-numeric:tabular-nums}
+  td.who{width:58px;text-align:center}
+  .q{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;color:#fff;font-weight:800;font-size:.76rem;margin:0 1px}
+  .q.f{background:var(--teal)} .q.i{background:var(--petroleo)}
+  td .say{color:#1d3e45} td .say em{color:var(--muted);font-style:italic}
+  td .watch{display:block;margin-top:.35em;font-size:.82em;color:var(--muted)}
+  td .watch b{color:var(--ambar)}
+  td .lam{font-size:.78em;color:var(--teal);font-weight:700;white-space:nowrap}
+
+  .frases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:.6em}
+  .frase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;box-shadow:var(--shadow)}
+  .frase .sit{font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rojo);margin-bottom:.3em}
+  .frase p{font-size:.88rem;color:#24383d} .frase p::before{content:"«";color:var(--teal);font-weight:800} .frase p::after{content:"»";color:var(--teal);font-weight:800}
+
+  .corules{background:var(--teal-l);border-radius:12px;padding:12px 18px;margin-top:.6em}
+  .corules ul{list-style:none} .corules li{position:relative;padding-left:1.4em;margin:.3em 0;font-size:.87rem}
+  .corules li::before{content:"▸";position:absolute;left:0;color:var(--petroleo);font-weight:700}
+
+  footer{text-align:center;color:var(--muted);font-size:.8rem;margin:18px 0 6px}
+
+  @media(max-width:700px){.roles,.frases{grid-template-columns:1fr}table{font-size:.8rem}}
+  @media print{body{background:#fff}.wrap{max-width:none;padding:0}header{border-radius:0;color:#000;background:#fff;border-bottom:3px solid var(--petroleo)}header .eyebrow,header h1{color:var(--petroleo-d)}header p,header .meta{color:#333}.role,.pre,table,.frase,.corules{box-shadow:none}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Hoja de moderación · uso interno</span>
+    <h1>Reunión técnica — Salud Mental y PASMI · CESFAM Tongoy</h1>
+    <p>Guía de conducción para coordinarnos durante la reunión: quién lleva cada bloque, qué decir, qué mostrar y a qué poner atención. Ventana: 35–40 min.</p>
+    <div class="meta">Francisca (conducción · Unidad Técnica) · Ismael (exposición técnica · análisis de datos) — octubre 2026</div>
+  </header>
+
+  <div class="roles">
+    <div class="role f"><span class="tag"><span class="chip">F</span>Francisca — Conduce y cuida el clima</span>
+      <p>Abre y cierra, enlaza los bloques, gestiona la relación con la visita, formula la petición de apoyo institucional y recoge los acuerdos. Marca el ritmo y la señal de tiempo.</p></div>
+    <div class="role i"><span class="tag"><span class="chip">I</span>Ismael — Expone el contenido técnico</span>
+      <p>Presenta el método, los datos de salud mental y PASMI, el contraste con la pauta DESAM y las propuestas 2027. Se apoya en la presentación proyectada.</p></div>
+  </div>
+
+  <section>
+    <h2>Antes de empezar (5 min antes)</h2>
+    <div class="pre"><ul>
+      <li>Los dos enlaces abiertos y probados: <b>Presentación</b> e <b>Informe</b>.</li>
+      <li>Presentación en pantalla completa (tecla <b>F</b>); avanzar con ← →, tecla <b>O</b> para vista general.</li>
+      <li>Tabla de <b>Acuerdos</b> del informe lista para completar (quién la escribe: Francisca).</li>
+      <li>Acordar la <b>señal de tiempo</b> entre ambos (un gesto cuando falten ~2 min de un bloque).</li>
+      <li>Recordatorio compartido: <b>hablamos del dato, no de las personas</b>.</li>
+    </ul></div>
+  </section>
+
+  <section>
+    <h2>Guion de la reunión, bloque por bloque</h2>
+    <table>
+      <thead><tr><th class="min">Min</th><th>Bloque</th><th class="who">Lleva</th><th>Qué decir · qué mostrar · atención</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="min">3′</td><td><strong>Apertura y encuadre</strong></td><td class="who"><span class="q f">F</span></td>
+          <td><span class="say"><em>«Gracias por la visita. Hoy, como área técnica, queremos compartir cómo analizamos nuestros datos y qué proponemos. Les pedimos una mirada en conjunto: conversemos del dato, no de las personas.»</em></span>
+          <span class="watch"><span class="lam">Lám. 1–2</span> · <b>Atención:</b> tono cálido; que la visita se sienta parte, no evaluada.</span></td>
+        </tr>
+        <tr>
+          <td class="min">6′</td><td><strong>Propósito y método</strong></td><td class="who"><span class="q i">I</span></td>
+          <td><span class="say">Primero el propósito —la infancia de Tongoy—; luego el método: fuente verificada, limpieza, pseudonimización, unidad de análisis, y los cuatro principios de lectura. Cerrar con <em>«dato → lectura → recomendación»</em>.</span>
+          <span class="watch"><span class="lam">Lám. 3–5</span> · <b>Atención:</b> sin exceso técnico; una idea a la vez. F enlaza al terminar.</span></td>
+        </tr>
+        <tr>
+          <td class="min">6′</td><td><strong>Lo realizado + Salud Mental</strong></td><td class="who"><span class="q i">I</span></td>
+          <td><span class="say">Los cuatro productos; síntesis del Programa de Salud Mental (9.890 prestaciones, 2.452 usuarios, dependencia operativa, continuidad).</span>
+          <span class="watch"><span class="lam">Lám. 6–7</span> · <b>Atención:</b> no leer las tablas completas; nombrar el titular de cada una. <i>(Bloque a comprimir si se busca cerrar en 35 min.)</i></span></td>
+        </tr>
+        <tr>
+          <td class="min">6′</td><td><strong>PASMI: resultados reales</strong></td><td class="who"><span class="q i">I</span></td>
+          <td><span class="say">100 niños/as bajo control (85% de la meta), 569 controles, la dupla sostiene el 94%, ≈23 controles por ingreso.</span>
+          <span class="watch"><span class="lam">Lám. 8–9</span> · <b>Atención:</b> conectar con lo humano (detrás de cada número hay un niño/a). <i>(Bloque a comprimir para 35 min.)</i></span></td>
+        </tr>
+        <tr style="background:var(--ambar-l)">
+          <td class="min">8′</td><td><strong>Contraste con la pauta DESAM</strong></td><td class="who"><span class="q i">I</span><br><span class="q f">F</span></td>
+          <td><span class="say">I expone la tabla celda a celda y las tres razones; F sostiene el clima y da espacio a la visita. <em>«Validamos cada cifra contra el REM: el dato es correcto. La diferencia es de corte, alcance y diseño de metas, no de desempeño. La propia pauta lo confirma: instrumentos solo 5–9, y la IPG/Taller NEP en A06 Sección A.»</em></span>
+          <span class="watch"><span class="lam">Lám. 10–11</span> · <b>Atención:</b> tono no defensivo; dejar hablar a la visita; si se tensa, reconducir (ver frases).</span></td>
+        </tr>
+        <tr>
+          <td class="min">6′</td><td><strong>Pasos a seguir y decisión</strong></td><td class="who"><span class="q i">I</span><br><span class="q f">F</span></td>
+          <td><span class="say">I presenta las 5 palancas y «Criar en Relación» listo para ejecutar. F formula la petición: <em>«Lo que pedimos es respaldo a la dupla, un espacio, metas realistas y apoyo en datos; a cambio, monitoreo trimestral transparente.»</em></span>
+          <span class="watch"><span class="lam">Lám. 12–14</span> · <b>Atención:</b> proyectar 2027; que la petición quede clara y concreta.</span></td>
+        </tr>
+        <tr>
+          <td class="min">5′</td><td><strong>Acuerdos y cierre</strong></td><td class="who"><span class="q f">F</span></td>
+          <td><span class="say"><em>«Recojamos acuerdos: responsable y plazo de cada uno. ¿Fijamos una próxima instancia de seguimiento?»</em> Anotar en la tabla de Acuerdos del informe.</span>
+          <span class="watch"><span class="lam">Informe · Acuerdos</span> · <b>Atención:</b> cerrar en fortalezas; que nadie salga sin un próximo paso.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Caja de frases para momentos clave</h2>
+    <div class="frases">
+      <div class="frase"><div class="sit">Si cuestionan las cifras</div><p>El dato coincide celda a celda con el REM y con la pauta comunal; en eso estamos de acuerdo. Lo que proponemos revisar es cómo se miden las metas.</p></div>
+      <div class="frase"><div class="sit">Si se lee como «bajo desempeño»</div><p>No es bajo desempeño: es una estrategia viva, con metas pensadas para una realidad mayor, un techo de registro bajo 5 años y producción de Guanaqueros que la pauta no visibiliza.</p></div>
+      <div class="frase"><div class="sit">Para reconducir si se tensa</div><p>Hablemos del dato, no de las personas. ¿Qué información nos ayudaría a cerrar esta diferencia?</p></div>
+      <div class="frase"><div class="sit">Para cerrar un bloque</div><p>¿Hay algo de esto que quieran precisar antes de seguir?</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reglas de co-moderación</h2>
+    <div class="corules"><ul>
+      <li>Uno conduce, el otro <strong>observa el clima y toma nota</strong>; nos turnamos según el guion.</li>
+      <li>No nos interrumpimos; si uno se traba, el otro retoma con naturalidad.</li>
+      <li>La calma se contagia: ritmo pausado, pausas para que la visita participe.</li>
+      <li>Cuidamos el tiempo con la señal acordada; si un bloque se alarga, comprimimos el siguiente.</li>
+      <li>Todo acuerdo se anota <strong>en el momento</strong> en la tabla del informe.</li>
+    </ul></div>
+  </section>
+
+  <footer>Uso interno · Unidad Técnica CESFAM Tongoy · Imprimir a PDF para tenerla en la mesa durante la reunión.</footer>
+</div>
+</body>
+</html>
