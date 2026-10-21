@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe de reunión técnica · Salud Mental y PASMI · CESFAM Tongoy</title>
+<style>
+  :root{
+    --ink:#132f35; --petroleo:#0d4f5c; --petroleo-d:#0a3b45; --petroleo-dd:#082e37;
+    --teal:#1b8a9b; --teal-l:#e3f1f3; --teal-ll:#f3f9fa;
+    --verde:#2e9e5b; --verde-l:#e6f5ec;
+    --ambar:#c98424; --ambar-l:#fbf0dc;
+    --rojo:#cf4b5e; --rojo-l:#fae7ea;
+    --bg:#eef4f5; --card:#ffffff; --line:#d7e3e5; --muted:#5a7076;
+    --shadow:0 6px 22px rgba(10,59,69,.08);
+    --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --wrap:960px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+
+  /* top nav */
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(10,59,69,.96);backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(255,255,255,.1)}
+  nav.top .wrap{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-top:9px;padding-bottom:9px;scrollbar-width:thin}
+  nav.top a{white-space:nowrap;color:#cfe7ea;text-decoration:none;font-size:.78rem;font-weight:600;
+    padding:.4em .8em;border-radius:999px;transition:.15s}
+  nav.top a:hover{background:rgba(255,255,255,.12);color:#fff}
+  nav.top a.home{color:#7fd3dd;font-weight:800}
+
+  /* hero */
+  header.hero{background:linear-gradient(150deg,var(--petroleo-d),var(--petroleo-dd));color:#fff;padding:52px 0 44px}
+  header.hero .eyebrow{color:#7fd3dd;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+  header.hero h1{font-size:clamp(1.8rem,4.6vw,2.9rem);line-height:1.1;letter-spacing:-.02em;margin:.4em 0;max-width:22ch}
+  header.hero p{color:#cfe7ea;max-width:62ch;font-size:1.05rem}
+  header.hero .meta{display:flex;flex-wrap:wrap;gap:.55em;margin-top:1.3em}
+  header.hero .meta span{font-size:.85rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:.45em .9em;border-radius:999px}
+
+  section.block{padding:40px 0;border-bottom:1px solid var(--line)}
+  section.block:nth-child(even){background:#f6fafa}
+  .kicker{display:inline-flex;align-items:center;gap:.5em;font-size:.76rem;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--teal)}
+  .kicker .no{background:var(--petroleo);color:#fff;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:.85rem}
+  h2{font-size:clamp(1.4rem,3.2vw,2rem);color:var(--petroleo-d);letter-spacing:-.01em;margin:.35em 0 .5em;line-height:1.15}
+  h3{font-size:1.15rem;color:var(--petroleo-d);margin:1.2em 0 .4em}
+  p.lead{font-size:1.08rem;color:#3a4e53;max-width:66ch;margin-bottom:.6em}
+  p{margin-bottom:.7em;max-width:72ch}
+  strong{color:var(--petroleo-d)}
+  a.inl{color:var(--teal);font-weight:600}
+
+  .grid{display:grid;gap:16px;margin-top:1.1em}
+  .c2{grid-template-columns:repeat(2,1fr)} .c3{grid-template-columns:repeat(3,1fr)} .c4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .card h4{font-size:1.02rem;color:var(--petroleo-d);margin-bottom:.35em;display:flex;align-items:center;gap:.5em}
+  .card p,.card li{font-size:.94rem;color:#36494e}
+  .badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:.25em .7em;border-radius:999px;background:var(--teal-l);color:var(--petroleo-d);margin-bottom:.5em}
+
+  .stats{display:grid;gap:14px;margin:1.1em 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:1.9rem;font-weight:800;color:var(--petroleo);line-height:1;letter-spacing:-.02em}
+  .stat .k{font-size:.9rem;font-weight:600;margin-top:.4em}
+  .stat .s{font-size:.78rem;color:var(--muted);margin-top:.2em}
+  .stat.teal{background:var(--petroleo);border-color:var(--petroleo)}
+  .stat.teal .n{color:#fff}.stat.teal .k{color:#eafafb}.stat.teal .s{color:#bfe2e6}
+
+  ul.clean{list-style:none;margin:.3em 0}
+  ul.clean li{position:relative;padding-left:1.4em;margin:.35em 0;font-size:.96rem}
+  ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--teal);font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;margin:.6em 0}
+  ol.steps li{position:relative;padding-left:2.6em;margin:.6em 0;font-size:.97rem}
+  ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-.1em;width:30px;height:30px;
+    border-radius:8px;background:var(--petroleo);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.9rem}
+
+  table{width:100%;border-collapse:collapse;margin:1em 0;background:var(--card);border-radius:12px;overflow:hidden;
+    box-shadow:var(--shadow);font-size:.9rem}
+  th,td{padding:.62em .8em;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--petroleo);color:#fff;font-weight:700;font-size:.85em;letter-spacing:.02em}
+  tbody tr:last-child td{border-bottom:none}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+  td.desam{color:#9e2e3e;background:var(--rojo-l);font-weight:700;text-align:center}
+  td.real{color:#1d6e3e;background:var(--verde-l);font-weight:700;text-align:center}
+  caption{caption-side:bottom;font-size:.8rem;color:var(--muted);text-align:left;padding-top:.5em}
+  .pauta th{font-size:.82em}
+  .pauta td.min{font-weight:800;color:var(--petroleo);text-align:center;width:62px}
+
+  .note{border-left:5px solid var(--teal);background:var(--teal-ll);border-radius:10px;padding:1em 1.2em;margin:1.1em 0}
+  .note.warn{border-color:var(--ambar);background:var(--ambar-l)}
+  .note.ok{border-color:var(--verde);background:var(--verde-l)}
+  .note.key{border-color:var(--petroleo);background:#fff}
+  .note .lbl{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.3em}
+  .note.warn .lbl{color:var(--ambar)} .note.ok .lbl{color:var(--verde)} .note.key .lbl{color:var(--petroleo)}
+
+  .dlr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1em 0}
+  .dlr .b{border:1px solid var(--line);border-radius:12px;padding:.9em 1em;background:var(--card)}
+  .dlr .b .t{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3em}
+  .dlr .b p{font-size:.88rem;margin:0}
+  .dlr .d{border-top:4px solid var(--petroleo)}.dlr .d .t{color:var(--petroleo)}
+  .dlr .l{border-top:4px solid var(--teal)}.dlr .l .t{color:var(--teal)}
+  .dlr .r{border-top:4px solid var(--verde)}.dlr .r .t{color:var(--verde)}
+
+  .links{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:1em}
+  a.link{display:flex;gap:.7em;align-items:center;text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:.8em 1em;color:var(--ink);box-shadow:var(--shadow);transition:.15s}
+  a.link:hover{border-color:var(--teal);transform:translateY(-2px)}
+  a.link .ri{flex:0 0 auto;width:36px;height:36px;border-radius:9px;background:var(--teal-l);display:grid;place-items:center;font-size:1.15em}
+  a.link .rt{font-weight:700;font-size:.92rem;color:var(--petroleo-d);line-height:1.2}
+  a.link .rs{font-size:.76rem;color:var(--muted)}
+
+  /* fillable acuerdos */
+  .fill{background:var(--card);border:1px dashed var(--teal);border-radius:12px;padding:1em 1.2em;margin:.8em 0}
+  .fill .q{font-weight:700;color:var(--petroleo-d);font-size:.95rem}
+  .fill .ln{border-bottom:1px solid var(--line);height:1.9em}
+  .acc-row{display:grid;grid-template-columns:1.6fr 1fr .8fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:.5em 0;background:var(--card)}
+  .acc-row>div{padding:.6em .8em;border-right:1px solid var(--line);font-size:.85rem}
+  .acc-row>div:last-child{border-right:none}
+  .acc-head{background:var(--teal-l);font-weight:700;color:var(--petroleo-d)}
+
+  footer{background:var(--petroleo-dd);color:#bfe2e6;padding:28px 0;font-size:.84rem}
+  footer strong{color:#eafafb}
+  .conf{background:#fff;border:1px solid var(--ambar);border-left:5px solid var(--ambar);border-radius:10px;padding:1em 1.2em;margin-top:1em}
+
+  @media(max-width:720px){.c2,.c3,.c4,.dlr,.links,.acc-row{grid-template-columns:1fr}table{font-size:.82rem}}
+  @media print{nav.top{display:none}section.block{break-inside:avoid}body{background:#fff}header.hero{color:#000;background:#fff;border-bottom:3px solid var(--petroleo)}header.hero h1,header.hero .eyebrow{color:var(--petroleo-d)}header.hero p,header.hero .meta span{color:#333;background:#eee}}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap">
+  <a class="home" href="#inicio">▲ Inicio</a>
+  <a href="#pauta">Pauta</a>
+  <a href="#metodo">Método</a>
+  <a href="#productos">Lo realizado</a>
+  <a href="#resultados">Resultados</a>
+  <a href="#contraste">Contraste DESAM</a>
+  <a href="#pasos">Pasos a seguir</a>
+  <a href="#acuerdos">Acuerdos</a>
+  <a href="#recursos">Recursos</a>
+</div></nav>
+
+<header class="hero" id="inicio"><div class="wrap">
+  <span class="eyebrow">Informe de reunión técnica · Área de análisis de datos</span>
+  <h1>Programa de Salud Mental y PASMI de Tongoy: método, resultados y pasos a seguir</h1>
+  <p>Documento de trabajo para la visita de la red. Reúne nuestro método de análisis, lo realizado en salud mental y PASMI, el contraste con la pauta de seguimiento del DESAM y las propuestas 2027 — con espacio para registrar los acuerdos de la reunión.</p>
+  <div class="meta">
+    <span>🏥 CESFAM Tongoy (105321) + PSR Guanaqueros (105405)</span>
+    <span>📅 Período de análisis: 2025–2026</span>
+    <span>📊 Fuente: REM Serie A/P (DEIS–MINSAL) y registro institucional</span>
+    <span>🔒 Solo datos agregados / des-identificados</span>
+  </div>
+</div></header>
+
+<!-- PARTE 0 · PAUTA -->
+<section class="block" id="pauta"><div class="wrap">
+  <span class="kicker"><span class="no">0</span>Pauta de la reunión · 35–40 min</span>
+  <h2>Cómo conduciremos esta conversación</h2>
+  <p class="lead">El área técnica expone al inicio de la visita. Diseñamos la reunión con la misma lógica con que trabajamos con las familias en «Criar en Relación»: un espacio seguro permite pensar mejor en conjunto. Seis principios la ordenan.</p>
+  <div class="grid c3">
+    <div class="card"><h4>🛡️ Seguridad primero</h4><p>Encuadre claro y no defensivo: baja la alarma y abre la escucha. Un grupo seguro es la condición del acuerdo.</p></div>
+    <div class="card"><h4>🤝 Conectar antes de informar</h4><p>Partimos por el propósito humano —la infancia de Tongoy— antes que por las cifras.</p></div>
+    <div class="card"><h4>🎯 Una idea a la vez</h4><p>Un mensaje por bloque, dentro de la «ventana de tolerancia»: ni saturar ni diluir.</p></div>
+    <div class="card"><h4>🔍 Dato · lectura · recomendación</h4><p>Separamos el hecho de su interpretación y de la propuesta. Eso vuelve el contraste una conversación, no una defensa.</p></div>
+    <div class="card"><h4>🗣️ Del dato, no de las personas</h4><p>Hablamos del registro y del diseño de métricas, nunca del desempeño individual.</p></div>
+    <div class="card"><h4>🌱 Cerrar en fortalezas y decisión</h4><p>Terminamos proyectando 2027 y con acuerdos concretos: lo último que se nombra es lo que más queda.</p></div>
+  </div>
+
+  <h3>Guion de bloques (run-of-show)</h3>
+  <table class="pauta">
+    <thead><tr><th class="num">Min</th><th>Bloque</th><th>Contenido</th><th>Objetivo de la conversación</th></tr></thead>
+    <tbody>
+      <tr><td class="min">3′</td><td><strong>Apertura y encuadre</strong></td><td>Qué es esta reunión y cómo conversaremos; «hablamos del dato, no de las personas».</td><td>Instalar seguridad y marco común.</td></tr>
+      <tr><td class="min">6′</td><td><strong>Propósito y método</strong></td><td>Por qué estamos aquí; los 4 pasos y 4 principios del análisis; resguardos (Ley 19.628).</td><td>Conectar; dar credibilidad al dato.</td></tr>
+      <tr><td class="min">6′</td><td><strong>Lo realizado + Salud Mental</strong></td><td>Los 4 productos; síntesis del Programa de Salud Mental (9.890 prestaciones).</td><td>Mostrar el cuerpo de trabajo.</td></tr>
+      <tr><td class="min">6′</td><td><strong>PASMI: resultados reales</strong></td><td>100 bajo control, 569 controles, dupla 94%, razón controles/ingreso ≈23.</td><td>Anclar en lo concreto y humano.</td></tr>
+      <tr><td class="min">8′</td><td><strong>Contraste con la pauta DESAM</strong></td><td>Tabla celda a celda; las 3 razones del bajo cumplimiento; notas del propio documento.</td><td>Reencuadre: diseño de métricas, no desempeño.</td></tr>
+      <tr><td class="min">6′</td><td><strong>Pasos a seguir y decisión</strong></td><td>5 palancas 2027 + «Criar en Relación»; qué pedimos y qué ofrecemos.</td><td>Proyectar 2027; pedir apoyo concreto.</td></tr>
+      <tr><td class="min">5′</td><td><strong>Acuerdos y cierre</strong></td><td>Recoger acuerdos, responsables y plazos; próximos pasos.</td><td>Consolidar y comprometer.</td></tr>
+    </tbody>
+    <caption>Total ≈ 40 min (objetivo acordado 35–40). Para cerrar en 35, comprimir los bloques 3 y 4. El detalle expositivo está en la presentación que acompaña este informe.</caption>
+  </table>
+</div></section>
+
+<!-- PARTE 1 · MÉTODO -->
+<section class="block" id="metodo"><div class="wrap">
+  <span class="kicker"><span class="no">1</span>Nuestro método de análisis</span>
+  <h2>Del registro en bruto al dato que sostiene una decisión</h2>
+  <p class="lead">El mismo procedimiento ordena todos nuestros productos. No inventamos lo que el dato no dice; lo que el dato no permite, se declara y se excluye.</p>
+
+  <h3>De la planilla al dato confiable — cuatro pasos</h3>
+  <ol class="steps">
+    <li><strong>Fuente única y verificada.</strong> Registro institucional (hojas MD/PS) y REM Serie A/P oficial (DEIS–MINSAL). Se valida período, estructura y ausencia de datos ocultos.</li>
+    <li><strong>Limpieza y estandarización.</strong> Se unifican tildes, mayúsculas y espacios; se corrigen codificaciones. Un mismo valor deja de contarse dos veces.</li>
+    <li><strong>Pseudonimización y confidencialidad.</strong> Profesionales con códigos (MED_/PSI_/AS_), con la llave guardada aparte. En PASMI, solo datos agregados. Resguardo conforme a la Ley 19.628.</li>
+    <li><strong>Unidad de análisis definida.</strong> Se distingue siempre atención · prestación · usuario · profesional; en REM, los tramos de edad se anclan por etiqueta en cada sección.</li>
+  </ol>
+
+  <h3>Cuatro principios que ordenan la lectura</h3>
+  <div class="grid c2">
+    <div class="card"><h4>A · El registro no es la realidad</h4><p>Ausencia de registro ≠ ausencia de atención, demanda o disponibilidad.</p></div>
+    <div class="card"><h4>B · Disciplina de denominadores</h4><p>No se afirma cobertura ni brecha sin denominador poblacional validado.</p></div>
+    <div class="card"><h4>C · Cada unidad en su lugar</h4><p>En REM usamos proxies ecológicos (dato agregado, no por paciente).</p></div>
+    <div class="card"><h4>D · Exclusión honesta</h4><p>Lo que el dato no permite (p. ej., la duración de la atención) se excluye y se declara.</p></div>
+  </div>
+  <div class="note key"><span class="lbl">La regla que vuelve todo conversable</span>Cada afirmación se ordena en <strong>Dato observado → Lectura / interpretación → Recomendación</strong>. Por eso el contraste con la pauta comunal es una conversación técnica, no una defensa.</div>
+</div></section>
+
+<!-- PARTE 2 · PRODUCTOS -->
+<section class="block" id="productos"><div class="wrap">
+  <span class="kicker"><span class="no">2</span>Lo que hemos realizado</span>
+  <h2>Cuatro productos, una misma línea de trabajo</h2>
+  <p class="lead">Del diagnóstico descriptivo a la herramienta de gestión y a la intervención lista para ejecutar — todo en arquitectura de archivo único, sin instalación, en español.</p>
+  <div class="grid c2">
+    <div class="card"><span class="badge">① Diagnóstico</span><h4>Análisis del Programa de Salud Mental</h4><p>Actividad registrada jul 2025–ago 2026 en 20 secciones: auditoría de calidad, perfil de usuarios, horarios con mapas de calor, continuidad, articulación y tablero de indicadores.</p></div>
+    <div class="card"><span class="badge">② Decisión 2027</span><h4>Informe Técnico-Ejecutivo PASMI 2026</h4><p>Implementación, impacto territorial y propuestas 2027, con trazabilidad celda a celda al REM oficial y plan de monitoreo con 12 indicadores.</p></div>
+    <div class="card"><span class="badge">③ Gestión</span><h4>Centro de Control PASMI</h4><p>Tablero de indicadores, casos y seguimiento. Dos capas: monitoreo agregado desde REM, y una capa operativa local <strong>des-identificada</strong> que nunca se publica.</p></div>
+    <div class="card"><span class="badge">④ Intervención</span><h4>«Criar en Relación» (IPG)</h4><p>Ciclo grupal de competencias parentales (5–9 años, presencial y online): propuesta técnica, manual del facilitador, cuadernillo de instrumentos y formato de planificación/evaluación de IPG.</p></div>
+  </div>
+  <p style="margin-top:1em">Los enlaces a cada producto están en la sección <a class="inl" href="#recursos">Recursos</a>.</p>
+</div></section>
+
+<!-- PARTE 3 · RESULTADOS -->
+<section class="block" id="resultados"><div class="wrap">
+  <span class="kicker"><span class="no">3</span>Síntesis de resultados</span>
+  <h2>Lo que muestran los datos</h2>
+
+  <h3>Programa de Salud Mental · jul 2025 – ago 2026</h3>
+  <div class="stats c4">
+    <div class="stat teal"><div class="n">9.890</div><div class="k">prestaciones registradas</div><div class="s">base anonimizada</div></div>
+    <div class="stat"><div class="n">2.452</div><div class="k">usuarios únicos</div><div class="s">todo el curso de vida</div></div>
+    <div class="stat"><div class="n">31</div><div class="k">profesionales</div><div class="s">16 med · 7 psi · 8 T. social</div></div>
+    <div class="stat"><div class="n">87%</div><div class="k">actividad psicosocial</div><div class="s">psicología 48% · T. social 39%</div></div>
+  </div>
+  <ul class="clean">
+    <li>Actividad matutina, con pico 10:00–10:59 y máximo los jueves: patrón de <strong>oferta registrada</strong>, no de demanda.</li>
+    <li>Dependencia operativa: en psicología, 3 de 7 profesionales concentran el <strong>82%</strong> de las atenciones (riesgo de continuidad).</li>
+    <li>Continuidad: 45% de usuarios con una sola atención; el 10% de mayor uso concentra el 46% de la actividad.</li>
+    <li>Articulación medicina–psicosocial en el 18,5% de los usuarios; no verificable como coordinación formal sin registrar derivación.</li>
+  </ul>
+
+  <h3>PASMI · enero – septiembre 2026</h3>
+  <div class="stats c4">
+    <div class="stat teal"><div class="n">100</div><div class="k">niños/as bajo control</div><div class="s">85% de la meta (118)</div></div>
+    <div class="stat"><div class="n">569</div><div class="k">controles SM infantil (0–9)</div><div class="s">739 con Guanaqueros</div></div>
+    <div class="stat"><div class="n">94%</div><div class="k">lo sostiene la dupla</div><div class="s">psi 52% · T. social 42%</div></div>
+    <div class="stat"><div class="n">≈23</div><div class="k">controles por ingreso</div><div class="s">acompañamiento sostenido</div></div>
+  </div>
+  <div class="dlr">
+    <div class="b d"><div class="t">Dato observado</div><p>Producción local (Tongoy + Guanaqueros): 42 ingresos, 29 EDI, 45 visitas educativas. Egresos por alta: 7 → permanencia ≈72%.</p></div>
+    <div class="b l"><div class="t">Lectura</div><p>Los niños/as que ingresan tienden a permanecer y a recibir múltiples controles: indicio fuerte de adherencia para un APS rural.</p></div>
+    <div class="b r"><div class="t">Recomendación</div><p>Visibilizar la razón controles/ingreso como indicador trazador del acompañamiento real.</p></div>
+  </div>
+  <p>Cobertura: los 100 niños/as bajo control equivalen a ≈8,6% de la población 0–9 inscrita per cápita (~1.159, estimada), sobre una población infantil 0–14 de 1.848 y una población inscrita validada de 11.273 personas.</p>
+</div></section>
+
+<!-- PARTE 4 · CONTRASTE -->
+<section class="block" id="contraste"><div class="wrap">
+  <span class="kicker"><span class="no">4</span>Contraste con la pauta DESAM SSC</span>
+  <h2>Nuestros números reales frente a la pauta comunal</h2>
+  <p class="lead">La «Revisión de estadísticas PASMI» del DESAM —Seguimiento de Metas PASMI (enero–junio), CESFAM Tongoy— muestra cumplimientos bajos. Pero validamos cada cifra contra el REM oficial: <strong>el dato es correcto y trazable</strong>. La diferencia es de corte, de alcance y de diseño de metas, no de desempeño.</p>
+
+  <h3>La pauta DESAM tal como la recibimos (enero–junio · solo Tongoy)</h3>
+  <table>
+    <thead><tr><th>Prestación (0–9)</th><th>Registro REM</th><th class="num">Total ene–jun</th><th class="num">Meta comunal</th><th class="num">Meta Tongoy</th><th class="num">Cumpl.</th></tr></thead>
+    <tbody>
+      <tr><td>Ingresos a tratamiento por trastornos mentales</td><td>A05 Secc. N</td><td class="num">19</td><td class="num">624</td><td class="num">53</td><td class="desam">36%</td></tr>
+      <tr><td>En tratamiento (bajo control)</td><td>P6</td><td class="num">100</td><td class="num">1.386</td><td class="num">118</td><td class="real">85%</td></tr>
+      <tr><td>Concentración de controles SM</td><td>A06-A1 + A32-F2 / P06-A1</td><td class="num">pend.</td><td class="num">8 o más</td><td class="num">8 o más</td><td class="num">—</td></tr>
+      <tr><td>Egresos por alta terapéutica</td><td>A05 Secc. O</td><td class="num">4</td><td class="num">277</td><td class="num">24</td><td class="desam">17%</td></tr>
+      <tr><td>Evaluación diagnóstica integral (EDI)</td><td>A06 Secc. G</td><td class="num">6</td><td class="num">561</td><td class="num">48</td><td class="desam">13%</td></tr>
+      <tr><td>Visitas educativas (3–9 años)</td><td>A26 Secc. F</td><td class="num">14</td><td class="num">693</td><td class="num">59</td><td class="desam">24%</td></tr>
+      <tr><td>Egreso en categoría baja/moderada</td><td>A03 Secc. D3</td><td class="num">3</td><td class="num">línea base</td><td class="num">línea base</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+
+  <h3>El mismo dato, actualizado y con la producción local completa</h3>
+  <table>
+    <thead><tr><th>Indicador PASMI (0–9)</th><th class="num">Pauta DESAM<br>ene–jun · Tongoy</th><th class="num">Dato real<br>ene–sep · Tongoy</th><th class="num">Producción local<br>+ Guanaqueros</th></tr></thead>
+    <tbody>
+      <tr><td>Ingresos a tratamiento SM</td><td class="desam">19 · 36%</td><td class="real">25 · 47%</td><td class="real">42</td></tr>
+      <tr><td>Evaluación diagnóstica (EDI)</td><td class="desam">6 · 13%</td><td class="real">19 · 40%</td><td class="real">29</td></tr>
+      <tr><td>Visitas educativas</td><td class="desam">14 · 24%</td><td class="real">25 · 42%</td><td class="real">45</td></tr>
+      <tr><td>Egresos por alta terapéutica</td><td class="desam">4 · 17%</td><td class="real">7 · 29%</td><td class="real">7</td></tr>
+      <tr><td>Controles SM infantil</td><td class="num">—</td><td class="real">569</td><td class="real">739</td></tr>
+      <tr><td>Bajo control (P6 jun)</td><td class="real" colspan="3" style="text-align:center">100 niños/as · 85% de la meta — mismo dato en ambas fuentes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note ok"><span class="lbl">Validación · el dato es correcto</span>Las cifras de enero–junio de Tongoy coinciden <strong>exactamente, celda a celda,</strong> con la pauta del DESAM y con el REM oficial. La discusión no es sobre exactitud.</div>
+
+  <h3>Por qué el cumplimiento se ve bajo — tres razones, ninguna es «bajo desempeño»</h3>
+  <div class="grid c3">
+    <div class="card"><h4>📏 Metas sobredimensionadas</h4><p>La meta Tongoy es una fracción de una meta comunal mucho mayor (ingresos 624, bajo control 1.386, EDI 561, visitas 693), pensada para una realidad mayor que la de un APS costero-rural pequeño.</p></div>
+    <div class="card"><h4>🧩 Techo de registro &lt;5 años</h4><p>EDI, visitas y pauta SM solo registran 5–9 años: no hay instrumento validado para menores de 5. Deprime artificialmente el cumplimiento.</p></div>
+    <div class="card"><h4>✍️ Brecha de registro del ingreso</h4><p>Mucha actividad real (569 controles) que no se traduce en «ingreso formal» en la sección correcta.</p></div>
+  </div>
+
+  <div class="note warn"><span class="lbl">La propia pauta DESAM lo respalda</span>El documento señala, textualmente, que los instrumentos de evaluación <strong>«solo deben haber de 5 a 9 años porque no hay instrumento definido para menores de 5 años»</strong> — exactamente el techo de registro que describimos. Además, anota la <strong>Intervención Psicosocial Grupal (Taller NEP)</strong> y su registro en <strong>A06 Sección A</strong>: es justamente lo que tenemos diseñado y listo para ejecutar en «Criar en Relación».</div>
+
+  <div class="note"><span class="lbl">Y además</span>La producción de <strong>PSR Guanaqueros</strong> (17 ingresos, 10 EDI, 20 visitas, 170 controles) no se visibiliza en la pauta comunal de Tongoy, aunque la realiza el mismo equipo local. «Concentración de controles» figura pendiente en la pauta; nuestro análisis ya la estima en ≈7,6 anualizado (meta ≥8).</div>
+</div></section>
+
+<!-- PARTE 5 · PASOS -->
+<section class="block" id="pasos"><div class="wrap">
+  <span class="kicker"><span class="no">5</span>Pasos a seguir · propuestas 2027</span>
+  <h2>Cinco palancas de mayor impacto</h2>
+  <ol class="steps">
+    <li><strong>Consolidar la dupla psicosocial:</strong> estabilidad de agenda y horas protegidas para trabajo territorial y coordinación.</li>
+    <li><strong>Espacio clínico pertinente:</strong> un box adecuado para atención de salud mental infantil y trabajo con familias.</li>
+    <li><strong>Metas 2027 realistas:</strong> redefinidas sobre el denominador 0–9 local real y la capacidad instalada, con denominador documentado.</li>
+    <li><strong>Mejor registro y trazabilidad:</strong> protocolo de registro del ingreso PASMI, glosas correctas por sección y apoyo en gestión de datos.</li>
+    <li><strong>Coordinación con escuelas e intersector:</strong> trabajo con la red educativa protocolizado para pesquisa temprana sistemática.</li>
+  </ol>
+  <div class="note ok"><span class="lbl">Ya listo para ejecutar</span><strong>«Criar en Relación»</strong>: ciclo grupal de 6 sesiones (5–9 años, presencial y online), con manual del facilitador, cuadernillo de instrumentos y formato de evaluación. Oferta complementaria del PASMI, de alto retorno sanitario, registrable en A06 Sección A (IPG / Taller NEP).</div>
+
+  <h3>La decisión que proponemos — un acuerdo de doble vía</h3>
+  <div class="grid c2">
+    <div class="card" style="border-top:4px solid var(--petroleo)"><h4>🙏 Lo que pedimos a la autoridad</h4>
+      <ul class="clean"><li>Respaldar la continuidad y condiciones de la dupla.</li><li>Adecuar un espacio para salud mental infantil.</li><li>Redefinir metas 2027 sobre la población local real.</li><li>Apoyo en gestión de datos y registro.</li></ul></div>
+    <div class="card" style="border-top:4px solid var(--verde)"><h4>✅ Lo que ofrecemos a cambio</h4>
+      <ul class="clean"><li>Monitoreo trimestral transparente con tablero en línea.</li><li>Indicadores de cobertura, continuidad, vínculo y calidad del registro.</li><li>Un programa estandarizado y replicable (IPG con instrumentos).</li><li>Trazabilidad celda a celda al REM oficial.</li></ul></div>
+  </div>
+</div></section>
+
+<!-- PARTE 6 · ACUERDOS -->
+<section class="block" id="acuerdos"><div class="wrap">
+  <span class="kicker"><span class="no">6</span>Acuerdos de la reunión</span>
+  <h2>Qué acordamos y quién lo lleva</h2>
+  <p class="lead">Espacio para completar durante o al cierre de la reunión. Puede imprimirse a PDF una vez lleno y compartirse como registro.</p>
+  <div class="acc-row acc-head"><div>Acuerdo / compromiso</div><div>Responsable</div><div>Plazo</div></div>
+  <div class="acc-row"><div style="min-height:2.4em"></div><div></div><div></div></div>
+  <div class="acc-row"><div style="min-height:2.4em"></div><div></div><div></div></div>
+  <div class="acc-row"><div style="min-height:2.4em"></div><div></div><div></div></div>
+  <div class="acc-row"><div style="min-height:2.4em"></div><div></div><div></div></div>
+  <div class="fill"><div class="q">Temas que quedaron abiertos («estacionamiento»)</div><div class="ln"></div><div class="ln"></div></div>
+  <div class="fill"><div class="q">Próxima instancia de seguimiento (fecha e insumos)</div><div class="ln"></div></div>
+</div></section>
+
+<!-- RECURSOS -->
+<section class="block" id="recursos"><div class="wrap">
+  <span class="kicker">Recursos</span>
+  <h2>Enlaces a todos los productos</h2>
+  <div class="links">
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/Informe_SaludMental_Tongoy_Jul25_Ago26_1.html"><span class="ri">📊</span><span><span class="rt">Informe Salud Mental</span><br><span class="rs">Análisis completo · 20 secciones</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/Presentacion_SaludMental_Tongoy_Jul25_Ago26.html"><span class="ri">🖥️</span><span><span class="rt">Presentación Salud Mental</span><br><span class="rs">Síntesis en 16 láminas</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/Informe_PASMI_Tongoy_2026.html"><span class="ri">📈</span><span><span class="rt">Informe PASMI 2026</span><br><span class="rs">Impacto territorial y propuestas 2027</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/Presentacion_PASMI_Tongoy_2027.html"><span class="ri">🧒</span><span><span class="rt">Presentación PASMI 2027</span><br><span class="rs">Resumen ejecutivo para la autoridad</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/Centro_Control_PASMI_Tongoy.html"><span class="ri">🎛️</span><span><span class="rt">Centro de Control PASMI</span><br><span class="rs">Tablero de gestión · des-identificado</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/1_Propuesta_Criar_en_Relacion_PASMI.html"><span class="ri">💛</span><span><span class="rt">Criar en Relación · Propuesta técnica</span><br><span class="rs">IPG de competencias parentales 5–9</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/2_Manual_Facilitador_Criar_en_Relacion.html"><span class="ri">📘</span><span><span class="rt">Manual del Facilitador</span><br><span class="rs">Sesión a sesión · presencial y online</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/3_Cuadernillo_Instrumentos_Criar_en_Relacion.html"><span class="ri">📋</span><span><span class="rt">Cuadernillo de Instrumentos</span><br><span class="rs">Convocatoria, consentimiento y evaluación</span></span></a>
+    <a class="link" target="_blank" href="https://ismaelvasquezl.github.io/cesfam-tongoy-indicadores-salud/4_Formato_Planificacion_Evaluacion_IPG.html"><span class="ri">🗂️</span><span><span class="rt">Formato de Planificación y Evaluación IPG</span><br><span class="rs">Ciclo de la intervención grupal en APS</span></span></a>
+  </div>
+  <div class="conf"><strong>Nota de confidencialidad.</strong> Todo lo compartido se trabaja con datos agregados o des-identificados. La llave de pseudonimización del Programa de Salud Mental y la capa operativa a nivel de caso del Centro de Control <strong>no se publican ni se comparten</strong>, y se conservan por separado conforme a la Ley 19.628. Este es un documento de apoyo a la gestión: no reemplaza el juicio clínico ni las definiciones oficiales del período.</div>
+</div></section>
+
+<footer><div class="wrap">
+  <strong>Unidad Técnica · Área de análisis y estadística — CESFAM Tongoy</strong> · Región de Coquimbo · octubre 2026<br>
+  Fuente: REM Serie A/P (DEIS–MINSAL) y registro institucional anonimizado · CESFAM Tongoy (105321) y PSR Guanaqueros (105405).
+</div></footer>
+
+</body>
+</html>
