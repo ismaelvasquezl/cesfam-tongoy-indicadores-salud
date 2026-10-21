@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual del Facilitador · Criar en Relación · PASMI Tongoy</title>
+<style>
+:root{
+  --petroleo:#0f3b44; --petroleo-2:#14525e; --petroleo-3:#1a6675;
+  --teal:#1f8a99; --teal-2:#2aa5b5; --teal-soft:#e2f1f3;
+  --calido:#d9682f; --calido-2:#e89a5c; --calido-soft:#fbeee4;  /* acento humano/neuro */
+  --lila:#6b5b95; --lila-soft:#efecf6;
+  --verde:#2e9e6b; --verde-soft:#e4f4ec;
+  --amarillo:#d99311; --amarillo-soft:#faf0d9;
+  --rojo:#c6485c; --rojo-soft:#f8e4e7;
+  --bg:#eef2f3; --surface:#ffffff; --surface-2:#f6fafa; --line:#dce5e7;
+  --txt:#17292c; --txt-soft:#546a6f; --txt-inv:#eef6f7;
+  --serif:Georgia,'Iowan Old Style','Palatino Linotype',Palatino,'Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --radius:14px; --radius-s:9px;
+  --shadow:0 1px 3px rgba(15,59,68,.07),0 6px 22px rgba(15,59,68,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--serif);font-size:16px;line-height:1.62}
+h1,h2,h3,h4,h5{font-family:var(--sans);font-weight:650;letter-spacing:-.01em;color:var(--petroleo);line-height:1.2}
+p{margin:.55em 0}
+a{color:var(--teal)}
+small{font-size:.8em}
+strong{color:var(--petroleo-2)}
+
+/* ---------- Portada ---------- */
+.cover{background:linear-gradient(135deg,var(--petroleo),var(--petroleo-2) 60%,var(--teal) 140%);color:var(--txt-inv);padding:62px 7vw 54px;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(217,104,47,.34),transparent 68%)}
+.cover::before{content:"";position:absolute;left:-60px;bottom:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(42,165,181,.3),transparent 70%)}
+.cover .kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;font-weight:600}
+.cover h1{color:#fff;font-size:40px;margin:14px 0 8px;max-width:17ch;position:relative;z-index:2}
+.cover .lede{font-family:var(--sans);font-size:17px;opacity:.94;max-width:54ch;font-weight:350;position:relative;z-index:2}
+.cover .meta{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--sans);font-size:13px;position:relative;z-index:2}
+.cover .meta b{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;font-weight:600;margin-bottom:2px}
+.cover .tags{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:2}
+.cover .tag{font-family:var(--sans);font-size:12px;font-weight:600;padding:5px 12px;border-radius:30px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22)}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:232px 1fr;gap:34px;padding:0 26px}
+.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:26px 0;font-family:var(--sans)}
+.toc .toc-t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-soft);font-weight:700;margin:0 0 10px 10px}
+.toc a{display:block;color:var(--txt-soft);text-decoration:none;font-size:13px;padding:6px 10px;border-radius:7px;border-left:2px solid transparent;line-height:1.35}
+.toc a:hover{background:var(--surface);color:var(--petroleo)}
+.toc a.active{color:var(--teal);border-left-color:var(--teal);background:var(--surface);font-weight:600}
+.main{padding:34px 0 80px;min-width:0;max-width:760px}
+
+/* ---------- Secciones ---------- */
+section{margin-bottom:38px;scroll-margin-top:16px}
+.sec-h{display:flex;align-items:center;gap:12px;margin:0 0 6px}
+.sec-n{font-family:var(--sans);font-size:13px;font-weight:700;color:#fff;background:var(--teal);min-width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+h2{font-size:24px;margin:0}
+h3{font-size:18px;margin:26px 0 6px}
+h4{font-size:15px;font-family:var(--sans);margin:18px 0 4px;color:var(--petroleo-2)}
+.lead{font-size:17.5px;color:var(--txt-soft);font-style:italic;margin:4px 0 14px}
+ul,ol{margin:.5em 0;padding-left:1.3em}
+li{margin:.3em 0}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+
+/* ---------- Callouts ---------- */
+.box{border-radius:var(--radius);padding:16px 18px;margin:18px 0;font-size:15px;position:relative}
+.box .box-t{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;margin-bottom:7px;text-transform:uppercase}
+.box p:first-of-type{margin-top:0}.box p:last-child{margin-bottom:0}
+.neuro{background:linear-gradient(135deg,var(--calido-soft),#fff);border:1px solid #f0d8c6;border-left:4px solid var(--calido)}
+.neuro .box-t{color:var(--calido)}
+.ling{background:var(--lila-soft);border:1px solid #ddd6ec;border-left:4px solid var(--lila)}
+.ling .box-t{color:var(--lila)}
+.voz{background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--teal-2);font-family:var(--serif)}
+.voz .box-t{color:var(--teal)}
+.voz .q{font-style:italic;color:var(--petroleo-2);display:block;margin:5px 0;padding-left:12px;border-left:2px solid var(--teal-soft)}
+.clave{background:var(--teal-soft);border:1px solid #c7e5e9;border-left:4px solid var(--teal)}
+.clave .box-t{color:var(--petroleo)}
+.ojo{background:var(--amarillo-soft);border:1px solid #efe0bd;border-left:4px solid var(--amarillo)}
+.ojo .box-t{color:#9a6a0b}
+.alerta{background:var(--rojo-soft);border:1px solid #efc9cf;border-left:4px solid var(--rojo)}
+.alerta .box-t{color:var(--rojo)}
+
+/* ---------- Modalidad presencial / online ---------- */
+.modos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.modo{border-radius:var(--radius-s);padding:13px 15px;font-size:14px;border:1px solid var(--line)}
+.modo.pres{background:var(--surface-2)}
+.modo.onl{background:#eef4f9;border-color:#d4e2ee}
+.modo .modo-t{font-family:var(--sans);font-weight:700;font-size:12.5px;display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.modo.pres .modo-t{color:var(--petroleo-2)}
+.modo.onl .modo-t{color:#2d6a9f}
+.modo ul{margin:.2em 0;padding-left:1.1em}.modo li{margin:.22em 0}
+
+/* ---------- Tarjeta de sesión ---------- */
+.sesion{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin:26px 0}
+.sesion-head{background:linear-gradient(120deg,var(--petroleo),var(--petroleo-2));color:#fff;padding:16px 20px}
+.sesion-head .n{font-family:var(--sans);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.82;font-weight:600}
+.sesion-head h3{color:#fff;margin:3px 0 0;font-size:21px}
+.sesion-head .obj{font-size:14px;opacity:.93;margin-top:7px;max-width:62ch}
+.sesion-body{padding:18px 20px}
+.bloque{display:flex;gap:13px;padding:12px 0;border-top:1px solid var(--line)}
+.bloque:first-child{border-top:0}
+.bloque .t{flex:0 0 58px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--teal);text-align:right;padding-top:2px}
+.bloque .c{flex:1;min-width:0}
+.bloque .c .bt{font-family:var(--sans);font-weight:650;color:var(--petroleo);font-size:15px}
+.fase{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--calido);margin:16px 0 2px}
+
+/* ---------- Tablas ---------- */
+table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13.5px;margin:14px 0}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--petroleo);color:#fff;font-weight:600;font-size:12px;letter-spacing:.02em;border-bottom:0}
+thead th:first-child{border-radius:8px 0 0 0}thead th:last-child{border-radius:0 8px 0 0}
+tbody tr:nth-child(even){background:var(--surface-2)}
+td .num,.num{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+.pill.teal{background:var(--teal-soft);color:var(--teal)}
+.pill.calido{background:var(--calido-soft);color:var(--calido)}
+.pill.verde{background:var(--verde-soft);color:var(--verde)}
+
+/* chips de meta bajo portada */
+.ribbon{background:var(--surface);border-bottom:1px solid var(--line);padding:11px 7vw;font-family:var(--sans);font-size:12.5px;color:var(--txt-soft);display:flex;gap:8px 20px;flex-wrap:wrap;align-items:center}
+.ribbon .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block;margin-right:7px}
+
+/* formularios imprimibles */
+.campo{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0;background:var(--surface)}
+.campo label{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--petroleo-2);display:block;margin-bottom:4px}
+.lineas{border-bottom:1px solid var(--line);height:1.9em}
+.escala{display:flex;gap:6px;flex-wrap:wrap}
+.escala span{width:26px;height:26px;border:1px solid var(--line);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:12px;color:var(--txt-soft)}
+.check{display:inline-block;width:15px;height:15px;border:1.5px solid var(--petroleo-3);border-radius:4px;vertical-align:-2px;margin-right:7px}
+
+.foot{font-family:var(--sans);font-size:12px;color:var(--txt-soft);border-top:1px solid var(--line);padding:22px 7vw 46px;max-width:1120px;margin:0 auto}
+.foot b{color:var(--petroleo)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:860px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  .toc{display:none}
+  .cover h1{font-size:30px}
+  .modos{grid-template-columns:1fr}
+  .main{padding-top:22px}
+}
+
+/* ---------- Impresión ---------- */
+@media print{
+  body{background:#fff;font-size:11.5pt}
+  .toc,.noprint{display:none!important}
+  .wrap{display:block;max-width:none;padding:0}
+  .main{max-width:none;padding:0}
+  .cover{padding:34px 24px}
+  .cover h1{font-size:28pt}
+  section{margin-bottom:20px;page-break-inside:avoid}
+  .sesion,.box,.modos,table{page-break-inside:avoid}
+  h2,h3{page-break-after:avoid}
+  a{color:var(--txt);text-decoration:none}
+  .pagebreak{page-break-before:always}
+}
+</style>
+</head>
+<body>
+<header class="cover">
+  <div class="kicker">Manual del facilitador · PASMI CESFAM Tongoy</div>
+  <h1>Criar en Relación</h1>
+  <div class="lede">Guía de facilitación del ciclo de competencias parentales, sesión por sesión, en modalidad <b>presencial y online</b>. Reconstruida sobre el modelo <b>Nadie es Perfecto–Conducta</b> con capa neurocientífica y de lenguaje.</div>
+  <div class="meta"><div><b>Para</b>La dupla psicosocial PASMI (co-facilitación)</div><div><b>Grupo</b>Cuidadores de niños/as 5–9 · 6–12 participantes · cerrado</div><div><b>Duración</b>6 sesiones semanales · 60–90 min</div><div><b>Enfoque</b>Experiencial · relacional · neurorelacional</div></div>
+  <div class="tags"><span class="tag">Sin clases expositivas</span><span class="tag">Presencial + online</span><span class="tag">PIP / PIS</span><span class="tag">Co-regulación</span><span class="tag">Buen trato</span></div>
+</header>
+<div class="ribbon"><span><span class="dot"></span>Los adultos aprenden haciendo y sintiendo</span><span><span class="dot"></span>El facilitador colabora, no impone</span><span><span class="dot"></span>Fortalezas por sobre déficits</span><span><span class="dot"></span>Confidencialidad siempre</span></div>
+<div class="wrap">
+  <nav class="toc"><div class="toc-t">Contenido</div><a href="#como">Cómo usar este manual</a>
+<a href="#rol">El rol del facilitador</a>
+<a href="#estructura">Estructura de cada sesión</a>
+<a href="#online">Facilitar en modalidad online</a>
+<a href="#s1">Sesión 1 · ¿Quiénes somos?</a>
+<a href="#s2">Sesión 2 · La relación, no la conducta</a>
+<a href="#s3">Sesión 3 · Límites que cuidan</a>
+<a href="#s4">Sesión 4 · La calma se contagia</a>
+<a href="#s5">Sesión 5 · Toda conducta dice algo</a>
+<a href="#s6">Sesión 6 · Lo que nos llevamos</a>
+<a href="#dificiles">Manejo de situaciones difíciles</a>
+<a href="#crisis">Vulneración de derechos y crisis</a></nav>
+  <main class="main">
+
+<section id="como">
+  <div class="sec-h"><h2>Cómo usar este manual</h2></div>
+  <p class="lead">Una partitura, no un libreto. Guía el proceso, pero el grupo dicta el ritmo.</p>
+  <p>Este manual acompaña la ejecución del taller <strong>“Criar en Relación”</strong>. Cada sesión trae su objetivo, un <strong>ancla neurocientífica</strong> (la “neurocápsula”: la idea de cerebro que ordena la sesión), una <strong>caja de lenguaje</strong> (recursos neurolingüísticos para modelar y enseñar), la secuencia <strong>inicio → desarrollo → cierre</strong> con cada actividad, la <strong>voz del facilitador</strong> (guiones sugeridos) y las adaptaciones <strong>presencial / online</strong> de cada dinámica.</p>
+  <p>Los tiempos y actividades son sugerencias: pueden reordenarse o reemplazarse según las necesidades del grupo. Lo que no se negocia es el <strong>cómo</strong>: experiencia por sobre exposición, diálogo por sobre monólogo, fortalezas por sobre déficits.</p>
+  <div class="box clave"><div class="box-t">◆ Clave</div>Tres distinciones que recorren todo el manual:<ul><li><b>El problema no es el niño ni el cuidador, sino el tipo de relación</b> entre ambos.</li><li><b>Hablamos del comportamiento, no de la persona.</b></li><li><b>Primero conectar, después corregir.</b></li></ul></div>
+</section>
+
+<section id="rol">
+  <div class="sec-h"><h2>El rol del facilitador</h2></div>
+  <p>Facilitar es “hacer más fácil” la participación. No se trata de enseñar y que otros aprendan, sino de que todos —facilitadores incluidos— aprendan algo nuevo. Cuatro actitudes sostienen el taller:</p>
+  <ol>
+    <li><strong>Colabora, no impone.</strong> Ofrece información como una alternativa más a probar, no como la verdad.</li>
+    <li><strong>Es respetuosamente curioso, no critica.</strong> Pregunta por la intención detrás de cada práctica, con actitud de “no saber”.</li>
+    <li><strong>Promueve el diálogo, no el monólogo.</strong> Administra el tiempo para que todos hablen; si el facilitador habla tanto como un participante, está haciendo un monólogo.</li>
+    <li><strong>Prioriza fortalezas, no déficits.</strong> Lo que se mira, crece: nombrar lo que funciona genera esperanza.</li>
+  </ol>
+  <h4>Co-facilitación (la dupla como modelo)</h4>
+  <p>Psicólogo/a y trabajador/a social se reparten roles acordados de antemano y se apoyan mutuamente. Su relación colaborativa <em>es</em> parte del contenido: modela ante el grupo el tipo de vínculo que el taller promueve. Acuerden quién abre, quién modera, quién observa el clima emocional, y túrnense.</p>
+  <div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>El facilitador es, para el grupo, una <b>corteza prefrontal prestada</b>: su calma, su ritmo y su tono regulan el sistema nervioso colectivo. Un facilitador apurado o crítico activa la alarma del grupo; uno cálido y pausado abre la exploración y el aprendizaje. Tu regulación es tu primera técnica.</div>
+</section>
+
+<section id="estructura">
+  <div class="sec-h"><h2>Estructura de cada sesión</h2></div>
+  <table>
+    <thead><tr><th>Fase</th><th>Qué ocurre</th><th>Por qué (neuro)</th></tr></thead>
+    <tbody>
+    <tr><td><b>Inicio</b></td><td>Bienvenida, etiquetas de nombre, dinámica de activación, retomar lo de la semana.</td><td>Crea seguridad: baja la alarma para que el cerebro pueda aprender.</td></tr>
+    <tr><td><b>Desarrollo</b></td><td>Uno o dos contenidos trabajados sobre dinámicas y reflexión grupal.</td><td>Aprendizaje experiencial: se graba lo que se vive y se siente.</td></tr>
+    <tr><td><b>Cierre</b></td><td>Síntesis breve, compromiso de la semana, evaluación, despedida.</td><td>Consolida: la repetición y el compromiso inician la neuroplasticidad.</td></tr>
+    </tbody>
+  </table>
+  <div class="box ojo"><div class="box-t">▲ Ojo</div>Nunca se pasan clases ni PowerPoint. Cada contenido temático es solo la <em>introducción</em> a una conversación o dinámica. Empieza siempre con una breve activación para subir la energía y la disposición.</div>
+</section>
+
+<section id="online">
+  <div class="sec-h"><h2>Facilitar en modalidad online</h2></div>
+  <p>El taller se puede ejecutar completo por videollamada. Cambia el medio, no el método. Recomendaciones transversales:</p>
+  <div class="modos">
+    <div class="modo onl"><div class="modo-t">⚙️ Preparación técnica</div>
+      <ul><li>Plataforma con <b>salas pequeñas</b> (breakout) y pizarra compartida.</li><li>Grupo algo más chico (6–10) para sostener el vínculo.</li><li>Sala de espera: la dupla admite a cada participante por su nombre.</li><li>Co-facilitación clave: uno facilita, el otro cuida chat, admisiones y quien “se cae”.</li></ul></div>
+    <div class="modo onl"><div class="modo-t">🔒 Encuadre y confianza</div>
+      <ul><li>Participar desde un <b>espacio privado</b>; sugerir audífonos.</li><li>Acuerdo explícito: <b>no grabar, no capturar pantalla</b>.</li><li>Cámara encendida como invitación, nunca obligación.</li><li>Plan de contingencia: si alguien pierde conexión, reingresa; si el facilitador se cae, el co-facilitador sostiene.</li></ul></div>
+  </div>
+  <div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>En pantalla, el cerebro social recibe menos señales de seguridad (no hay cuerpo entero, ni mirada directa, ni contacto). Compénsalo: <b>usa los nombres seguido</b>, saluda a cada quien al entrar, baja el ritmo, haz pausas para respirar juntos y usa rondas cortas para que nadie quede invisible.</div>
+  <p>En cada sesión, el recuadro <b>💻 En online</b> indica cómo adaptar cada dinámica: salas pequeñas en vez de grupos, pizarra compartida en vez de papelógrafo, formularios en línea en vez de hojas, y materiales caseros en vez de insumos de sala.</p>
+</section>
+<section id="s1"><div class="sec-h"><h2>Sesión 1 · ¿Quiénes somos? Criar no es perfecto</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 1 · 60–90 min</div><h3>¿Quiénes somos? Criar no es perfecto</h3><div class="obj">Acoger al grupo, reconocer la pluralidad y las fortalezas de cada familia, acordar cómo trabajaremos juntos e instalar un clima de seguridad.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>El cerebro solo aprende y cambia cuando se siente <b>seguro</b>. Ante amenaza (crítica, vergüenza, apuro) se enciende la “alarma” y se cierra la exploración. La primera sesión no enseña contenidos: <b>construye seguridad</b>. Por eso se cuida tanto la bienvenida, los acuerdos y el tono. Un grupo seguro es la condición neurológica del aprendizaje.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li>Pregunta a cada quien <b>cómo prefiere ser llamado/a</b> y úsalo siempre.</li><li>“<b>Nadie es perfecto</b>” como presuposición liberadora: nombra desde el inicio que no existe la crianza perfecta, para bajar la culpa y abrir el aprendizaje.</li><li>Invita a hablar en <b>primera persona</b> (“yo creo…”) en vez de en afirmaciones absolutas (“los niños son…”).</li></ul></div><div class="fase">Inicio · 20–30 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida y presentación</div>Reciban a cada persona en la puerta (o en la sala de espera, online). Entreguen etiquetas con el nombre. Dinámica breve: “Di tu nombre y a qué te gustaba jugar cuando eras niño/a”.<div class="box voz"><div class="box-t">🗣️ Voz del facilitador</div><span class="q">“Bienvenidos/as a Criar en Relación. Soy… y voy a acompañarlos/as en este taller. No venimos a enseñar la crianza correcta —no existe— sino a pensar y crear juntos. Para partir: su nombre y a qué jugaban de pequeños/as.”</span></div><div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Etiquetas adhesivas; sillas en círculo; reciban uno a uno.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Admitan por nombre desde la sala de espera; renombrar en pantalla con el nombre preferido; ronda ordenada para presentarse.</li></ul></div></div></div></div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Acuerdos para trabajar juntos</div>Construyan con el grupo los acuerdos de convivencia y déjenlos a la vista toda la sesión: respeto, hablar en primera persona, esperar el turno, puntualidad, confidencialidad, evitar dar consejos no pedidos.<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Papelógrafo visible, pegado a la pared.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Pizarra compartida o diapositiva fija; incluyan: no grabar, no capturar pantalla, cámara como invitación.</li></ul></div></div></div></div><div class="bloque"><div class="t">5'</div><div class="c"><div class="bt">Expectativas y “estacionamiento”</div>Exploren qué esperan del taller (“¿qué debería pasar para que sientas que valió la pena venir?”). Instalen un <b>estacionamiento</b>: un papelógrafo/espacio donde “aparcar” dudas o temas que se cerrarán más adelante.</div></div><div class="fase">Desarrollo · 30 min</div><div class="bloque"><div class="t">18'</div><div class="c"><div class="bt">Las fortalezas están en nuestras diferencias</div>Lean en voz alta el cuento de la <em>escuela de animales</em> (el conejo obligado a volar, el pájaro a excavar…): cada uno tiene fortalezas distintas, igual que nuestras familias. Luego, en grupos de 3–4, conversen con preguntas guía; cierren con una ronda.<p style="margin:6px 0 2px"><b>Preguntas guía:</b> ¿Qué anécdota de tu hijo/a te llena de orgullo? ¿Qué valor representa? ¿De dónde vienen los valores de crianza de tu casa? ¿Cómo te imaginas a tu hijo/a siendo feliz?</p><div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Grupos pequeños en rincones de la sala; papelógrafo por grupo; un vocero comparte.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Salas pequeñas (breakout) de 3–4; cada sala anota en la pizarra compartida; vuelven y comparte un vocero.</li></ul></div></div></div></div><div class="bloque"><div class="t">12'</div><div class="c"><div class="bt">Tarjetas de nuestra relación</div>Cada participante elige una tarjeta con una pregunta sobre su relación con su hijo/a, la lee en voz alta y responde desde su experiencia. Alternativa: ejercicio <em>“Acuérdame que…”</em> (tres cosas que aprecio de mi hijo/a).<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Set físico de 22 tarjetas; se pasan en ronda.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Tarjetas en diapositivas numeradas; cada quien elige un número; o formulario con las preguntas.</li></ul></div></div></div></div><div class="fase">Cierre · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Lo que me llevo + compromiso</div>Ronda breve: “Lo que me llevo hoy es…”. Entreguen la evaluación de la sesión (3 preguntas). <b>Compromiso de la semana:</b> observar y anotar una fortaleza de su hijo/a cada día.<div class="box voz"><div class="box-t">🗣️ Voz del facilitador</div><span class="q">“Esta semana, cuando lo/la miren, busquen algo que haga bien —aunque sea pequeño— y anótenlo. La próxima semana lo compartimos.”</span></div></div></div><div class="box ojo"><div class="box-t">▲ Ojo</div><b>Materiales.</b> Presencial: etiquetas, papelógrafo, plumones, hojas, set de tarjetas, hoja de evaluación. Online: pizarra compartida, diapositiva de acuerdos, formulario de evaluación, tarjetas numeradas.</div></div></div></section><section id="s2"><div class="sec-h"><h2>Sesión 2 · La relación, no la conducta</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 2 · 60–90 min</div><h3>Lo importante es la relación, no la conducta</h3><div class="obj">Promover relaciones positivas diarias y la calidad del vínculo, desplazando el foco desde la disciplina hacia el encuentro.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>El vínculo se construye en los pequeños “ida y vuelta” (<b>serve &amp; return</b>): el niño/a hace un gesto, el adulto responde, y esa secuencia —miles de veces— construye la arquitectura del cerebro social. Además, las emociones se contagian por las <b>neuronas espejo</b>: un niño/a copia la calma o la tensión del adulto. Por eso la mejor prevención de la conducta disruptiva no es la disciplina, sino el <b>cultivo diario de una relación positiva</b>.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li><b>Reencuadre:</b> de “tengo que disciplinarlo” a “¿cómo cultivo nuestra relación hoy?”.</li><li><b>Vitaminas relacionales:</b> cariño, atención plena, apoyo y disfrutar de estar juntos.</li><li><b>Connotar positivamente:</b> agradece cada vez que alguien comparte (“gracias por contarlo, aporta a todos”).</li></ul></div><div class="fase">Inicio · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida, activación y compromiso previo</div>Saludo, dinámica de activación y ronda breve sobre el compromiso de la semana: ¿qué fortaleza descubrieron en su hijo/a?<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Dinámica de movimiento suave.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Activación adaptada a pantalla (mímica, “muéstrame con un objeto…”).</li></ul></div></div></div></div><div class="fase">Desarrollo · 40–60 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">“¿Le harías esto a un adulto?”</div>Muestren un video corto de Chile Crece Contigo (o describan una escena cotidiana) donde un adulto trata a un niño/a de un modo que no usaría con otro adulto. Reflexión breve: ¿qué les llama la atención? ¿cómo se estará sintiendo el niño/a?<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Reproducir desde pen drive (sin depender de internet).</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Compartir pantalla con audio del sistema; o enviar el enlace y ver 60 s juntos.</li></ul></div></div></div></div><div class="bloque"><div class="t">20'</div><div class="c"><div class="bt">Prevenir antes que curar (la moneda)</div>Introduzcan la idea de la relación como una moneda de dos caras: <b>Cara A</b> = relaciones positivas diarias (afecto, rutina previsible) que generan cooperación; <b>Cara B</b> = técnicas de manejo para cuando aparece el problema. Lluvia de ideas sobre la Pregunta A: ¿cómo se tiene una relación positiva diaria?<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Dos papelógrafos; recojan ideas; se quedan con las que promueven relación.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Pizarra compartida con dos columnas; el co-facilitador transcribe el chat.</li></ul></div></div></div></div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">Construyendo relaciones positivas · espacio diario</div>Trabajen el “espacio diario de positividad”: 20–30 minutos al día de disponibilidad total y exclusiva, sin celular ni obligaciones. Para quienes trabajan, idealmente al llegar a casa. Conversen: ¿cuánto tiempo al día lo pasan bien juntos?<div class="box ling"><div class="box-t">✶ Caja de lenguaje</div>Formulen la invitación desde el <b>querer</b>, no el <b>deber</b>: “¿qué momento te gustaría recuperar con tu hijo/a?”, en vez de “tienes que dedicarle tiempo”. La culpa cierra; el deseo abre.</div></div></div><div class="fase">Cierre · 10–15 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Un momento de conexión</div>Cada participante define una acción simple para la semana: conversar sin pantallas, leer juntos, un juego, preguntar cómo estuvo el día. Evaluación de la sesión y despedida.</div></div><div class="box ojo"><div class="box-t">▲ Ojo</div>Es frecuente que surja el estrés del cuidador. Pueden entregar la <b>Escala de estrés del adulto</b> para traerla respondida la próxima sesión, y anuncien que la sesión 4 trabaja ese tema.</div></div></div></section><section id="s3"><div class="sec-h"><h2>Sesión 3 · Límites que cuidan</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 3 · 60–90 min</div><h3>Límites que cuidan</h3><div class="obj">Promover normas claras, consistentes y respetuosas, y practicar el “pedir calmadamente” como alternativa a imponer.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>El “cerebro de arriba” (la corteza, que razona y se controla) está <b>en construcción</b> hasta la adultez; el “de abajo” (emoción e impulso) manda temprano. Los límites <b>previsibles</b> funcionan como andamios que ayudan a construir ese cerebro de arriba. Previsibilidad = seguridad = menos alarma = más cooperación. Un límite no es un castigo: es información y estructura que el cerebro necesita.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li>Di lo que <b>SÍ</b> quieres, no lo que no (“camina” en vez de “no corras”).</li><li>Ofrece <b>opciones acotadas</b>: “¿guardas tú la tablet o la guardamos juntos?”.</li><li>Nombra la emoción y sostén la norma: “entiendo que quieras seguir; igual es hora de…”.</li></ul></div><div class="fase">Inicio · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida, activación y compromiso previo</div>Saludo, activación y ronda del “momento de conexión” de la semana.</div></div><div class="fase">Desarrollo · 45–65 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">¿Para qué sirven los límites?</div>Pregunta al grupo: “¿qué pasa en casa cuando ponemos un límite y el niño/a no está de acuerdo?”. Recojan respuestas y encuadren: los límites dan seguridad y estructura, y se ponen con firmeza <em>y</em> afecto.<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Lluvia en papelógrafo.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Chat + voz; pizarra compartida.</li></ul></div></div></div></div><div class="bloque"><div class="t">12'</div><div class="c"><div class="bt">Características de un límite saludable</div>Revisen cuatro: claro y comprensible; adecuado a la edad; consistente entre los adultos (cuando sea posible); sin humillaciones ni amenazas. Distingan consecuencia lógica vs sanción desproporcionada.</div></div><div class="bloque"><div class="t">25'</div><div class="c"><div class="bt">Pedir calmadamente (juego de rol · 7 pasos)</div>Presenten los pasos para pedir colaboración y practíquenlos en parejas con una situación real (ej.: colgar la chaqueta, apagar la pantalla).<p style="margin:6px 0 0"><b>Pasos:</b> 1) identificar qué quiero que haga; 2) la intención positiva; 3) calmarme; 4) conseguir su atención y contacto visual; 5) reconocerlo como capaz (“por favor…”); 6) decir en voz alta la conducta deseada y su razón; 7) silencio neutro por 10 segundos.</p><div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Juego de rol en parejas; luego ronda de lo observado.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Salas pequeñas en parejas; vuelven y dos parejas muestran; el facilitador grafica.</li></ul></div></div></div></div><div class="fase">Cierre · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Una norma que fortaleceré</div>Cada participante elige una norma de su casa que necesita más claridad y define cómo la comunicará y sostendrá esta semana. Evaluación y despedida.</div></div><div class="box clave"><div class="box-t">◆ Clave</div>La meta no es “ganarle” al niño/a, sino sostener la norma sin romper la relación: firmeza en el qué, calidez en el cómo.</div></div></div></section><section id="s4"><div class="sec-h"><h2>Sesión 4 · La calma se contagia</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 4 · 60–90 min</div><h3>La calma se contagia</h3><div class="obj">Reconocer y manejar el propio estrés y las propias emociones del cuidador, como condición para co-regular al niño/a y para una crianza sin violencia.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>Nadie puede enseñar una calma que no tiene: la autorregulación del niño/a se construye por <b>co-regulación</b> —primero se regula el adulto, y presta esa calma. Cada persona tiene una <b>ventana de tolerancia</b>: dentro, puede pensar; fuera (hiper o hipoactivación), solo sobrevive. La respiración lenta activa el <b>nervio vago</b> y ayuda a volver a la ventana. Por las neuronas espejo, tu calma —o tu tensión— se contagia.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li>Autoinstrucción: “<b>me doy un minuto</b> para poder responder y no reaccionar”.</li><li>Separa persona y conducta incluso contigo: “me costó esta situación”, no “soy un mal padre/madre”.</li><li>Las <b>4R</b> frente a la violencia: <b>R</b>eclutar apoyo · <b>R</b>esistir sin violencia · <b>R</b>etardar la respuesta (“en frío”) · <b>R</b>eparar después.</li></ul></div><div class="fase">Inicio · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida y compromiso previo</div>Saludo, activación y ronda de la “norma que fortalecí” de la semana.</div></div><div class="fase">Desarrollo · 45–65 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">¿Qué siento cuando mi hijo/a se desregula?</div>Identifiquen emociones del adulto en los momentos difíciles (frustración, rabia, miedo, culpa, agotamiento). Validen: sentir es natural; lo que se cuida es la forma de responder.</div></div><div class="bloque"><div class="t">12'</div><div class="c"><div class="bt">Reconocer las señales de alerta</div>Conversen cómo se nota el estrés en el cuerpo antes de estallar (tensión, voz que sube, respiración acelerada). Reconocer la señal es la ventana para elegir la respuesta.</div></div><div class="bloque"><div class="t">18'</div><div class="c"><div class="bt">Pausar antes de responder (co-regulación)</div>Enseñen y practiquen una secuencia simple: <b>detenerse</b> al notar la rabia → <b>respirar</b> lento y soltar el cuerpo → <b>identificar</b> qué siento y qué necesita el niño/a → <b>responder</b> con palabras claras, sin gritos ni amenazas. Si siento que puedo perder el control: priorizar la seguridad, pedir apoyo y retomar luego.<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Práctica guiada de respiración en grupo; análisis de ejemplos en grupos pequeños.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Respiración guiada con cámara (modelen ustedes); ejemplos en salas pequeñas.</li></ul></div></div></div></div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">La escala de estrés como “instrumento para conversar”</div>Apliquen la Escala de estrés del adulto (ver Cuadernillo). No es un test: es una invitación a conversar sobre los “estresores” y la relación entre el estrés propio y la capacidad de responder. Compartan estrategias: para y respira, toma una pausa, piensa positivo, busca a alguien que te escuche, pon música, escribe, discúlpate, atención plena al presente.<div class="box ling"><div class="box-t">✶ Caja de lenguaje</div>Encuadre clave: el estrés no te hace mal cuidador; <b>interfiere</b> con el cuidador que quieres ser. Reconocerlo no es culpa, es información.</div></div></div><div class="fase">Cierre · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Mi estrategia para recuperar la calma</div>Cada participante elige una estrategia personal para practicar la semana. Evaluación y despedida.</div></div><div class="box alerta"><div class="box-t">■ Cuidado</div>Si en esta sesión emergen señales de violencia intrafamiliar grave, maltrato o riesgo, activen el flujo de la sección “Vulneración de derechos y crisis” y coordinen con el equipo de cabecera. El autocuidado del cuidador nunca justifica ni minimiza la protección del niño/a.</div></div></div></section><section id="s5"><div class="sec-h"><h2>Sesión 5 · Toda conducta dice algo</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 5 · 60–90 min</div><h3>Toda conducta dice algo</h3><div class="obj">Comprender la conducta como comunicación, graficar los patrones relacionales (problemáticos y sanadores) y practicar el manejo de conflictos.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>La conducta es la <b>punta del iceberg</b>: debajo hay una necesidad, una emoción o una señal del sistema nervioso (cansancio, hambre, miedo, sobreestimulación). “Conectar antes de corregir” no es ser permisivo: es leer la necesidad para poder enseñar. La <b>pirámide de la frustración</b> muestra que, bajo presión, el niño/a “baja de nivel” (de las palabras al grito, del grito al golpe); el adulto puede ayudar a “subir” prestando lenguaje y calma.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li>Pregunta ordenadora: “¿<b>qué me quiere decir</b> esta conducta?”.</li><li>Curiosidad respetuosa: “¿qué habrá pasado antes?”, en vez de “¿por qué eres así?”.</li><li>Grafiquen el patrón: dibujar el círculo <b>imponer↔oponer</b> ayuda a verlo como relación, no como defecto del niño/a.</li></ul></div><div class="fase">Inicio · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida y compromiso previo</div>Saludo, activación y ronda de “mi estrategia para la calma”.</div></div><div class="fase">Desarrollo · 45–65 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">¿Qué nos quiere comunicar una conducta?</div>Reflexionen sobre pataletas, rechazo a instrucciones, aislamiento: pueden relacionarse con cansancio, frustración, dificultad para expresar emociones o necesidad de atención —sin asumir una causa única.</div></div><div class="bloque"><div class="t">25'</div><div class="c"><div class="bt">Patrones interpersonales: problemático y sanador</div>Con un caso voluntario, grafiquen el <b>patrón interpersonal problemático</b> (PIP): p. ej. regañar→ignorar→regañar más. Luego el grupo propone un <b>patrón sanador</b> (PIS): dar alternativa→aceptar. Cada pareja registra uno de cada tipo.<p style="margin:6px 0 0"><b>Preguntas guía:</b> ¿cómo respondo a la conducta? ¿cómo responde mi hijo/a? ¿la conducta se mantiene, baja o sube? ¿qué pasaría si hiciera algo distinto?</p><div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Pizarra/papelógrafo; dibujen los círculos; parejas usan la hoja del ejercicio PIP/PIS.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Pizarra compartida para dibujar los patrones; salas pequeñas en parejas; formulario PIP/PIS.</li></ul></div></div></div></div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">Resolver conflictos y enseñar límites</div>En grupos, resuelvan una situación (conflicto entre hermanos, pantallas, rutina) con pasos: escuchar → identificar el problema y la emoción → proponer alternativas → elegir una respuesta respetuosa → acordar qué hacer si vuelve. Para conductas de riesgo, presenten “enseñar límites” (firme, claro, sin castigo) y, si corresponde, la técnica de <em>sentarse</em> (resistencia no violenta).</div></div><div class="fase">Cierre · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Una respuesta diferente</div>Cada participante elige un conflicto recurrente y escribe una estrategia concreta para abordarlo distinto esta semana. Evaluación y despedida.</div></div><div class="box ojo"><div class="box-t">▲ Ojo</div>No se receta el patrón sanador como “en vez de X haz Y”. El valor está en que cada cuidador <b>construya</b> su propia respuesta preferida: eso es lo que se sostiene en el tiempo.</div></div></div></section><section id="s6"><div class="sec-h"><h2>Sesión 6 · Lo que nos llevamos</h2></div><div class="sesion">
+      <div class="sesion-head"><div class="n">Sesión 6 · 60–90 min</div><h3>Lo que nos llevamos</h3><div class="obj">Consolidar los aprendizajes, reconocer fortalezas parentales, construir un plan y una red de apoyo, y cerrar el proceso grupal.</div></div>
+      <div class="sesion-body"><div class="box neuro"><div class="box-t">🧠 Neurocápsula</div>Lo que se <b>repite</b>, se graba: la neuroplasticidad convierte las prácticas nuevas en hábitos. Las <b>recaídas son parte</b> del aprendizaje, no un fracaso. Y la <b>red social regula</b>: sostenerse en otros cuidadores literalmente baja el estrés y sostiene los cambios. Por eso cerramos consolidando prácticas, anticipando obstáculos y tejiendo red.</div><div class="box ling"><div class="box-t">✶ Caja de lenguaje</div><ul><li><b>Future-pacing:</b> invita a imaginarse “dentro de 6 meses, cuando ya…”, para que el cerebro pre-viva el logro y lo ejecute mejor.</li><li><b>Carta al niño/a:</b> poner en palabras el compromiso lo hace más real.</li><li>Cierra en <b>fortalezas</b>: lo último que se nombra es lo que más queda.</li></ul></div><div class="fase">Inicio · 10 min</div><div class="bloque"><div class="t">10'</div><div class="c"><div class="bt">Bienvenida y recorrido</div>Saludo y ronda: una herramienta de estas semanas que les haya servido o hayan intentado aplicar.</div></div><div class="fase">Desarrollo · 45–60 min</div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">Reconociendo mis fortalezas parentales</div>Cada participante completa: “una fortaleza que reconozco en mi crianza es…”, “una habilidad que quiero seguir desarrollando es…”, “una situación donde puedo aplicar lo aprendido es…”.</div></div><div class="bloque"><div class="t">20'</div><div class="c"><div class="bt">Mi plan de crianza familiar</div>Cada participante arma un plan con tres compromisos: una acción para el vínculo, una estrategia para límites o conflictos, y una persona/red de apoyo a la que recurrir. Comparten voluntariamente.<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li>Hoja de plan; la trabajadora social refuerza redes; el psicólogo refuerza bienestar emocional.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li>Formulario de plan; comparten en voz o chat.</li></ul></div></div></div></div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">La fuerza del grupo (fortalezas)</div>Cierre de cohesión: cada participante recibe de los demás una fortaleza que vieron en él/ella durante el taller.<div class="modos"><div class="modo pres"><div class="modo-t">🏫 En presencial</div><ul><li><b>Telaraña:</b> con un ovillo de lana se lanzan nombrando una fortaleza del compañero; se forma una red física. O <b>hoja en la espalda</b> con mensajes positivos.</li></ul></div><div class="modo onl"><div class="modo-t">💻 En online</div><ul><li><b>Ronda de fortalezas:</b> cada quien nombra una fortaleza de la persona siguiente; o cada uno recibe mensajes positivos en el chat dirigidos por nombre.</li></ul></div></div></div></div><div class="fase">Cierre · 15 min</div><div class="bloque"><div class="t">15'</div><div class="c"><div class="bt">Carta al niño/a, evaluación final y despedida</div>Cada participante escribe (o dibuja) una breve carta a su hijo/a sobre lo aprendido y cómo espera que crezca la relación. Apliquen la <b>evaluación final</b> (ver Cuadernillo). Intercambio de contactos y despedida. El facilitador completa después su propia pauta de evaluación.<div class="box voz"><div class="box-t">🗣️ Voz del facilitador</div><span class="q">“Gracias por la confianza de estas semanas. Nada de lo que construyeron aquí lo trajimos nosotros: ya estaba en ustedes. Lo que sigue es seguir practicando, y recordar que nadie es perfecto —y está bien.”</span></div></div></div></div></div></section>
+<section id="dificiles">
+  <div class="sec-h"><h2>Manejo de situaciones difíciles en el grupo</h2></div>
+  <p>Son esperables y manejables. Algunas y su abordaje:</p>
+  <table>
+    <thead><tr><th>Situación</th><th>Abordaje breve</th></tr></thead>
+    <tbody>
+    <tr><td>Alguien vuelca problemas personales fuera del foco</td><td>Validar, redirigir al objetivo del grupo y ofrecer un espacio individual después.</td></tr>
+    <tr><td>Uso excesivo del tiempo de habla</td><td>Agradecer e invitar a otros: “me interesa; démosle espacio también a quien no ha hablado”.</td></tr>
+    <tr><td>Escasa participación / timidez</td><td>Preguntas abiertas y, con cuidado, dirigidas; parejas antes que plenario.</td></tr>
+    <tr><td>Interrupciones</td><td>Recordar el acuerdo de turnos sin exponer a nadie.</td></tr>
+    <tr><td>Emociones intensas</td><td>Resguardar el derecho a no revelar; nadie está obligado a compartir.</td></tr>
+    <tr><td>Hostilidad verbal</td><td>No dejar pasar la violencia; nombrar el efecto y reencuadrar; separar persona de conducta.</td></tr>
+    <tr><td>Participante que “aconseja” a otros</td><td>Reorientar: “¿qué te sería útil a ti?”, en vez de recibir consejos.</td></tr>
+    </tbody>
+  </table>
+  <div class="box ojo"><div class="box-t">▲ Ojo</div><b>Online:</b> a lo anterior se suman los silencios por conexión y la “invisibilidad” de quien apaga cámara. Nombren por turnos, usen el chat como vía alternativa de participación y no asuman desinterés ante una cámara apagada.</div>
+</section>
+
+<section id="crisis">
+  <div class="sec-h"><h2>Vulneración de derechos y situaciones de crisis</h2></div>
+  <div class="box alerta"><div class="box-t">■ Cuidado</div>Si durante el taller se pesquisa negligencia, maltrato físico o psicológico, o abuso sexual, o una crisis aguda: seguir el <b>flujo de primera respuesta según directrices MINSAL</b>, presentar el caso al <b>equipo de cabecera</b> y coordinar con la <b>OPD / Oficina Local de la Niñez</b>. Ante crisis en sala, distribuir roles: uno contiene, otro gestiona la ayuda. La protección del niño/a prevalece sobre la continuidad de la actividad.</div>
+  <p>Estas familias suelen requerir intervenciones de mayor intensidad (individual, visita domiciliaria, acompañamiento psicosocial). El taller grupal las complementa, no las reemplaza.</p>
+</section>
+
+  </main>
+</div>
+<footer class="foot">
+<b>Programa de Apoyo a la Salud Mental Infantil (PASMI)</b> · CESFAM Tongoy (105321) y PSR Guanaqueros (105405) · Región de Coquimbo.<br>
+Adaptación local del modelo <b>Nadie es Perfecto–Conducta</b> (MINSAL · Subsistema Chile Crece Contigo) con enfoque neurorelacional. Documento técnico de trabajo; las actividades experienciales priman sobre la exposición. Material de uso interno del equipo PASMI.
+</footer>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  function onScroll(){
+    var y=window.scrollY+120, cur=null;
+    secs.forEach(function(s){ if(s && s.offsetTop<=y) cur=s.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
