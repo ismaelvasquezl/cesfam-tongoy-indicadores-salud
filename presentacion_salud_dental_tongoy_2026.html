@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salud dental Tongoy 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#0B1A21;overflow:hidden;font-family:'Nunito Sans',Arial,sans-serif}
+#stage{position:fixed;inset:0;overflow:hidden}
+#deck{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .35s ease}
+.slide.on{opacity:1;visibility:visible}
+.slide *{box-sizing:border-box}
+.slide>*:not([style*="position:absolute"]){position:relative}
+.slide h1,.slide h2,.slide h3,.slide p,.slide ul,.slide ol{margin:0}
+.slide ul,.slide ol{padding-left:1.2em}
+.slide table{border-collapse:collapse;width:100%}
+.slide th,.slide td{padding:.35em .6em;border-bottom:1px solid rgba(20,48,61,.18);text-align:left}
+.slide th{font-weight:700}
+.slide aside{display:none}
+#notes{position:fixed;left:0;right:0;bottom:56px;max-height:32vh;overflow:auto;background:#FBF8F2;color:#14303D;font-size:18px;line-height:1.5;padding:16px 24px;box-shadow:0 -4px 20px rgba(0,0,0,.3);display:none}
+#notes.on{display:block}
+#bar{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;gap:12px;padding:0 max(16px,env(safe-area-inset-left,0px));background:rgba(11,26,33,.92);color:#BFD3D6;font-size:15px;transition:opacity .3s}
+#bar{flex-wrap:nowrap;overflow-x:auto}
+#bar button{white-space:nowrap;font:inherit;font-weight:700;background:#1F4A57;color:#FBF8F2;border:0;border-radius:8px;padding:7px 14px;cursor:pointer}
+#bar button:disabled{opacity:.4;cursor:default}
+#bar button:focus-visible{outline:2px solid #F2A27A;outline-offset:2px}
+#prog{flex:1;height:4px;background:#1F4A57;border-radius:2px;overflow:hidden}#prog i{display:block;height:100%;width:0;background:#F2A27A}
+#num{min-width:4.5em;text-align:right;font-variant-numeric:tabular-nums}
+body.idle #bar{opacity:0}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}}
+@media print{@page{size:1920px 1080px;margin:0}html,body{height:auto;overflow:visible;background:#fff}#stage{position:static;display:block}#deck{transform:none!important;width:auto;height:auto}
+.slide{position:relative;opacity:1;visibility:visible;page-break-after:always;break-after:page}#bar,#notes{display:none!important}}
+</style></head><body>
+<div id="stage"><main id="deck">
+<section id="cover" class="slide" aria-label="Diapositiva 1" data-transition="fade" style="background:#14303D;color:#FBF8F2;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="position:absolute;left:1240px;top:0px;width:680px;height:1080px;background:linear-gradient(160deg, #1F4A57 0%, #14303D 70%)"></div>
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#F2A27A">Programa de Salud Dental · CESFAM Tongoy y PSR Guanaqueros</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1240px">
+<h1 style="font-family:'Domine', Georgia, serif;font-size:96px;font-weight:700;line-height:1.1;color:#FBF8F2">Lo que nos cuentan nuestros datos de salud dental</h1>
+<p style="font-size:44px;line-height:1.35;color:#BFD3D6">Un borrador para construir juntos con la Unidad Técnica</p>
+</div>
+<p style="font-size:28px;color:#BFD3D6">Enero a octubre de 2026 · Área técnica · Estadística</p>
+<aside>Gracias por el espacio. Esto no es un informe terminado: es una primera lectura de nuestros datos, hecha para revisarla y mejorarla en equipo antes de darla por final.</aside>
+</section>
+<section id="proposito" class="slide" aria-label="Diapositiva 2" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Por qué estamos aquí</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Queríamos mirar nuestro trabajo con datos, y hacerlo en equipo</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:1px solid #E1E6E3;border-radius:20px">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:44px;font-weight:700;color:#1F7A78">Entender</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5A63">Qué hicimos este año, a quién llegamos y a quién todavía no.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:1px solid #E1E6E3;border-radius:20px">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:44px;font-weight:700;color:#1F7A78">Conversar</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5A63">Revisar cada cifra con quienes conocen la atención desde el box.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:1px solid #E1E6E3;border-radius:20px">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:44px;font-weight:700;color:#1F7A78">Cerrar juntos</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5A63">Llegar con la Unidad Técnica a una versión final que nos sirva para planificar 2027.</p>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#4A5A63">Todo lo que sigue es un <b style="color:#14303D">borrador</b>: las cifras están verificadas, pero la lectura la completamos con ustedes.</p>
+<aside>El objetivo de hoy no es presentar conclusiones cerradas. Es mostrar qué encontramos, explicar cómo lo calculamos y acordar qué ajustar para tener una versión final validada por el programa y por la Unidad Técnica.</aside>
+</section>
+<section id="datos" class="slide" aria-label="Diapositiva 3" data-transition="fade" style="background:#EEF3F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Cuidar a las personas es cuidar sus datos</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">La anonimización es una política de nuestro equipo</h2>
+</div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">Antes de analizar, cada RUN y cada nombre se reemplaza por un código. El análisis trabaja solo con códigos y con cifras agregadas.</p>
+<ul style="font-size:32px;line-height:1.5;color:#4A5A63">
+<li>Pacientes: <b style="color:#14303D">P-000001</b>, P-000002…</li>
+<li>Profesionales: <b style="color:#14303D">OD-000001</b>, OD-000002…</li>
+<li>La tabla que une código y persona queda en Tongoy, en manos del equipo.</li>
+</ul>
+</div>
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#14303D;padding:48px;border-radius:20px">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:40px;font-weight:700;color:#FBF8F2">Por qué lo hacemos</h3>
+<p style="font-size:30px;line-height:1.45;color:#BFD3D6">Ley 19.628 de protección de la vida privada.</p>
+<p style="font-size:30px;line-height:1.45;color:#BFD3D6">Podemos compartir y revisar el trabajo sin exponer a nadie.</p>
+<p style="font-size:30px;line-height:1.45;color:#BFD3D6">Las cifras por profesional sirven para planificar y apoyar, nunca para sancionar.</p>
+</div>
+</div>
+<aside>La anonimización no es un trámite: es la forma en que este equipo decidió trabajar. Permite que el análisis circule entre programa, unidad técnica y dirección sin que aparezca un solo nombre o RUN. Solo el equipo de Tongoy puede volver del código a la persona, por ejemplo para citar a un niño sin atención.</aside>
+</section>
+<section id="proceso" class="slide" aria-label="Diapositiva 4" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Lo que hicimos</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Tres archivos, una sola historia</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #E1E6E3;border-radius:20px">
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#1F7A78">33.461</p>
+<p style="font-size:28px;line-height:1.4;color:#4A5A63">registros de la hoja diaria de AVIS, enero a octubre</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #E1E6E3;border-radius:20px">
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#1F7A78">8.134</p>
+<p style="font-size:28px;line-height:1.4;color:#4A5A63">atenciones reales, al agrupar paciente, profesional, fecha y hora</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #E1E6E3;border-radius:20px">
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#1F7A78">1.061</p>
+<p style="font-size:28px;line-height:1.4;color:#4A5A63">niños de 0 a 7 años inscritos, cruzados con la atención</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #E1E6E3;border-radius:20px">
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#1F7A78">11.273</p>
+<p style="font-size:28px;line-height:1.4;color:#4A5A63">personas en el per cápita FONASA 2026, nuestro denominador</p>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">Cada fila de AVIS es un diagnóstico o una prestación, no una atención. Contar filas habría inflado la producción cuatro veces.</p>
+<aside>Un detalle de método que conviene validar: cada atención genera varias filas en AVIS. Por eso agrupamos por paciente, profesional, fecha y hora. Los 574 códigos de niños de la nómina aparecen en la base de producción con edad, centro y sexo coincidentes, así que el cruce es confiable.</aside>
+</section>
+<section id="espacio" class="slide" aria-label="Diapositiva 5" data-transition="fade" style="background:#14303D;color:#FBF8F2;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#F2A27A">Para conversar · el trabajo que no se ve</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#FBF8F2">El espacio que nadie ve</h2>
+</div>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.45;color:#BFD3D6">Para el sistema, estos dos RUN son personas distintas. El primero termina en un espacio invisible.</p>
+<div style="display:flex;flex-direction:column;gap:16px;background:#1F4A57;padding:36px;border-radius:16px">
+<p style="font-family:'Courier New', monospace;font-size:40px;color:#FBF8F2">"11.111.111-1<span style="color:#F2A27A">␣</span>"</p>
+<p style="font-family:'Courier New', monospace;font-size:40px;color:#FBF8F2">"11.111.111-1"</p>
+<p style="font-size:26px;color:#BFD3D6">RUN de ejemplo. Al cruzar bases, el niño “desaparece” y figura sin atención.</p>
+</div>
+<p style="font-size:32px;line-height:1.45;color:#BFD3D6">Normalizar la exportación de AVIS antes de cada análisis toma tiempo y es fácil equivocarse.</p>
+</div>
+<div style="width:640px;display:flex;flex-direction:column;gap:20px">
+<div style="background:#FBF8F2;padding:32px;border-radius:16px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Domine', Georgia, serif;font-size:48px;font-weight:700;color:#B8532A">100 %</p>
+<p style="font-size:26px;line-height:1.4;color:#14303D">de los textos en 5 columnas de la hoja diaria empieza con un espacio</p>
+</div>
+<div style="background:#FBF8F2;padding:32px;border-radius:16px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Domine', Georgia, serif;font-size:48px;font-weight:700;color:#B8532A">17.984</p>
+<p style="font-size:26px;line-height:1.4;color:#14303D">celdas de “Sector” parecen vacías, pero guardan un espacio</p>
+</div>
+<div style="background:#FBF8F2;padding:32px;border-radius:16px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Domine', Georgia, serif;font-size:48px;font-weight:700;color:#B8532A">7 formas</p>
+<p style="font-size:26px;line-height:1.4;color:#14303D">de escribir Guanaqueros en la nómina de inscritos</p>
+</div>
+</div>
+</div>
+<aside>Este es un tema que vale la pena conversar con calma. Un espacio invisible al final de un RUN basta para que un cruce falle sin aviso: el niño aparece como no atendido aunque sí lo esté. En la exportación de este año encontramos que todos los textos de cinco columnas empiezan con un espacio, que miles de celdas que parecen vacías no lo están y que Guanaqueros se escribe de siete maneras distintas. Proponemos acordar un procedimiento estándar de limpieza y, si se puede, pedir a AVIS que exporte sin esos espacios.</aside>
+</section>
+<section id="equipo" class="slide" aria-label="Diapositiva 6" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 1 · Un equipo que no se detiene</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Llegamos a uno de cada cinco inscritos en diez meses</h2>
+</div>
+<div style="display:flex;gap:56px;align-items:end">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:16px;align-items:end;height:300px">
+<div style="flex:1;height:245px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:226px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:276px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:280px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:271px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:260px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:214px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:300px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:253px;background:#1F7A78;border-radius:8px 8px 0 0"></div>
+<div style="flex:1;height:219px;background:#9DB9BD;border-radius:8px 8px 0 0"></div>
+</div>
+<div style="display:flex;gap:16px">
+<p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">E</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">F</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">M</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">A</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">M</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">J</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">J</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">A</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">S</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">O*</p>
+</div>
+</div>
+<div style="width:620px;display:flex;flex-direction:column;gap:28px">
+<div><p style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;color:#1F7A78">634</p><p style="font-size:30px;color:#4A5A63">atenciones al mes, sin caída en verano</p></div>
+<div><p style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;color:#1F7A78">2.364</p><p style="font-size:30px;color:#4A5A63">inscritos atendidos: 21 % del per cápita</p></div>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">Y una buena noticia de registro: la hora de atención refleja la agenda real.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Atenciones efectivas por mes (presencial y teleconsulta). Octubre, en gris, cortado al día 26. Máximo: agosto, 736.</p>
+<aside>Mientras el año avanzaba, con vacaciones, licencias y el verano lleno de gente en Tongoy, el equipo sostuvo unas 634 atenciones efectivas al mes. Julio baja por las vacaciones de invierno y agosto fue el mejor mes. A diferencia de otras bases de la comuna, en Tongoy la hora registrada coincide con la agenda real, lo que nos permite analizar horarios con confianza.</aside>
+</section>
+<section id="citas" class="slide" aria-label="Diapositiva 7" data-transition="fade" style="background:#EEF3F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 2 · La silla que queda vacía</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Una de cada cinco citas se pierde</h2>
+</div>
+<div style="display:flex;gap:56px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">A las 8 de la mañana casi nadie falta. Desde media mañana, la silla queda vacía en una de cada cinco citas. Con los niños pequeños, en casi una de cada tres.</p>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:20px"><p style="width:230px;font-size:28px;color:#4A5A63">8:00</p><div style="width:60px;height:40px;background:#D9663A;border-radius:0 8px 8px 0"></div><p style="font-size:28px;font-weight:700">4,6 %</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="width:230px;font-size:28px;color:#4A5A63">11:00</p><div style="width:316px;height:40px;background:#D9663A;border-radius:0 8px 8px 0"></div><p style="font-size:28px;font-weight:700">24,3 %</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="width:230px;font-size:28px;color:#4A5A63">Menores de 5</p><div style="width:411px;height:40px;background:#D9663A;border-radius:0 8px 8px 0"></div><p style="font-size:28px;font-weight:700">31,6 %</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="width:230px;font-size:28px;color:#4A5A63">60 años y más</p><div style="width:168px;height:40px;background:#D9663A;border-radius:0 8px 8px 0"></div><p style="font-size:28px;font-weight:700">12,9 %</p></div>
+</div>
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E1E6E3">
+<p style="font-family:'Domine', Georgia, serif;font-size:96px;font-weight:700;color:#B8532A">1.468</p>
+<p style="font-size:32px;line-height:1.4;color:#4A5A63">horas de odontólogo que quedaron libres este año. Es la mayor reserva de capacidad que tenemos.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Inasistencia = citas perdidas / citas agendadas. Enero a octubre de 2026.</p>
+<aside>La primera hora del día probablemente recibe urgencias y demanda espontánea, por eso casi no tiene pérdidas. Desde las 10 y hasta la tarde la inasistencia ronda entre 18 y 24 por ciento. En niños menores de 5 años sube a casi un tercio: la cita depende del adulto que los acompaña y de su trabajo. Confirmar las citas de 10 a 17 horas, partiendo por las infantiles, es probablemente la acción de mejor rendimiento.</aside>
+</section>
+<section id="recorrido" class="slide" aria-label="Diapositiva 8" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 3 · El camino de un niño de Tongoy</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Lo acompañamos de guagua, y lo perdemos al entrar al colegio</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-top:8px solid #1F7A78;border-radius:16px">
+<p style="font-size:28px;font-weight:700;color:#1F7A78">1 a 2 años</p>
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#14303D">1 de 2</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">llega al box dental. Es nuestro mejor momento: el control CERO funciona.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-top:8px solid #E5A43A;border-radius:16px">
+<p style="font-size:28px;font-weight:700;color:#8A5A0E">3 a 5 años</p>
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#14303D">3 de 10</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">va al box, y otros tres nos ven solo en el jardín con Sembrando Sonrisas.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border-top:8px solid #B8532A;border-radius:16px">
+<p style="font-size:28px;font-weight:700;color:#B8532A">6 a 8 años</p>
+<p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#14303D">2 de 3</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">no tiene ningún registro dental en 2026. Sin jardín, no hay quien los traiga.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Recorrido ilustrativo armado con las cifras reales de cada edad. Nómina de 1.061 inscritos de 0 a 7 años, contacto dental 2026.</p>
+<aside>Imaginemos a un niño de Tongoy. Al año o a los dos, su mamá lo trae al control y tiene una buena chance de pasar por el box: uno de cada dos lo hace. Entre los 3 y los 5 años va al jardín, y ahí Sembrando Sonrisas lo encuentra aunque no venga al CESFAM. A los 6 entra al colegio y el puente se corta: dos de cada tres niños de 6 a 8 años no tienen ningún registro dental este año. No es un niño real, es el recorrido típico que muestran los datos.</aside>
+</section>
+<section id="brecha" class="slide" aria-label="Diapositiva 9" data-transition="fade" style="background:#B8532A;color:#FBF8F2;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#FDE3D4">El número que nos queda dando vueltas</p>
+<p style="font-family:'Domine', Georgia, serif;font-size:300px;font-weight:700;line-height:1;color:#FBF8F2">487</p>
+<p style="font-size:44px;line-height:1.3;color:#FBF8F2;width:1500px">niños inscritos de 0 a 7 años no tienen ningún registro dental en 2026: ni atención, ni Sembrando Sonrisas, ni una cita perdida.</p>
+<p style="font-size:32px;line-height:1.4;color:#FDE3D4;width:1500px">193 tienen entre 6 y 8 años. 56 son menores de un año. 455 son de Tongoy y 32 de Guanaqueros.</p>
+<aside>Este es casi la mitad de los niños de la nómina: 46 por ciento. Son niños con nombre y apellido que el equipo puede encontrar, porque la nómina anonimizada se puede revertir solo aquí, en Tongoy. La mayoría ya está en el colegio o recién nació, y eso nos dice dónde buscarlos.</aside>
+</section>
+<section id="caries" class="slide" aria-label="Diapositiva 10" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 4 · La caries llega temprano</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Entre los 3 y los 5 años se juega todo</h2>
+</div>
+<div style="display:flex;gap:56px;align-items:end">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#4A5A63">Niños libres de caries (ceod = 0), por edad</p>
+<div style="display:flex;gap:16px;align-items:end;height:340px">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">100 %</p><div style="width:100%;height:280px;background:#1F7A78;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">100 %</p><div style="width:100%;height:280px;background:#1F7A78;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">93 %</p><div style="width:100%;height:260px;background:#1F7A78;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">73 %</p><div style="width:100%;height:204px;background:#1F7A78;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">54 %</p><div style="width:100%;height:151px;background:#1F7A78;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">16 %</p><div style="width:100%;height:45px;background:#B8532A;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">29 %</p><div style="width:100%;height:81px;background:#B8532A;border-radius:8px 8px 0 0"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><p style="font-size:24px;font-weight:700">18 %</p><div style="width:100%;height:50px;background:#B8532A;border-radius:8px 8px 0 0"></div></div>
+</div>
+<div style="display:flex;gap:16px">
+<p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">0</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">1</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">2</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">3</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">4</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">5</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">6</p><p style="flex:1;font-size:24px;text-align:center;color:#4A5A63">7–8</p>
+</div>
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:28px">
+<div><p style="font-family:'Domine', Georgia, serif;font-size:64px;font-weight:700;color:#B8532A">5 % → 82 %</p><p style="font-size:30px;line-height:1.4;color:#4A5A63">niños con riesgo CERO alto, de menores de 2 años a mayores de 5</p></div>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">67 niños con riesgo alto tuvieron una sola atención en el año.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">309 niños con ceod registrado y 301 con pauta de riesgo. Los mayores que llegan al box suelen venir por un problema: puede sobreestimar el daño.</p>
+<aside>Casi todos los niños menores de 3 años que evaluamos llegan con los dientes sanos. A los 5 años, solo uno de cada seis. La caries temprana de la infancia se instala justo en la edad en que dejamos de verlos en el box. Por eso cada control CERO antes de los 3 años vale tanto. Una advertencia honesta: los niños mayores que llegan al box muchas veces vienen por dolor o por un problema, así que la cifra puede ser peor que la realidad de toda la población de esa edad.</aside>
+</section>
+<section id="guanaqueros" class="slide" aria-label="Diapositiva 11" data-transition="fade" style="background:#EEF3F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 5 · Guanaqueros nos enseña algo</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">La posta pequeña llega a más niños</h2>
+</div>
+<div style="display:flex;gap:48px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;font-weight:700;color:#14303D">Guanaqueros · 91 niños inscritos</p>
+<div style="display:flex;align-items:center;gap:20px"><div style="width:516px;height:56px;background:#1F7A78;border-radius:0 10px 10px 0"></div><p style="font-family:'Domine', Georgia, serif;font-size:44px;font-weight:700;color:#1F7A78">52 %</p></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;font-weight:700;color:#14303D">Tongoy · 970 niños inscritos</p>
+<div style="display:flex;align-items:center;gap:20px"><div style="width:333px;height:56px;background:#7FA7AB;border-radius:0 10px 10px 0"></div><p style="font-family:'Domine', Georgia, serif;font-size:44px;font-weight:700;color:#4A5A63">33 %</p></div>
+</div>
+<p style="font-size:26px;color:#4A5A63">Niños de 0 a 7 años con atención clínica en 2026.</p>
+</div>
+<div style="width:640px;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E1E6E3">
+<p style="font-family:'Domine', Georgia, serif;font-size:96px;font-weight:700;color:#1F7A78">2,4 veces</p>
+<p style="font-size:30px;line-height:1.4;color:#4A5A63">más probabilidad de atención para un niño inscrito en Guanaqueros, a igual edad y sexo.</p>
+<p style="font-size:24px;color:#6A7A82">Regresión logística, IC 95 %: 1,4 a 4,1.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Pregunta para el equipo: ¿qué hace distinto Guanaqueros al citar y rescatar a las familias?</p>
+<aside>En la posta de Guanaqueros, la mitad de los niños tuvo atención clínica este año; en Tongoy, un tercio. Al comparar niños de la misma edad y sexo, la diferencia se mantiene: un niño de Guanaqueros tiene 2,4 veces más chance de ser atendido. Probablemente tiene que ver con la cercanía: un equipo pequeño que conoce a cada familia. Vale la pena preguntarles cómo lo hacen y llevarlo a Tongoy.</aside>
+</section>
+<section id="hombres" class="slide" aria-label="Diapositiva 12" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Historia 6 · Los que salen temprano al mar</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Las mujeres adultas se atienden el doble que los hombres</h2>
+</div>
+<div style="display:flex;gap:80px;align-items:end">
+<div style="display:flex;gap:56px;align-items:end;height:420px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-family:'Domine', Georgia, serif;font-size:56px;font-weight:700;color:#B8532A">22 %</p><div style="width:220px;height:300px;background:#D9663A;border-radius:12px 12px 0 0"></div><p style="font-size:30px;font-weight:700">Mujeres</p></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-family:'Domine', Georgia, serif;font-size:56px;font-weight:700;color:#1F5F8A">11 %</p><div style="width:220px;height:150px;background:#2A78D6;border-radius:12px 12px 0 0"></div><p style="font-size:30px;font-weight:700">Hombres</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">Personas de 20 a 59 años atendidas sobre el per cápita FONASA de cada sexo.</p>
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">La pesca, la agricultura y la construcción empiezan temprano y terminan tarde. La extensión horaria existe, pero todavía no alcanza a estos hombres.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Inscritos en Tongoy o Guanaqueros con atención efectiva, enero a octubre de 2026. La explicación laboral es una hipótesis para conversar.</p>
+<aside>Entre los 20 y los 59 años, una de cada cinco mujeres inscritas pasó por el box este año; entre los hombres, uno de cada diez. Nuestra hipótesis es la jornada laboral de una comuna costera y rural: el pescador que sale de madrugada, el temporero, el maestro de la construcción. La extensión horaria ya atiende adultos, pero quizás falta llevar la oferta a donde ellos están: caletas, faenas y juntas de vecinos.</aside>
+</section>
+<section id="cero" class="slide" aria-label="Diapositiva 13" data-transition="fade" style="background:#EEF3F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Programa CERO frente a la referencia</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Vamos bien encaminados, todavía lejos de la meta</h2>
+</div>
+<table style="font-family:'Nunito Sans', Arial, sans-serif;font-size:32px;color:#14303D">
+<tr><th style="width:34%;text-align:left">Tramo de edad</th><th style="width:22%;text-align:right">Cobertura CERO 2026</th><th style="width:22%;text-align:right">Referencia MINSAL</th><th style="width:22%;text-align:right">Distancia</th></tr>
+<tr style="background:#FFFFFF"><td>Menores de 1 año</td><td style="text-align:right">44 %</td><td style="text-align:right">90 %</td><td style="text-align:right;color:#B8532A">46 puntos</td></tr>
+<tr><td>1 a 2 años</td><td style="text-align:right">45 %</td><td style="text-align:right">75 %</td><td style="text-align:right;color:#B8532A">30 puntos</td></tr>
+<tr style="background:#FFFFFF"><td>3 a 8 años</td><td style="text-align:right">27 %</td><td style="text-align:right">55 %</td><td style="text-align:right;color:#B8532A">28 puntos</td></tr>
+</table>
+<p style="font-size:32px;line-height:1.45;color:#4A5A63">Para acercarnos a la referencia faltan unos <b style="color:#14303D">297 niños</b> antes de diciembre. A nuestro ritmo actual sumaríamos cerca de 75: necesitamos salir a buscarlos.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6A7A82">Inscritos de 6 meses o más con alguna prestación CERO. Referencia: criterios técnicos de programación odontológica MINSAL 2026 (anual; octubre aún en curso).</p>
+<aside>La referencia de MINSAL es de programación, no una meta IAAPS, y es anual: todavía quedan dos meses. Aun así, la distancia es grande en los tres tramos. Captamos unos 38 niños nuevos al mes, de forma muy pareja. Para acercarnos a la referencia necesitamos una estrategia activa, no solo esperar que lleguen.</aside>
+</section>
+<section id="propuestas" class="slide" aria-label="Diapositiva 14" data-transition="fade" style="background:#FBF8F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Ideas para conversar, no decisiones tomadas</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Seis propuestas</h2>
+</div>
+<table style="font-family:'Nunito Sans', Arial, sans-serif;font-size:28px;color:#14303D">
+<tr><th style="width:36%;text-align:left">Propuesta</th><th style="width:34%;text-align:left">Por qué</th><th style="width:30%;text-align:left">Primer paso</th></tr>
+<tr style="background:#FFFFFF"><td>Barrido escolar de 6 a 8 años</td><td>193 niños sin registro</td><td>Cruzar nómina con matrícula</td></tr>
+<tr><td>CERO en el control infantil</td><td>56 menores de 1 año sin registro</td><td>Hora dental en el control de los 6 meses</td></tr>
+<tr style="background:#FFFFFF"><td>Confirmar citas de 10 a 17 h</td><td>1 de cada 5 citas se pierde</td><td>Llamada o mensaje 24–48 h antes</td></tr>
+<tr><td>Seguir a los niños de riesgo alto</td><td>67 con una sola atención</td><td>Lista nominal mensual</td></tr>
+<tr style="background:#FFFFFF"><td>Llevar la oferta a los hombres adultos</td><td>11 % frente a 22 % en mujeres</td><td>Difusión en caletas y faenas</td></tr>
+<tr><td>Normalizar la base AVIS</td><td>Espacios invisibles y textos libres</td><td>Procedimiento común y consulta a AVIS</td></tr>
+</table>
+<aside>Estas propuestas salen de los datos, pero quien sabe si son viables es el equipo. Las traemos para priorizarlas juntos: qué se puede hacer con lo que ya tenemos, qué necesita apoyo de la dirección y qué conviene descartar.</aside>
+</section>
+<section id="pasos" class="slide" aria-label="Diapositiva 15" data-transition="fade" style="background:#EEF3F2;color:#14303D;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#B8532A">Cómo seguimos</p>
+<h2 style="font-family:'Domine', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#14303D">Del borrador a la versión final, juntos</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E1E6E3">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:40px;font-weight:700;color:#1F7A78">Lo que necesitamos validar</h3>
+<ul style="font-size:30px;line-height:1.5;color:#4A5A63">
+<li>Cómo contamos una atención y una inasistencia</li>
+<li>Sumar la nómina de 8 y 9 años</li>
+<li>Separar lo atendido en Guanaqueros</li>
+<li>Las metas y referencias del programa</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;background:#FFFFFF;padding:44px;border-radius:20px;border:1px solid #E1E6E3">
+<h3 style="font-family:'Domine', Georgia, serif;font-size:40px;font-weight:700;color:#1F7A78">Lo que proponemos hacer</h3>
+<ol style="font-size:30px;line-height:1.5;color:#4A5A63">
+<li>Revisar este borrador con el programa</li>
+<li>Reunión con la Unidad Técnica</li>
+<li>Ajustar cifras y redacción</li>
+<li>Versión final y tablero mensual</li>
+</ol>
+</div>
+</div>
+<aside>Lo que pedimos es tiempo para revisar juntos. Hay decisiones de método que el programa debe validar, datos que podemos sumar y una conversación pendiente sobre cómo exportar y limpiar la base de AVIS. Con eso cerramos una versión final que quede como línea base para 2027.</aside>
+</section>
+<section id="gracias" class="slide" aria-label="Diapositiva 16" data-transition="fade" style="background:#14303D;color:#FBF8F2;font-family:'Nunito Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="position:absolute;left:1240px;top:0px;width:680px;height:1080px;background:linear-gradient(160deg, #1F4A57 0%, #14303D 70%)"></div>
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#F2A27A">Gracias</p>
+<div style="display:flex;flex-direction:column;gap:32px;width:1240px">
+<h2 style="font-family:'Domine', Georgia, serif;font-size:88px;font-weight:700;line-height:1.1;color:#FBF8F2">Detrás de cada cifra hay un niño, una familia y un equipo que los cuida</h2>
+<p style="font-size:40px;line-height:1.35;color:#BFD3D6">Construyamos juntos la versión final.</p>
+</div>
+<p style="font-size:28px;color:#BFD3D6">Ismael Vásquez Loyola · Estadística, CESFAM Tongoy · [correo] · [teléfono]</p>
+<aside>Cerrar agradeciendo el trabajo diario del equipo dental. Ofrecer el informe, el tablero interactivo y esta presentación para que cada uno los revise con calma antes de la reunión.</aside>
+</section>
+</main></div>
+<div id="notes" role="note" aria-live="polite"></div>
+<nav id="bar" aria-label="Navegación">
+<button id="prev" aria-label="Diapositiva anterior">Anterior</button>
+<button id="next" aria-label="Diapositiva siguiente">Siguiente</button>
+<button id="nbtn" aria-pressed="false">Notas</button>
+<button id="fbtn">Pantalla completa</button>
+<div id="prog" aria-hidden="true"><i></i></div><span id="num"></span>
+</nav>
+<script>
+const S=[...document.querySelectorAll('.slide')],deck=document.getElementById('deck'),notes=document.getElementById('notes');let i=0;
+function fit(){const sc=Math.min(innerWidth/1920,innerHeight/1080);deck.style.transform='translate(-50%,-50%) scale('+sc+')'}
+function go(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>{s.classList.toggle('on',k===i);s.setAttribute('aria-hidden',k!==i)});
+ document.getElementById('num').textContent=(i+1)+' / '+S.length;document.querySelector('#prog i').style.width=((i+1)/S.length*100)+'%';
+ document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;
+ const a=S[i].querySelector('aside');notes.textContent=a?a.textContent:'Sin notas para esta diapositiva.';
+ try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+document.getElementById('prev').onclick=()=>go(i-1);document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('nbtn').onclick=e=>{const on=notes.classList.toggle('on');e.currentTarget.setAttribute('aria-pressed',on)};
+document.getElementById('fbtn').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}};
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();go(i+1)}else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(i-1)}else if(e.key==='Home')go(0);else if(e.key==='End')go(S.length-1);else if(e.key.toLowerCase()==='n')document.getElementById('nbtn').click();else if(e.key.toLowerCase()==='f')document.getElementById('fbtn').click()});
+let x0=null;addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(x0===null)return;const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)go(i+(d<0?1:-1));x0=null});
+let t;addEventListener('mousemove',()=>{document.body.classList.remove('idle');clearTimeout(t);t=setTimeout(()=>document.body.classList.add('idle'),2500)});
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>
