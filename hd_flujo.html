@@ -1,0 +1,341 @@
+<title>Flujo Hospital Digital Tongoy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: columna central; cabecera fija navy; secciones apiladas con bandas de color por etapa. */
+:root{
+  --bg:#EEF2F7; --surface:#FFFFFF; --surface-2:#F4F7FB;
+  --fg:#17202E; --muted:#59647A; --border:#D7DEEA;
+  --navy:#1F3864; --navy-ink:#FFFFFF; --accent:#2E5496;
+  --s1:#0E8A86; --s2:#1F6FEB; --s3:#5B3FD6; --s4:#B9770A; --s5:#1E9E5A; --danger:#CE1F34;
+  --shadow:0 1px 2px rgba(20,30,50,.06),0 8px 24px rgba(20,30,50,.06);
+  --fdisp:"Archivo",system-ui,sans-serif; --fbody:"IBM Plex Sans",system-ui,sans-serif; --fmono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1420; --surface:#162032; --surface-2:#1B2638;
+  --fg:#E8EDF5; --muted:#9BA8BC; --border:#2A3850;
+  --navy:#132038; --accent:#6E9BE6;
+  --s1:#2FB6B1; --s2:#5E95F6; --s3:#9A82F2; --s4:#E0A52E; --s5:#3FCB85; --danger:#FF6B79;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0D1420; --surface:#162032; --surface-2:#1B2638;
+  --fg:#E8EDF5; --muted:#9BA8BC; --border:#2A3850;
+  --navy:#132038; --accent:#6E9BE6;
+  --s1:#2FB6B1; --s2:#5E95F6; --s3:#9A82F2; --s4:#E0A52E; --s5:#3FCB85; --danger:#FF6B79;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--fbody);line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
+.wrap{max-width:940px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--fdisp);text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+
+/* Cabecera */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:var(--navy-ink);box-shadow:0 2px 10px rgba(10,20,40,.25)}
+header.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;min-height:52px}
+header.top .brand{font-family:var(--fdisp);font-weight:700;font-size:.98rem;letter-spacing:.01em;line-height:1.15}
+header.top .brand small{display:block;font-family:var(--fbody);font-weight:400;font-size:.72rem;color:#AFC3E6;letter-spacing:.02em}
+header.top .sp{flex:1}
+.tbtn{appearance:none;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-family:var(--fbody);font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:9px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.16)}
+.tbtn:focus-visible{outline:2px solid #AFC3E6;outline-offset:2px}
+
+/* Hero */
+.hero{background:linear-gradient(180deg,var(--navy),color-mix(in srgb,var(--navy) 86%,#000));color:#fff}
+.hero .wrap{padding-block:30px 34px}
+.hero h1{font-size:clamp(1.7rem,4.6vw,2.6rem);font-weight:800;line-height:1.05;color:#fff}
+.hero .lede{margin-top:10px;color:#CBD9F0;max-width:60ch;font-size:1.02rem}
+.lema{display:inline-flex;gap:10px;align-items:center;margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:999px;font-family:var(--fdisp);font-weight:700;letter-spacing:.08em;font-size:.82rem}
+.lema b{color:#FFD166}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.fact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 12px}
+.fact .n{font-family:var(--fdisp);font-weight:800;font-size:1.25rem;color:#fff;font-variant-numeric:tabular-nums}
+.fact .l{font-size:.72rem;color:#AFC3E6;margin-top:2px}
+@media(max-width:620px){.facts{grid-template-columns:repeat(2,1fr)}}
+
+/* Secciones */
+section{padding-block:30px}
+.sechead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sechead h2{font-size:1.35rem;font-weight:700}
+.sechead .hint{color:var(--muted);font-size:.85rem}
+
+/* Controles de flujo */
+.flowctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:3px}
+.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--fbody);font-weight:600;font-size:.82rem;padding:7px 13px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Tarjetas de etapa */
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-left:7px solid var(--sc);border-radius:14px;padding:16px 18px 16px 18px;box-shadow:var(--shadow)}
+.step .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.step .num{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--sc);color:#fff;font-family:var(--fdisp);font-weight:800;font-size:1.2rem;display:grid;place-items:center}
+.step h3{font-size:1.08rem;font-weight:700;color:var(--sc)}
+.step .verb{color:var(--muted);font-weight:500;font-size:.95rem}
+.step .chip{margin-left:auto;font-size:.72rem;font-weight:600;color:var(--sc);background:color-mix(in srgb,var(--sc) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--sc) 35%,var(--surface));padding:5px 10px;border-radius:999px;white-space:nowrap}
+.step ul{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.step li{position:relative;padding-left:20px;color:var(--fg);font-size:.95rem}
+.step li::before{content:"";position:absolute;left:3px;top:.52em;width:7px;height:7px;border-radius:50%;background:var(--sc)}
+.step li b{font-weight:600}
+.step .mono{font-family:var(--fmono);font-size:.86em;background:var(--surface-2);padding:1px 6px;border-radius:6px;border:1px solid var(--border)}
+.connector{height:16px;width:2px;background:var(--border);margin:-6px auto -2px 26px}
+/* modo presentación */
+.steps.present .step{display:none}
+.steps.present .step.active{display:block;animation:pop .25s ease}
+.steps.present .connector{display:none}
+@keyframes pop{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pnav{display:none;align-items:center;gap:12px;margin-top:14px}
+.steps.present ~ .pnav{display:flex}
+.pnav button{appearance:none;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-family:var(--fbody);font-weight:600;font-size:.9rem;padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow)}
+.pnav button:disabled{opacity:.4;cursor:default}
+.pnav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pnav .dots{display:flex;gap:7px;margin-left:auto}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--border);border:0;cursor:pointer;padding:0}
+.dot.on{background:var(--accent)}
+
+/* Contingencias */
+.cont{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.cont{grid-template-columns:1fr}}
+.cbox{background:color-mix(in srgb,var(--danger) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--danger) 40%,var(--surface));border-left:7px solid var(--danger);border-radius:14px;padding:16px 18px}
+.cbox h3{color:var(--danger);font-size:1rem;font-weight:700;margin-bottom:6px}
+.cbox p{font-size:.92rem;color:var(--fg)}
+.cbox .act{display:block;margin-top:8px;font-weight:700;color:var(--danger)}
+
+/* Banda SOME */
+.some{background:var(--navy);color:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.some h3{color:#FFD166;font-size:1.05rem;margin-bottom:10px}
+.some .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.some .two{grid-template-columns:1fr}}
+.some .slot{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px}
+.some .slot b{display:block;font-family:var(--fdisp);font-size:1rem}
+.some .slot span{color:#CBD9F0;font-size:.88rem}
+.some .fine{margin-top:12px;color:#AFC3E6;font-size:.82rem;line-height:1.55}
+
+/* REM */
+.rem{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:720px){.rem{grid-template-columns:1fr}}
+.rcard{background:var(--surface);border:1px solid var(--border);border-top:6px solid var(--rc);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.rcard .code{font-family:var(--fmono);font-weight:600;font-size:1rem;color:var(--rc)}
+.rcard .use{font-weight:600;margin-top:6px;font-size:.92rem}
+.rcard .desc{color:var(--muted);font-size:.86rem;margin-top:6px}
+
+/* Reglas clave */
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.rules{grid-template-columns:1fr}}
+.rule{display:flex;gap:11px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+.rule .k{flex:0 0 auto;width:26px;height:26px;border-radius:7px;background:color-mix(in srgb,var(--accent) 16%,var(--surface));color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.rule p{font-size:.9rem}
+
+/* Checklist */
+.check{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
+.check .bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:4px 0 16px}
+.check .bar i{display:block;height:100%;width:0;background:var(--s5);transition:width .25s ease}
+.check label{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--border);cursor:pointer;font-size:.95rem}
+.check label:first-of-type{border-top:0}
+.check input{appearance:none;flex:0 0 auto;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;margin-top:1px;cursor:pointer;position:relative}
+.check input:checked{background:var(--s5);border-color:var(--s5)}
+.check input:checked::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.check input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.check label.done span{color:var(--muted);text-decoration:line-through}
+.check .foot{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.check .foot .count{font-weight:700;font-variant-numeric:tabular-nums}
+.lnk{appearance:none;border:1px solid var(--border);background:var(--surface-2);color:var(--fg);font-family:var(--fbody);font-weight:600;font-size:.82rem;padding:7px 12px;border-radius:9px;cursor:pointer}
+.lnk:hover{border-color:var(--accent);color:var(--accent)}
+
+footer{border-top:1px solid var(--border);margin-top:14px}
+footer .wrap{padding-block:22px 34px;color:var(--muted);font-size:.82rem;line-height:1.6}
+footer b{color:var(--fg)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Hospital Digital · CESFAM Tongoy<small>Flujo operativo — teleinterconsulta asincrónica</small></div>
+    <div class="sp"></div>
+    <button class="tbtn" id="theme" type="button" aria-label="Cambiar tema">Tema</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#AFC3E6">Guía rápida del equipo · v3.2</p>
+    <h1>Un caso, dos horas agendadas, cero tiempo perdido</h1>
+    <p class="lede">Resumen operativo para derivar, registrar y cerrar una teleinterconsulta de Hospital Digital en un CESFAM rural. Acompaña al protocolo oficial y a su control de cambios.</p>
+    <div class="lema"><b>DERIVA</b> · <b>REGISTRA</b> · <b>CIERRA</b> · <b>ACOMPAÑA</b></div>
+    <div class="facts">
+      <div class="fact"><div class="n">2</div><div class="l">horas agendadas con el mismo profesional</div></div>
+      <div class="fact"><div class="n">30 min</div><div class="l">cupo de la hora de Ingreso</div></div>
+      <div class="fact"><div class="n">5–7 días</div><div class="l">hora de Cierre tras el Ingreso</div></div>
+      <div class="fact"><div class="n">≥ 2</div><div class="l">teléfonos de contacto confirmados</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="flujo"><div class="wrap">
+  <div class="sechead"><h2>El flujo en 5 pasos</h2><span class="hint">Explóralo como lista o en modo presentación para el equipo.</span></div>
+  <div class="flowctl">
+    <div class="seg" role="group" aria-label="Modo de visualización">
+      <button id="mList" type="button" aria-pressed="true">Lista completa</button>
+      <button id="mPres" type="button" aria-pressed="false">Modo presentación</button>
+    </div>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div class="pnav" id="pnav" hidden>
+    <button id="prev" type="button">‹ Anterior</button>
+    <button id="next" type="button">Siguiente ›</button>
+    <div class="dots" id="dots"></div>
+  </div>
+</div></section>
+
+<section id="contingencias" style="background:var(--surface-2)"><div class="wrap">
+  <div class="sechead"><h2>Contingencias</h2><span class="hint">Qué hacer cuando el flujo normal se interrumpe.</span></div>
+  <div class="cont">
+    <div class="cbox">
+      <h3>Persona no ubicable</h3>
+      <p>Si no se logra contactar a la persona en <b>2 agendamientos seguidos</b> por falta de datos de contacto:</p>
+      <span class="act">→ Visita domiciliaria personal del profesional derivador.</span>
+    </div>
+    <div class="cbox">
+      <h3>No se puede cerrar el caso</h3>
+      <p>Cuando el profesional no puede realizar el cierre dentro del plazo:</p>
+      <span class="act">→ Notificar a la Encargada de Hospital Digital del CESFAM.</span>
+    </div>
+  </div>
+</div></section>
+
+<section id="agenda"><div class="wrap">
+  <div class="sechead"><h2>Agenda de Hospital Digital y rol de SOME</h2></div>
+  <div class="some">
+    <h3>SOME agenda SIEMPRE 2 horas — con el mismo profesional</h3>
+    <div class="two">
+      <div class="slot"><b>1 · Ingreso</b><span>Cupo de 30 minutos. Precisar si es presencial o no presencial.</span></div>
+      <div class="slot"><b>2 · Cierre</b><span>5 a 7 días después. En hora de morbilidad u HD; habitualmente contacto telefónico.</span></div>
+    </div>
+    <p class="fine">CESFAM rural: la contrarreferencia puede entregarse por llamada telefónica (no obligatoriamente presencial). · La hora de HD solo se usa si existe derivación del mismo profesional. · Si un cupo de HD no se utiliza, se libera el <b style="color:#fff">mismo día</b>, no antes.</p>
+  </div>
+</div></section>
+
+<section id="rem" style="background:var(--surface-2)"><div class="wrap">
+  <div class="sechead"><h2>Registro en la hoja diaria</h2><span class="hint">REM serie A — según tipo de caso y canal de contacto.</span></div>
+  <div class="rem">
+    <div class="rcard" style="--rc:var(--s1)">
+      <div class="code">A01 · Sección C</div>
+      <div class="use">Control de otros problemas de salud</div>
+      <div class="desc">Ingreso o Cierre de caso <b>NO dermatológico</b>. En nefrología y diabetología, también <b>Control cardiovascular</b>.</div>
+    </div>
+    <div class="rcard" style="--rc:var(--s3)">
+      <div class="code">A29 · Sección H</div>
+      <div class="use">Médico interconsultor vía HD (Dermatología)</div>
+      <div class="desc">Ingreso: teleinterconsulta <b>solicitada</b>. Cierre: <b>respondida</b> + información entregada.</div>
+    </div>
+    <div class="rcard" style="--rc:var(--s5)">
+      <div class="code">A32 · Sección C</div>
+      <div class="use">Modalidad llamada telefónica (Medicina General)</div>
+      <div class="desc">Contactos telefónicos; habitualmente el Cierre, y el Ingreso si se recabó información por teléfono.</div>
+    </div>
+  </div>
+  <p class="hint" style="margin-top:12px">Este registro alimenta la evaluación de concordancia <b>SIDRA–REM</b> (COMGES N° 9.3).</p>
+</div></section>
+
+<section id="reglas"><div class="wrap">
+  <div class="sechead"><h2>Reglas clave para recordar</h2></div>
+  <div class="rules">
+    <div class="rule"><div class="k">1</div><p>En la derivación, el médico <b>precisa si el Ingreso y el Cierre son presenciales o no</b>, para que SOME entregue ambas horas.</p></div>
+    <div class="rule"><div class="k">2</div><p>Confirmar <b>al menos 2 teléfonos</b> y cargar uno en la plataforma de HD: los datos del sistema no siempre están vigentes.</p></div>
+    <div class="rule"><div class="k">3</div><p>En la plataforma HD: dejar el caso como <b>«Completo»</b> y luego <b>«Guardar y salir»</b>.</p></div>
+    <div class="rule"><div class="k">4</div><p>En AVIS: generar la SIC de la misma especialidad marcando complejidad <b>«Simple»</b>.</p></div>
+    <div class="rule"><div class="k">5</div><p>Los <b>borradores</b> de la plataforma nueva se mantienen <b>30 días</b> y luego se eliminan: completa el caso a tiempo.</p></div>
+    <div class="rule"><div class="k">6</div><p>Plataformas: Dermatología, Geriatría y Patología Oral en la anterior; el resto en teleinterconsulta. <b>Geriatría migra el 3-nov-2026</b>.</p></div>
+  </div>
+</div></section>
+
+<section id="checklist" style="background:var(--surface-2)"><div class="wrap">
+  <div class="sechead"><h2>Checklist del cierre</h2><span class="hint">Márcalo durante la llamada o la atención. Se guarda en este navegador.</span></div>
+  <div class="check" id="check">
+    <div class="bar"><i id="barfill"></i></div>
+    <div id="checkitems"></div>
+    <div class="foot">
+      <span class="count"><span id="cdone">0</span>/<span id="ctot">0</span> completado</span>
+      <button class="lnk" id="reset" type="button">Reiniciar</button>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p><b>Flujo operativo de Hospital Digital — CESFAM Tongoy.</b> Documento de apoyo al equipo, derivado del Protocolo de Atención mediante Hospital Digital <b>v3.2</b> y su hoja de control de cambios (archivos Word oficiales). Fuente del flujo local: coordinación de la estrategia de Hospital Digital del CESFAM.</p>
+  <p style="margin-top:8px">Diseño orientado al aprendizaje del equipo: verbos de acción, una idea por tarjeta, color por etapa (verde: cierre · ámbar: espera · rojo: contingencia) y secuencia numerada.</p>
+</div></footer>
+
+<script>
+const STEPS=[
+ {n:1,c:"--s1",t:"Pesquisa",v:"Detecta y deriva",chip:"Cualquier integrante del equipo",
+  li:["Se detecta una patología susceptible de derivar a Hospital Digital.","El caso se canaliza a una <b>hora de morbilidad</b> con médico."]},
+ {n:2,c:"--s2",t:"Morbilidad médica",v:"Evalúa y confirma",chip:"Puerta de entrada · médico",
+  li:["El médico evalúa el caso y recaba la información clínica necesaria.","Confirma <b>2 teléfonos</b> de contacto.","Define si el Ingreso y el Cierre son presenciales o no."]},
+ {n:3,c:"--s3",t:"Ingreso",v:"Ingresa y registra",chip:"Día 0 · 30 min · mismo profesional",
+  li:["Plataforma HD: caso <b>«Completo»</b> → <b>«Guardar y salir»</b>.","AVIS: registro clínico + <b>SIC «Simple»</b> de la misma especialidad.","REM del día: <span class='mono'>A01-C</span> o <span class='mono'>A29-H</span> (dermatología)."]},
+ {n:4,c:"--s4",t:"Espera de respuesta",v:"El especialista responde",chip:"≈ 5 días",
+  li:["Respuesta diferida del especialista de Hospital Digital.","Los borradores en la plataforma nueva se mantienen <b>30 días</b>."]},
+ {n:5,c:"--s5",t:"Cierre",v:"Cierra y acompaña",chip:"Día 5–7 · mismo profesional",
+  li:["Entrega de la información a la persona (teléfono o presencial).","Si es telefónica: registrar <b>teléfono, hora, duración y con quién</b> se habló.","AVIS: registra la actividad · HD: cierra el caso · REM del día."]},
+];
+const stepsEl=document.getElementById('steps');
+stepsEl.innerHTML=STEPS.map((s,i)=>`
+ <div class="step" data-i="${i}" style="--sc:${'var('+s.c+')'}">
+   <div class="row">
+     <div class="num">${s.n}</div>
+     <div><h3>${s.t}</h3><div class="verb">${s.v}</div></div>
+     <span class="chip">${s.chip}</span>
+   </div>
+   <ul>${s.li.map(x=>`<li>${x}</li>`).join('')}</ul>
+ </div>${i<STEPS.length-1?'<div class="connector"></div>':''}`).join('');
+
+// modo lista / presentación
+const mList=document.getElementById('mList'),mPres=document.getElementById('mPres');
+const pnav=document.getElementById('pnav'),dots=document.getElementById('dots');
+const prev=document.getElementById('prev'),next=document.getElementById('next');
+let present=false,active=0;
+dots.innerHTML=STEPS.map((_,i)=>`<button class="dot" data-i="${i}" aria-label="Paso ${i+1}"></button>`).join('');
+function render(){
+  stepsEl.classList.toggle('present',present);
+  pnav.hidden=!present;
+  mList.setAttribute('aria-pressed',(!present).toString());
+  mPres.setAttribute('aria-pressed',present.toString());
+  stepsEl.querySelectorAll('.step').forEach(el=>el.classList.toggle('active',+el.dataset.i===active));
+  dots.querySelectorAll('.dot').forEach(d=>d.classList.toggle('on',+d.dataset.i===active));
+  prev.disabled=active===0;next.disabled=active===STEPS.length-1;
+}
+mList.onclick=()=>{present=false;render()};
+mPres.onclick=()=>{present=true;active=0;render()};
+prev.onclick=()=>{if(active>0){active--;render()}};
+next.onclick=()=>{if(active<STEPS.length-1){active++;render()}};
+dots.onclick=e=>{const b=e.target.closest('.dot');if(b){active=+b.dataset.i;render()}};
+document.addEventListener('keydown',e=>{if(!present)return;if(e.key==='ArrowRight'&&active<STEPS.length-1){active++;render()}if(e.key==='ArrowLeft'&&active>0){active--;render()}});
+render();
+
+// tema
+const root=document.documentElement,tb=document.getElementById('theme');
+tb.onclick=()=>{const dark=matchMedia('(prefers-color-scheme:dark)').matches;const cur=root.getAttribute('data-theme')|| (dark?'dark':'light');root.setAttribute('data-theme',cur==='dark'?'light':'dark')};
+
+// checklist
+const TASKS=["Entregué la información a la persona","Registré teléfono, hora y duración (si fue telefónica)","Registro clínico de la actividad en AVIS","Cerré el caso en la plataforma de Hospital Digital","Registro en REM del día"];
+const KEY='hd_tongoy_cierre_v1';
+const ci=document.getElementById('checkitems'),cdone=document.getElementById('cdone'),ctot=document.getElementById('ctot'),bar=document.getElementById('barfill');
+let state=new Array(TASKS.length).fill(false);
+try{const s=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(s)&&s.length===TASKS.length)state=s}catch(e){}
+ctot.textContent=TASKS.length;
+ci.innerHTML=TASKS.map((t,i)=>`<label class="${state[i]?'done':''}"><input type="checkbox" id="t${i}" ${state[i]?'checked':''}><span>${t}</span></label>`).join('');
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function upd(){const d=state.filter(Boolean).length;cdone.textContent=d;bar.style.width=(d/TASKS.length*100)+'%';}
+ci.querySelectorAll('input').forEach((inp,i)=>inp.addEventListener('change',()=>{state[i]=inp.checked;inp.closest('label').classList.toggle('done',inp.checked);save();upd();}));
+document.getElementById('reset').onclick=()=>{state=state.map(()=>false);ci.querySelectorAll('input').forEach((inp)=>{inp.checked=false;inp.closest('label').classList.remove('done')});save();upd();};
+upd();
+</script>

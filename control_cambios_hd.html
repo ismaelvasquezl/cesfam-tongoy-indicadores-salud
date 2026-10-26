@@ -1,0 +1,98 @@
+<title>Control de Cambios HD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<style>
+:root{
+  --bg:#EEF2F7; --surface:#FFFFFF; --surface-2:#F4F7FB;
+  --fg:#17202E; --muted:#59647A; --border:#D7DEEA;
+  --navy:#1F3864; --accent:#2E5496; --head:#1F3864; --ok:#1E9E5A; --warn:#B9770A;
+  --shadow:0 1px 2px rgba(20,30,50,.06),0 8px 24px rgba(20,30,50,.06);
+  --fdisp:"Archivo",system-ui,sans-serif; --fbody:"IBM Plex Sans",system-ui,sans-serif; --fmono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1420; --surface:#162032; --surface-2:#1B2638; --fg:#E8EDF5; --muted:#9BA8BC; --border:#2A3850;
+  --navy:#132038; --accent:#6E9BE6; --head:#CBD9F0; --ok:#3FCB85; --warn:#E0A52E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0D1420; --surface:#162032; --surface-2:#1B2638; --fg:#E8EDF5; --muted:#9BA8BC; --border:#2A3850;
+  --navy:#132038; --accent:#6E9BE6; --head:#CBD9F0; --ok:#3FCB85; --warn:#E0A52E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--fbody);line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--fdisp);text-wrap:balance;margin:0;line-height:1.2}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#AFC3E6;margin:0 0 4px}
+
+/* barra superior */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(10,20,40,.25)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;padding-block:9px;min-height:50px}
+.topbar .name{font-family:var(--fdisp);font-weight:700;font-size:.9rem;line-height:1.1}
+.topbar .name small{display:block;font-family:var(--fbody);font-weight:400;font-size:.7rem;color:#AFC3E6}
+.topbar .sp{flex:1}
+.tbtn{appearance:none;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-family:var(--fbody);font-size:.78rem;font-weight:600;padding:7px 11px;border-radius:9px;cursor:pointer}
+.tbtn:hover{background:rgba(255,255,255,.16)}
+.tbtn:focus-visible{outline:2px solid #AFC3E6;outline-offset:2px}
+
+/* portada */
+.cover{background:linear-gradient(180deg,var(--navy),color-mix(in srgb,var(--navy) 86%,#000));color:#fff}
+.cover .wrap{padding-block:40px 44px}
+.cover-title{font-size:clamp(1.8rem,4.8vw,2.7rem);font-weight:800;color:#fff;margin:6px 0}
+.cover-sub{font-size:1.1rem;color:#CBD9F0;margin-top:8px}
+.cover-meta{font-size:.9rem;color:#9FB6DC;margin-top:4px}
+
+/* documento */
+.doc{padding-block:26px 10px;font-size:1rem}
+.doc h2.h1{font-size:1.5rem;font-weight:800;color:var(--head);margin:34px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+.doc h3.h2{font-size:1.2rem;font-weight:700;color:var(--accent);margin:24px 0 8px}
+.doc h4.h3{font-size:1.02rem;font-weight:600;color:var(--muted);margin:18px 0 6px;text-transform:none}
+.doc p{margin:10px 0;max-width:72ch}
+.doc ul{margin:10px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:7px;max-width:72ch}
+.doc li{position:relative;padding-left:22px}
+.doc li::before{content:"";position:absolute;left:4px;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.doc strong{font-weight:600}
+.doc a{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin:14px 0 6px;box-shadow:var(--shadow)}
+.toc-title{font-family:var(--fdisp);font-weight:700;color:var(--head);margin:0 0 8px!important;font-size:1rem}
+.toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:28px}
+@media(max-width:620px){.toc ol{columns:1}}
+.toc li{break-inside:avoid;padding:3px 0;font-size:.9rem;padding-left:0}
+.toc li::before{content:none}
+.toc li.lvl2{padding-left:18px}
+.toc li.lvl2 a{color:var(--muted)}
+.toc a{text-decoration:none}
+.toc a:hover{text-decoration:underline}
+
+/* tablas */
+.tablewrap{overflow-x:auto;margin:14px 0;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.9rem;background:var(--surface)}
+th{background:var(--navy);color:#fff;text-align:left;font-weight:600;padding:10px 12px;vertical-align:top}
+td{padding:9px 12px;border-top:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(even) td,tr:nth-child(even) td{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+td.hl-ok{background:color-mix(in srgb,var(--ok) 15%,var(--surface))!important}
+td.hl-warn{background:color-mix(in srgb,var(--warn) 16%,var(--surface))!important}
+
+/* figura */
+.fig{margin:18px 0;text-align:center}
+.fig img{max-width:100%;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+
+footer{border-top:1px solid var(--border);margin-top:26px}
+footer .wrap{padding-block:22px 36px;color:var(--muted);font-size:.82rem;line-height:1.6}
+footer b{color:var(--fg)}
+@media print{.topbar{position:static}.toc{break-inside:avoid}body::before{display:none}}
+</style>
+
+<div class="topbar"><div class="wrap"><div class="name">Control de Cambios HD<small>CESFAM Tongoy · Salud Digital</small></div><div class="sp"></div><button class="tbtn" id="theme" type="button">Tema</button></div></div>
+<header class="cover"><div class="wrap"><p class="eyebrow">CESFAM TONGOY — SALUD DIGITAL</p><h1 class="cover-title">CONTROL DE CAMBIOS</h1><p class="cover-sub">Protocolo de Atención mediante Hospital Digital</p><p class="cover-meta">Versión 3.0 (2026) → Versión 3.2 (2026)</p><p class="cover-meta">Actualización normativa (Reunión SD APS 2026), flujo operativo local (correo Dra. Alarcón) y actualización administrativa de la tabla de aprobación</p></div></header><main class="wrap doc"><h2 id="1-contexto-de-la-revision" class="h1">1. Contexto de la revisión</h2><p>Este documento registra la trazabilidad de los cambios del Protocolo de Atención mediante Hospital Digital del CESFAM Tongoy desde la versión 3.0. La actualización integró dos fuentes sucesivas: (1) la presentación “Reunión Salud Digital APS 2026” (normativa) y (2) el correo de la Dra. Valeria Alarcón, encargada de la estrategia, que formaliza el flujo operativo local. Se añade además la actualización administrativa de la tabla de aprobación.</p><p><strong>Versiones: </strong>v3.0 → v3.1 (cambios normativos); v3.1 → v3.2 (flujo operativo local e ilustración). Ante discrepancias se prioriza la normativa más reciente y específica del SSC/MINSAL.</p><h2 id="2-registro-de-cambios-normativos-v3-0-v3-1" class="h1">2. Registro de cambios normativos (v3.0 → v3.1)</h2><div class="tablewrap"><table><tr><th><strong>Sección</strong></th><th><strong>Cambio realizado</strong></th><th><strong>Descripción</strong></th><th><strong>Justificación / fuente</strong></th></tr><tr><td>4. Marco normativo</td><td>Incorporación de instrumentos</td><td>Ord. 555/2026, Ord. 1521/2025, Ord. N° 29, Ord. 0258 SSC, Ord. A15 N° 2448, C105 N° 2229, NGT N° 237, Planificación y Programación en Red 2025, Modelo de Competencias v2.0, Res. Ex. 1143, Ley 21.663 y COMGES N° 9.</td><td>Reunión SD APS 2026.</td></tr><tr><td>8. Roles</td><td>Referente de Salud Digital y Gestor de caso</td><td>Referente en CESFAM: profesional médico, 5 h semanales, acto administrativo (titular y subrogante); funciones de cierre, registro y stock.</td><td>Ord. 555/2026.</td></tr><tr><td>10 / 11</td><td>Primera atención por HD; células</td><td>Primera atención de especialidad por HD (Dermatología, Patología Oral, Reumatología no GES, Nefrología ERC 1-IIIB); Endocrinología Adulto; ECAH.</td><td>Ord. 1521/2025 y Ord. N° 29.</td></tr><tr><td>11, 14, 17</td><td>REM, SIDRA–REM y COMGES</td><td>Registro en REM; concordancia SIDRA–REM; indicadores y subsección COMGES N° 9; página de acceso.</td><td>COMGES N° 9; Reunión SD APS 2026.</td></tr><tr><td>16. Seguridad</td><td>Ley 21.663 y Plan de Ciberseguridad</td><td>Ley Marco de Ciberseguridad, Plan de Ciberseguridad, NGT N° 237 y Res. Ex. 1143.</td><td>COMGES N° 9.4.</td></tr></table></div><h2 id="3-registro-de-cambios-flujo-operativo-local-v3-1-v3-2" class="h1">3. Registro de cambios — flujo operativo local (v3.1 → v3.2)</h2><p><strong>Fuente: </strong>correo de la Dra. Valeria Alarcón (encargada de la estrategia de Hospital Digital), que comparte el flujograma pulido y las estrategias de mejoramiento local. El contenido se desarrolló e integró con coherencia en el protocolo, acompañado de una ilustración (Figura 1).</p><div class="tablewrap"><table><tr><th><strong>Sección</strong></th><th><strong>Cambio realizado</strong></th><th><strong>Descripción</strong></th><th><strong>Justificación / fuente</strong></th></tr><tr><td>11.7 (nueva)</td><td>Flujo operativo local + Figura 1</td><td>Flujo pesquisa → morbilidad médica → Ingreso (día 0, cupo 30 min) → espera (~5 días) → Cierre (5–7 días), con el mismo profesional. Contacto de la persona: 2 teléfonos y visita domiciliaria tras 2 agendamientos fallidos. Entrega de contrarreferencia telefónica (CESFAM rural). Pasos en HD (“Completo” → “Guardar y salir”) y AVIS (SIC “Simple”).</td><td>Correo Dra. V. Alarcón (oct. 2026).</td></tr><tr><td>11.7 (nota)</td><td>Migración de plataformas y borradores</td><td>Dermatología, Geriatría y Patología Oral en plataforma anterior; resto en teleinterconsulta; Geriatría migra el 3-nov-2026; borradores vigentes 30 días.</td><td>Correo Dra. V. Alarcón.</td></tr><tr><td>11.8 (nueva)</td><td>Agenda de HD y rol de SOME</td><td>SOME agenda 2 horas (Ingreso 30 min + Cierre 5–7 días) con el mismo profesional; la hora HD exige derivación; el cupo no usado se libera el mismo día.</td><td>Correo Dra. V. Alarcón.</td></tr><tr><td>11.9 (nueva)</td><td>Registro en hoja diaria (REM)</td><td>Tabla REM serie A: A01-C (Ingreso/Cierre no dermatológico; en nefrología y diabetología, también Control cardiovascular), A29-H (Dermatología: solicitada / respondida + información entregada), A32-C (contacto telefónico).</td><td>Correo Dra. V. Alarcón; concordancia SIDRA–REM (COMGES 9.3).</td></tr><tr><td>11.9 (ajuste)</td><td>Control cardiovascular en A01</td><td>En nefrología y diabetología, el Ingreso y el Cierre se registran además como Control cardiovascular (REM A01).</td><td>Corrección solicitada por el equipo clínico.</td></tr><tr><td>13 y 14</td><td>Refuerzos de coherencia</td><td>Referencias cruzadas: Plazos → agenda local (11.8); Trazabilidad → registro REM (11.9).</td><td>Coherencia interna.</td></tr><tr><td>Figura 1</td><td>Ilustración del flujo</td><td>Flujograma con principios de comunicación visual: verbos de acción, una idea por tarjeta, color por etapa (verde cierre, ámbar espera, rojo contingencia), secuencia numerada y lema de anclaje.</td><td>Solicitud del Referente de Salud Digital.</td></tr></table></div><h2 id="4-actualizacion-administrativa-de-la-tabla-de-aprobacion" class="h1">4. Actualización administrativa de la tabla de aprobación</h2><p>Firmantes vigentes de la tabla “Identificación y aprobación del documento” (ajuste administrativo, no altera el contenido normativo):</p><div class="tablewrap"><table><tr><th><strong>Campo</strong></th><th><strong>Firmante</strong></th><th><strong>Observación</strong></th></tr><tr><td>Elaborado por</td><td class="hl-ok">Dra. Valeria Alarcón Kunakov — Médica, Salud Digital</td><td>Elaboración del protocolo.</td></tr><tr><td>Revisado por</td><td class="hl-ok">Francisca Rebolledo Campos — Kinesióloga, Encargada Unidad Técnica</td><td>Revisión técnica.</td></tr><tr><td>Autorizado por</td><td class="hl-ok">Joselyn Galleguillos Palma — Enfermera, Directora</td><td>Autorización.</td></tr></table></div><p><em><strong>Nota: </strong></em><em>las fechas de firma figuran como “2026”; completar con la fecha efectiva de suscripción.</em></p><h2 id="5-hallazgos-que-requieren-verificacion-u-observacion" class="h1">5. Hallazgos que requieren verificación u observación</h2><div class="tablewrap"><table><tr><th><strong>Hallazgo</strong></th><th><strong>Estado</strong></th><th><strong>Acción recomendada</strong></th></tr><tr><td>Página de acceso https://www.aps-sscoquimbo.cl</td><td class="hl-warn">Incorporada</td><td>Confirmar con el SSC si reemplaza o complementa interconsulta.minsal.cl.</td></tr><tr><td>Criterios de derivación de ECAH</td><td class="hl-warn">No disponibles en la fuente</td><td>Solicitar el instructivo oficial de la estrategia de heridas (Sección 10.9).</td></tr><tr><td>Fecha de migración de Geriatría (3-nov-2026)</td><td class="hl-warn">Informada por correo</td><td>Verificar su concreción y actualizar la nota de la Sección 11.7.</td></tr><tr><td>Vigencia de borradores (30 días) y plataformas</td><td class="hl-warn">Informada por correo</td><td>Dato operativo sujeto a cambios de la plataforma; revisar periódicamente.</td></tr></table></div><h2 id="6-declaracion-de-fuentes-y-limites" class="h1">6. Declaración de fuentes y límites</h2><ul><li>Los cambios normativos (v3.1) provienen de la presentación “Reunión SD APS 2026”; los textos de ordinarios se leyeron por OCR y deben contrastarse con los documentos oficiales.</li><li>Los cambios operativos (v3.2) provienen del correo de la Dra. Valeria Alarcón, encargada de la estrategia; reflejan el flujo local acordado por el equipo y pueden ajustarse a medida que la estrategia se instala.</li><li>No se incorporó normativa distinta a la aquí referenciada. Donde la información no estaba disponible, se declaró explícitamente y se remitió al instructivo oficial.</li><li>El protocolo se entrega como versión 3.2; conserva íntegro el contenido de versiones anteriores no afectado por estos cambios.</li></ul></main>
+<footer><div class="wrap"><p><b>Documento generado desde el archivo Word oficial.</b> CESFAM Tongoy — Salud Digital. Para la versión firmada y editable, utilizar el documento .docx correspondiente.</p></div></footer>
+
+<script>
+const root=document.documentElement,tb=document.getElementById('theme');
+if(tb)tb.onclick=()=>{const dark=matchMedia('(prefers-color-scheme:dark)').matches;const cur=root.getAttribute('data-theme')||(dark?'dark':'light');root.setAttribute('data-theme',cur==='dark'?'light':'dark')};
+</script>
