@@ -1,0 +1,475 @@
+<title>Agenda 2027 Carolina Cornejo</title>
+<meta name="description" content="Propuesta definitiva de agenda 2027 de la matrona Carolina Cornejo · Programa Chile Crece Más · CESFAM Tongoy y PSR Guanaqueros">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Informe de lectura vertical: portada breve → decisiones → historia 2026 → agenda interactiva por semana → capacidad → seguimiento */
+:root{
+  --bg:#FAF7F5; --surface:#FFFFFF; --soft:#F4ECEA; --line:#E6DAD7;
+  --ink:#2E2423; --ink-2:#5B4F4D; --muted:#6E6664;
+  --vino:#8F3B4D; --terra:#B65C63; --arcilla:#D99A9E; --rg:#A96B70;
+  --ok:#7FA58A; --warn:#D8B56A; --warn-ink:#8E6F25; --grey:#B9B0AE;
+  --k-pre:#8F3B4D; --k-pre-bg:#F4E1E5; --k-dia:#B65C63; --k-dia-bg:#F8E7E6;
+  --k-lac:#5E8F6B; --k-lac-bg:#E4EFE6; --k-ssr:#7C6A9A; --k-ssr-bg:#ECE7F3;
+  --k-com:#9A7A2E; --k-com-bg:#F6EDD8; --k-adm:#6E6664; --k-adm-bg:#EFEBEA;
+  --f-display:"Libre Franklin","Segoe UI",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1A1515; --surface:#231C1C; --soft:#2C2323; --line:#3C3030;
+  --ink:#F3EAE8; --ink-2:#D2C4C1; --muted:#A99D9A;
+  --vino:#D27A8C; --terra:#D0858B; --arcilla:#E3AFB2; --rg:#C08F93;
+  --ok:#8DB797; --warn:#E0C07A; --warn-ink:#E0C07A; --grey:#6E6462;
+  --k-pre:#E08A9B; --k-pre-bg:#3A2228; --k-dia:#E3A0A5; --k-dia-bg:#3A2626;
+  --k-lac:#93C29F; --k-lac-bg:#22322A; --k-ssr:#B7A6D6; --k-ssr-bg:#2D2838;
+  --k-com:#E0C07A; --k-com-bg:#352E1E; --k-adm:#A99D9A; --k-adm-bg:#2C2626; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1A1515; --surface:#231C1C; --soft:#2C2323; --line:#3C3030;
+  --ink:#F3EAE8; --ink-2:#D2C4C1; --muted:#A99D9A;
+  --vino:#D27A8C; --terra:#D0858B; --arcilla:#E3AFB2; --rg:#C08F93;
+  --ok:#8DB797; --warn:#E0C07A; --warn-ink:#E0C07A; --grey:#6E6462;
+  --k-pre:#E08A9B; --k-pre-bg:#3A2228; --k-dia:#E3A0A5; --k-dia-bg:#3A2626;
+  --k-lac:#93C29F; --k-lac-bg:#22322A; --k-ssr:#B7A6D6; --k-ssr-bg:#2D2838;
+  --k-com:#E0C07A; --k-com-bg:#352E1E; --k-adm:#A99D9A; --k-adm-bg:#2C2626; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+h1,h2,h3{font-family:var(--f-display);color:var(--ink);text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.015em}
+h2{font-size:clamp(1.35rem,2.6vw,1.75rem);font-weight:800;line-height:1.15}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+a{color:var(--vino)}
+:focus-visible{outline:2px solid var(--vino);outline-offset:2px}
+.eyebrow{font-family:var(--f-display);font-size:.74rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--rg)}
+.prose{max-width:70ch;display:grid;gap:12px;color:var(--ink-2)}
+.prose b,.prose strong{color:var(--ink)}
+.small{font-size:.86rem;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+header.hero{background:var(--vino);color:#FFF7F5}
+header.hero .wrap{padding-block:44px 36px;display:grid;gap:16px}
+header.hero h1,header.hero .eyebrow{color:#FFF7F5}
+header.hero .lead{font-size:1.15rem;max-width:62ch;opacity:.92}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.92rem;opacity:.9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.hero{background:#5E2433}}
+:root[data-theme="dark"] header.hero{background:#5E2433}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:thin}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink-2);font-size:.88rem;font-weight:600;padding:6px 10px;border-radius:6px}
+nav.toc a:hover{background:var(--soft);color:var(--ink)}
+
+section{padding-block:44px 4px;display:grid;gap:18px}
+section > header{display:grid;gap:6px;max-width:72ch}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:2px}
+.kpi .n{font-family:var(--f-display);font-weight:800;font-size:1.9rem;line-height:1.1;color:var(--vino);font-variant-numeric:tabular-nums}
+.kpi .l{font-size:.85rem;font-weight:600;color:var(--ink)}
+.kpi .s{font-size:.8rem;color:var(--muted)}
+
+.decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px;counter-reset:d;list-style:none;padding:0;margin:0}
+.decisions li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px 16px 58px;position:relative;counter-increment:d;color:var(--ink-2);font-size:.98rem}
+.decisions li::before{content:counter(d);position:absolute;left:18px;top:14px;width:28px;height:28px;border-radius:50%;background:var(--vino);color:#fff;font:800 .95rem/28px var(--f-display);text-align:center}
+.decisions b{color:var(--ink);display:block;font-family:var(--f-display);margin-bottom:2px}
+
+.story{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px;display:grid;gap:12px;max-width:78ch}
+.story .tag{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.story p{font-size:1.06rem;color:var(--ink-2);line-height:1.7}
+.journey{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.86rem}
+.journey span{padding:4px 10px;border-radius:99px;font-weight:600}
+.journey i{color:var(--muted);font-style:normal}
+
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:10px}
+.principle{border-top:3px solid var(--vino);background:var(--surface);border-radius:0 0 10px 10px;padding:14px 16px;display:grid;gap:4px}
+.principle p{font-size:.92rem;color:var(--ink-2);line-height:1.45}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+th{font-family:var(--f-display);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--soft);font-weight:700}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td.n{font-family:var(--f-mono);color:var(--ink)}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.c-ok{background:var(--k-lac-bg);color:var(--k-lac)} .c-warn{background:var(--k-com-bg);color:var(--k-com)} .c-bad{background:var(--k-pre-bg);color:var(--k-pre)}
+
+/* ---- Agenda semanal ---- */
+.agenda-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{font:600 .9rem var(--f-body);border:0;background:transparent;color:var(--ink);padding:7px 14px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--vino);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;border-left:3px solid;display:inline-block}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;overflow-x:auto}
+.cal-grid{display:grid;grid-template-columns:52px repeat(5,minmax(150px,1fr));gap:0 8px;min-width:820px}
+.cal-head{font-family:var(--f-display);font-weight:700;font-size:.9rem;padding:4px 6px 10px;display:grid;gap:1px}
+.cal-head small{font-family:var(--f-body);font-weight:600;font-size:.76rem;color:var(--muted)}
+.cal-col{position:relative;height:var(--h);border-left:1px solid var(--line)}
+.cal-times{position:relative;height:var(--h)}
+.cal-times span{position:absolute;right:6px;transform:translateY(-50%);font:500 .72rem var(--f-mono);color:var(--muted)}
+.hline{position:absolute;left:0;right:0;border-top:1px dashed var(--line)}
+.lunch{position:absolute;left:0;right:0;background:repeating-linear-gradient(135deg,var(--soft) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--muted)}
+.blk{position:absolute;left:4px;right:4px;border-radius:6px;border-left:4px solid var(--c);background:var(--cb);padding:2px 7px;overflow:hidden;font-size:.76rem;line-height:1.2;color:var(--ink);display:flex;flex-direction:column;justify-content:center}
+.blk b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk span{color:var(--ink-2);font-family:var(--f-mono);font-size:.68rem;white-space:nowrap}
+.blk.adj{box-shadow:inset 0 0 0 1.5px var(--c)}
+.blk.adj b::after{content:" ✱";color:var(--c)}
+.blk.tiny b{font-size:.7rem}
+.blk.tiny span{display:none}
+.tbd{position:absolute;inset:8px 4px;z-index:2;background:var(--k-adm-bg);border:0;border-left:4px solid var(--k-adm);color:var(--ink)!important;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:.84rem;color:var(--muted)}
+.cal-list{display:none}
+@media (max-width:760px){
+  .cal{padding:0;border:0;background:transparent;overflow:visible}
+  .cal-grid{display:none}
+  .cal-list{display:grid;gap:12px}
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+  .day h3{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .day h3 small{font-family:var(--f-body);font-size:.78rem;color:var(--muted);font-weight:600}
+  .li{display:grid;grid-template-columns:96px 1fr;gap:8px;padding:6px 8px;border-radius:6px;border-left:4px solid var(--c);background:var(--cb);font-size:.88rem}
+  .li .t{font:500 .78rem var(--f-mono);color:var(--ink-2)}
+  .li.adj b::after{content:" ✱";color:var(--c)}
+}
+.adjust{display:grid;gap:8px;counter-reset:a;list-style:none;padding:0;margin:0}
+.adjust li{counter-increment:a;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;color:var(--ink-2);font-size:.95rem}
+.adjust li::before{content:counter(a);font:800 .85rem/26px var(--f-display);width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--vino);text-align:center}
+
+/* ---- Gráfico pesas ---- */
+.chart-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:8px}
+.chart-card svg{width:100%;height:auto;display:block}
+.callout{border-left:4px solid var(--vino);background:var(--surface);border-radius:0 10px 10px 0;padding:14px 18px;color:var(--ink-2);max-width:78ch}
+.callout b{color:var(--ink)}
+.practices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.practice{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:6px}
+.practice p{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:0;border-left:2px solid var(--line);margin-left:8px}
+.steps li{position:relative;padding:4px 0 16px 22px;color:var(--ink-2)}
+.steps li::before{content:"";position:absolute;left:-7px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--vino)}
+.steps .d{font:600 .82rem var(--f-mono);color:var(--vino);display:block}
+footer{border-top:1px solid var(--line);margin-top:44px;padding-block:22px;font-size:.84rem;color:var(--muted)}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding-inline:16px}
+  section{padding-block:32px 2px}
+  header.hero .wrap{padding-block:30px 26px}
+  .story{padding:16px}
+  table.stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  table.stack,table.stack tbody,table.stack tr{display:block;width:100%}
+  table.stack tr{border-bottom:1px solid var(--line);padding:8px 2px}
+  table.stack td{display:grid;grid-template-columns:minmax(110px,42%) 1fr;gap:10px;border:0;padding:3px 12px;text-align:left!important}
+  table.stack td::before{content:attr(data-label);font:700 .68rem var(--f-display);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding-top:3px}
+  table.stack td:first-child{font-weight:700;color:var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Programa de Salud Sexual y Reproductiva · Chile Crece Más</span>
+    <h1>Propuesta de agenda 2027<br>Matrona Carolina Cornejo</h1>
+    <p class="lead">Tres días en CESFAM Tongoy, un día en la Posta de Salud Rural Guanaqueros y los jueves de apoyo a otro CESFAM de la comuna, para acompañar a cada gestante y a su hijo o hija desde el ingreso prenatal hasta la lactancia establecida.</p>
+    <div class="meta"><span>Versión definitiva · 27-10-2026</span><span>Base: agenda 2026 (01-01 a 28-09-2026)</span><span>Para validación de jefatura y coordinación PSSR</span></div>
+  </div>
+</header>
+<nav class="toc" aria-label="Secciones"><div class="wrap">
+  <a href="#resumen">Resumen</a><a href="#2026">Lo que nos enseñó 2026</a><a href="#proposito">Propósito</a><a href="#agenda">Agenda semanal</a><a href="#capacidad">Capacidad</a><a href="#continuidad">Continuidad</a><a href="#indicadores">Indicadores</a><a href="#implementacion">Implementación</a><a href="#fuentes">Fuentes</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="resumen">
+  <header><span class="eyebrow">Resumen ejecutivo</span>
+    <h2>Una agenda que alcanza las metas mensuales del programa en 16 de 18 casos</h2></header>
+  <div class="prose">
+    <p>Esta versión une las dos propuestas del programa y corrige 9 diferencias entre los cupos de la agenda y las metas mensuales. Solo quedan bajo la meta ingreso prenatal en Tongoy (11 de 12) y lactancia ingreso (9 de 12), porque no queda espacio libre sin quitar otra prestación.</p>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <h3>Para aprobarla se necesitan tres decisiones de la jefatura y la referente comunal</h3>
+  <ol class="decisions">
+    <li><b>Aprobar la estructura semanal</b>Lunes en Guanaqueros; martes, miércoles y viernes en Tongoy; jueves de apoyo comunal.</li>
+    <li><b>Formalizar el apoyo de los jueves</b>Acordar con la referente comunal en qué CESFAM, qué prestaciones, cómo se registra esa producción y quién cubre el traslado. En 2026 Carolina hizo unas 30 atenciones al mes los jueves que Tongoy deja de tener.</li>
+    <li><b>Reasignar la SSR general</b>Control ginecológico, regulación de fertilidad, PAP, consejería VIH y teleconsulta suman unas 36 atenciones al mes que esta agenda ya no incluye.</li>
+  </ol>
+</section>
+
+<section id="2026">
+  <header><span class="eyebrow">Punto de partida</span>
+    <h2>Lo que nos enseñó 2026</h2>
+    <p class="prose">La agenda de Carolina (Matrona 1 en el análisis) sostuvo el 42 % de la producción del estamento y tuvo la menor inasistencia de las tres agendas.</p></header>
+  <div class="tbl"><table class="stack">
+    <thead><tr><th>Indicador</th><th>Carolina (Matrona 1)</th><th>Estamento completo</th></tr></thead>
+    <tbody>
+      <tr><td>Atenciones asistenciales</td><td>1.691 (1.609 sin sábados)</td><td>3.994</td></tr>
+      <tr><td>Personas atendidas</td><td>444</td><td>1.657</td></tr>
+      <tr><td>Tasa aproximada de inasistencia</td><td>17,7 % (179 de 1.011 citas)</td><td>26,3 %</td></tr>
+      <tr><td>Personas que volvieron tras una inasistencia</td><td>67 %, mediana de 7 días</td><td>64 %, mediana de 20 días</td></tr>
+      <tr><td>Control prenatal (promedio mensual)</td><td>59 atenciones</td><td>—</td></tr>
+      <tr><td>Personas en prioridad 1 de rescate</td><td>24</td><td>63</td></tr>
+    </tbody></table></div>
+  <p class="small">Las 1.609 atenciones informadas en la propuesta de trabajo coinciden con las atenciones de lunes a viernes. La tasa informada (17,1 %) difiere levemente de la calculada (17,7 %) por el denominador; conviene acordar una sola definición.</p>
+  <div class="practices">
+    <div class="practice"><span class="eyebrow">El día pesa</span><p>El <b>martes en Tongoy</b> tuvo la mayor inasistencia (<b>27,6 %</b>). El <b>lunes en Guanaqueros</b> tuvo la menor (<b>13,5 %</b>).</p></div>
+    <div class="practice"><span class="eyebrow">La tarde funciona</span><p>Las citas de la tarde fallaron menos que las de la mañana: <b>11,8 %</b> frente a <b>18,8 %</b>.</p></div>
+    <div class="practice"><span class="eyebrow">El rol cambia</span><p>En 2026 hizo unas <b>36 atenciones mensuales de SSR general</b> y 26 consultas abreviadas. La agenda 2027 la concentra en Chile Crece Más, así que esa demanda necesita otro lugar.</p></div>
+  </div>
+</section>
+
+<section id="proposito">
+  <header><span class="eyebrow">Propósito</span>
+    <h2>Acompañar sin cortes, cerca de donde viven las familias</h2></header>
+  <article class="story">
+    <span class="tag">Caso ilustrativo · no es una persona real</span>
+    <p>Una gestante de Guanaqueros ingresa un lunes a las 11:50 en su posta, sin viajar a Tongoy. Sus controles quedan los lunes en la mañana o en la tarde, el horario que menos falla. Si un día no llega, el viernes a las 15:00 alguien la llama y le ofrece una nueva hora. Después del parto, la díada vuelve a la misma matrona. La lactancia sigue en dupla con nutricionista y, si el hogar lo necesita, la visita domiciliaria llega con trabajador social. Siempre la atiende el mismo equipo, que la conoce.</p>
+    <div class="journey" aria-label="Recorrido de la gestante">
+      <span style="background:var(--k-pre-bg);color:var(--k-pre)">Ingreso prenatal</span><i>→</i>
+      <span style="background:var(--k-pre-bg);color:var(--k-pre)">Controles</span><i>→</i>
+      <span style="background:var(--k-adm-bg);color:var(--k-adm)">Rescate si falta</span><i>→</i>
+      <span style="background:var(--k-dia-bg);color:var(--k-dia)">Díada</span><i>→</i>
+      <span style="background:var(--k-lac-bg);color:var(--k-lac)">Lactancia</span><i>→</i>
+      <span style="background:var(--k-com-bg);color:var(--k-com)">Visita domiciliaria</span>
+    </div>
+  </article>
+  <div class="principles">
+    <div class="principle"><h3>Continuidad del binomio</h3><p>Las mismas prestaciones en días fijos, para saber cuándo y con quién se vuelve.</p></div>
+    <div class="principle"><h3>Cercanía territorial</h3><p>Guanaqueros tiene su día propio: el lunes.</p></div>
+    <div class="principle"><h3>Oferta según demanda real</h3><p>Cupos calculados sobre lo atendido en 2026 y la inasistencia esperada.</p></div>
+    <div class="principle"><h3>Tiempo protegido</h3><p>Rescate, registro, limpieza y pausa con hora fija.</p></div>
+    <div class="principle"><h3>Trabajo en dupla</h3><p>Lactancia con nutricionista; visita domiciliaria con trabajador social.</p></div>
+  </div>
+</section>
+
+<section id="agenda">
+  <header><span class="eyebrow">Estructura semanal</span>
+    <h2>Un ciclo de cuatro semanas, con un día fijo para Guanaqueros</h2>
+    <p class="prose">Elige la semana del ciclo. Entre paréntesis va el número de cupos; ✱ marca un ajuste de esta versión definitiva.</p></header>
+  <div class="agenda-tools">
+    <div class="seg" role="group" aria-label="Semana del ciclo">
+      <button type="button" data-w="1" aria-pressed="true">Semana 1</button><button type="button" data-w="2" aria-pressed="false">Semana 2</button><button type="button" data-w="3" aria-pressed="false">Semana 3</button><button type="button" data-w="4" aria-pressed="false">Semana 4</button>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <div class="cal" id="cal"><div class="cal-grid" id="calgrid"></div><div class="cal-list" id="callist"></div></div>
+  <h3>Los 9 ajustes de esta versión</h3>
+  <ol class="adjust">
+    <li>Morbilidad obstétrica de lunes y de viernes S2·S4 pasa a 10:20–11:20: el bloque original duraba 30 minutos para 2 cupos de 30.</li>
+    <li>VD gestantes del lunes S2 pasa a 14:00–16:00 (2 cupos de 60 minutos).</li>
+    <li>VD Chile Crece Más de la tarde del martes S4 pasa a 14:00–16:00 (2 cupos de 60 minutos).</li>
+    <li>Control prenatal del viernes S1·S3 pasa a 08:00–09:00 (2 cupos de 30 minutos).</li>
+    <li>En Guanaqueros, la tarde del lunes S1·S3 suma una díada y deja 1 control prenatal: la díada sube de 2 a 4 al mes (la meta) y el control prenatal baja de 21 a 17 (meta 12).</li>
+    <li>Tongoy suma 7 cupos preconcepcionales (martes 10:50 y miércoles 09:30): de 5 a 12 al mes, la meta.</li>
+    <li>Tongoy suma 7 seguimientos de lactancia (martes 09:00 y miércoles 11:20): de 5 a 12 al mes, la meta.</li>
+    <li>El viernes S2 cambia la díada por un taller de gestantes: Tongoy llega a 2 talleres y 9 díadas al mes, ambas metas.</li>
+    <li>El rescate de inasistentes se extiende a la semana 4: 4 bloques al mes en vez de 3.</li>
+  </ol>
+</section>
+
+<section id="capacidad">
+  <header><span class="eyebrow">Capacidad y rendimientos</span>
+    <h2>La oferta crece donde el programa quiere crecer</h2></header>
+  <div class="chart-card">
+    <svg id="dumbbell" role="img" aria-label="Atenciones mensuales 2026 frente a cupos mensuales de la agenda 2027 por prestación"></svg>
+    <p class="small">2026: atenciones de Carolina, promedio mensual (ene–sep). 2027: cupos del ciclo de 4 semanas de esta propuesta.</p>
+  </div>
+  <div class="tbl"><table class="stack" id="tmetas">
+    <thead><tr><th>Prestación</th><th class="n">Meta Tongoy</th><th class="n">Agenda Tongoy</th><th class="n">Meta Guanaqueros</th><th class="n">Agenda Guanaqueros</th></tr></thead>
+    <tbody></tbody></table></div>
+  <div class="callout"><p>El control prenatal tiene más cupos que la meta a propósito. Con una inasistencia del 17 %, <b>76 cupos dan unas 63 atenciones</b>, la demanda real de 2026. Ingreso prenatal (15 cupos) y morbilidad obstétrica (12) superan lo atendido en 2026 (7,7 y 3,6 al mes). Por eso son <b>cupos reconvertibles</b>: si a 48 horas no tienen paciente, pasan a control prenatal, preconcepcional o demanda espontánea.</p></div>
+  <p class="prose">De las 44 horas contratadas, unas 8 corresponden al apoyo comunal de los jueves. En los cuatro días de esta agenda, la atención directa ocupa unas <b id="hdir">26</b> horas semanales y el resto se va en registro, administración, limpieza de box, pausas y traslados. El control prenatal usa 20 minutos en la mañana y 30 en la tarde. En 2026 duró 30 minutos (mediana), así que el cupo de 20 minutos debe validarse con la coordinación del programa.</p>
+</section>
+
+<section id="continuidad">
+  <header><span class="eyebrow">Continuidad, confirmación y rescate</span>
+    <h2>Cada hora vacía es una gestante que no se controló a tiempo</h2></header>
+  <div class="practices">
+    <div class="practice"><h3>Rescate semanal</h3><p>Viernes de 15:00 a 15:30: llamada a gestantes y puérperas que no asistieron, con una nueva hora antes de 7 días. En 2026 la mediana de Carolina ya fue de 7 días.</p></div>
+    <div class="practice"><h3>Confirmación de los martes</h3><p>El martes fue el día con más inasistencia (27,6 %). El SOME confirma esas citas el viernes anterior, y siempre los ingresos prenatales y la lactancia ingreso.</p></div>
+    <div class="practice"><h3>Cupos reconvertibles</h3><p>Ingreso prenatal y morbilidad obstétrica sin paciente a 48 horas pasan a control prenatal, preconcepcional o demanda espontánea.</p></div>
+    <div class="practice"><h3>Continuidad de matrona</h3><p>Ingreso, controles, díada y lactancia quedan con Carolina. Si la gestante pasa a otra agenda, el cambio se registra.</p></div>
+    <div class="practice"><h3>Listado de inicio</h3><p>En enero se contacta a las 24 personas de su agenda en prioridad 1 según el análisis 2026, previa validación clínica.</p></div>
+  </div>
+  <p class="prose">En todos los casos, una inasistencia se trata como señal de una barrera (traslado, trabajo, cuidado de otros hijos, comunicación) y no como falta de compromiso. El contacto pregunta qué horario le sirve a la persona.</p>
+</section>
+
+<section id="indicadores">
+  <header><span class="eyebrow">Seguimiento</span>
+    <h2>Ocho indicadores dicen cada mes si la propuesta funciona</h2>
+    <p class="prose">Las metas son propuestas del programa para validar con la coordinación; no son metas normativas.</p></header>
+  <div class="tbl"><table class="stack">
+    <thead><tr><th>Indicador</th><th>Cómo se calcula</th><th>2026</th><th>Meta 2027</th></tr></thead>
+    <tbody>
+      <tr><td>Tasa de inasistencia de la agenda</td><td>Inasistencias / citas con resultado</td><td>17,7 %</td><td><b>≤ 15 %</b></td></tr>
+      <tr><td>Inasistencia en control prenatal</td><td>Inasistencias / citas de control prenatal</td><td>17,0 %</td><td><b>≤ 15 %</b></td></tr>
+      <tr><td>Cumplimiento de la agenda</td><td>Atenciones realizadas / meta mensual, por prestación y sede</td><td>Sin medición</td><td><b>≥ 90 %</b></td></tr>
+      <tr><td>Ocupación de cupos</td><td>Citas otorgadas / cupos programados</td><td>No calculable (sin exportación de cupos)</td><td><b>≥ 85 %</b></td></tr>
+      <tr><td>Días hasta la nueva atención tras una inasistencia</td><td>Mediana de días</td><td>7</td><td><b>≤ 7</b></td></tr>
+      <tr><td>Rescate oportuno</td><td>Prioridad 1 contactadas antes de 7 días / total en prioridad 1</td><td>Sin medición</td><td><b>≥ 80 %</b></td></tr>
+      <tr><td>Atenciones de lactancia materna</td><td>Ingresos + seguimientos al mes</td><td>7</td><td><b>≥ 21</b></td></tr>
+      <tr><td>Visitas domiciliarias</td><td>Visitas realizadas al mes</td><td>9,8</td><td><b>≥ 11</b></td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="implementacion">
+  <header><span class="eyebrow">Implementación y validación</span>
+    <h2>La agenda puede partir el 4 de enero de 2027</h2>
+    <p class="prose">Para eso, la jefatura y la referente comunal deben cerrar las tres decisiones antes del 27 de noviembre.</p></header>
+  <ol class="steps">
+    <li><span class="d">13-11-2026</span>Revisión de esta versión con Carolina y la coordinación del programa.</li>
+    <li><span class="d">27-11-2026</span>Decisiones de jefatura y referente comunal: acuerdo de apoyo de los jueves, reasignación de SSR general y aprobación.</li>
+    <li><span class="d">11-12-2026</span>Carga de la agenda en el sistema y configuración de cupos reconvertibles (SOME).</li>
+    <li><span class="d">04-01-2027</span>Inicio de la agenda y del rescate del listado de prioridad 1.</li>
+    <li><span class="d">05-04-2027</span>Primera revisión trimestral con los indicadores de enero a marzo.</li>
+  </ol>
+  <div class="tbl"><table class="stack">
+    <thead><tr><th>Riesgo</th><th>Señal de alerta</th><th>Respuesta</th></tr></thead>
+    <tbody>
+      <tr><td>La demanda de SSR general queda sin agenda</td><td>Aumentan las consultas espontáneas sin hora</td><td>Reasignar antes de enero y usar cupos reconvertibles</td></tr>
+      <tr><td>Cupos de ingreso y morbilidad sin uso</td><td>Ocupación bajo 70 % por dos meses</td><td>Reducir cupos y moverlos a control prenatal o lactancia</td></tr>
+      <tr><td>Los cupos de 20 minutos no alcanzan</td><td>Retrasos que acumulan la agenda de la mañana</td><td>Pasar a 30 minutos y revisar la meta de control prenatal</td></tr>
+      <tr><td>La producción de los jueves queda en el otro establecimiento</td><td>La agenda de Tongoy aparece con menos trabajo del real</td><td>Registrar el jueves aparte y medir esta agenda solo con lunes, martes, miércoles y viernes</td></tr>
+      <tr><td>Sin box de nutrición o dupla los martes</td><td>Lactancia ingreso suspendida</td><td>Fijar el box y la dupla por escrito con nutrición</td></tr>
+    </tbody></table></div>
+  <h3>Antes de cargar la agenda, deben validar</h3>
+  <div class="tbl"><table class="stack">
+    <thead><tr><th>Quién</th><th>Qué valida</th></tr></thead>
+    <tbody>
+      <tr><td>Coordinación del programa</td><td>Rendimiento del control prenatal (20 o 30 minutos), metas mensuales y criterios de prioridad para el rescate</td></tr>
+      <tr><td>Carolina Cornejo</td><td>Que la secuencia de bloques y los espacios de holgura sean viables en la práctica</td></tr>
+      <tr><td>Jefatura y referente comunal</td><td>Reasignación de la demanda de SSR general y alcance del apoyo de los jueves: CESFAM de destino, prestaciones, registro de la producción y traslado</td></tr>
+      <tr><td>SOME</td><td>Confirmación de los martes y reconversión de cupos a 48 horas</td></tr>
+      <tr><td>Estadística</td><td>Una sola definición de tasa de inasistencia y exportación mensual de cupos</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="fuentes">
+  <header><span class="eyebrow">Fuentes y supuestos</span><h2>De dónde salen los números</h2></header>
+  <ul class="prose" style="padding-left:20px">
+    <li><i>Propuesta de trabajo matrona Carolina Cornejo 2027</i>: metas semanales y mensuales por sede, trabajo en dupla y distribución de días.</li>
+    <li><i>Propuesta de agenda Carolina Cornejo</i>, 44 horas, Programa Chile Crece Más: horario base en ciclo de cuatro semanas.</li>
+    <li><a href="https://claude.ai/artifact/GCi6p38MVg74nk7JnsUnvP" target="_blank" rel="noopener">Tablero de gestión de agenda de matronas</a>: reportes de atenciones e inasistentes del 01-01 al 28-09-2026, datos anonimizados (Carolina = Matrona 1).</li>
+    <li><a href="https://www.minsal.cl/sites/default/files/files/GUIA%20PERINATAL_2015_%20PARA%20PUBLICAR.pdf" target="_blank" rel="noopener">Guía Perinatal, MINSAL 2015</a>: marco para el control prenatal y del puerperio.</li>
+    <li><a href="https://repositoriodeis.minsal.cl/ContenidoSitioWeb2020/REM/2026/SERIE/Manual%20Series%20REM%202026%20SERIE%20A%20BS%20BM%20DV1.2.pdf" target="_blank" rel="noopener">Manual REM 2026, Series A, DEIS</a>: registro de controles, ingresos, visitas y rescate de inasistentes.</li>
+  </ul>
+  <p class="small">Supuestos: el mes de agenda equivale a un ciclo de 4 semanas; los promedios 2026 dividen por 9 meses; la inasistencia esperada es la de 2026 (17 %); «Container 3» se considera parte de CESFAM Tongoy; el jueves corresponde a apoyo a otro CESFAM de la comuna solicitado por la referente comunal, y su producción no entra en los indicadores de esta agenda. En preconcepcional, la propuesta indica 4 controles semanales y 12 mensuales en Tongoy; esta versión usa 12 al mes.</p>
+</section>
+</main>
+<footer><div class="wrap">Programa de Salud Sexual y Reproductiva · CESFAM Tongoy y PSR Guanaqueros · Propuesta de agenda 2027, versión definitiva para validación.</div></footer>
+
+<script>
+(function(){
+  "use strict";
+  const T="Tongoy", G="Guanaqueros", ALL=[1,2,3,4];
+  // categorías: pre (gestación), dia (díada), lac (lactancia), ssr (preconcepcional / morbilidad), com (visitas y talleres), adm (tiempo protegido)
+  const CAT={pre:"Gestación",dia:"Díada",lac:"Lactancia",ssr:"Preconcepcional y morbilidad",com:"Visitas y talleres",adm:"Tiempo protegido"};
+  const P={ // prestación -> [categoría, cuenta para metas]
+    "Control prenatal":["pre",1],"Ingreso prenatal":["pre",1],"Díada":["dia",1],"Preconcepcional":["ssr",1],"Morbilidad obstétrica":["ssr",1],
+    "Lactancia ingreso":["lac",1],"Lactancia seguimiento":["lac",1],"Taller de gestantes":["com",1],"VD Chile Crece Más":["com",1],"VD en dupla":["com",1],"VD gestantes":["com",1],
+    "Rescate de inasistentes":["adm",1],"Pausa saludable":["adm",0],"Limpieza de box":["adm",0],"Administrativo":["adm",0],"Registro de visitas":["adm",0],"Confección de ruta":["adm",0],"Cierre de fichas":["adm",0]
+  };
+  // [día, semanas, inicio, fin, prestación, cupos, sede, ajuste, nota]
+  const A=[
+    ["Lun",ALL,"08:00","09:00","Control prenatal",3,G],["Lun",ALL,"09:30","10:00","Preconcepcional",1,G],["Lun",ALL,"10:00","10:20","Pausa saludable",0,G],
+    ["Lun",ALL,"10:20","11:20","Morbilidad obstétrica",2,G,1],["Lun",ALL,"11:20","11:50","Lactancia seguimiento",1,G],["Lun",ALL,"11:50","12:50","Ingreso prenatal",1,G],["Lun",ALL,"12:50","13:00","Limpieza de box",0,G],
+    ["Lun",[1,3],"14:00","15:00","Díada",1,G],["Lun",[1,3],"15:00","16:00","Díada",1,G,1],["Lun",[1,3],"16:00","16:30","Control prenatal",1,G,1],["Lun",[1,3],"16:30","17:00","Administrativo",0,G],
+    ["Lun",[2],"14:00","16:00","VD gestantes",2,G,1],["Lun",[2],"16:00","17:00","Registro de visitas",0,G],
+    ["Lun",[4],"14:00","15:00","Taller de gestantes",1,G],["Lun",[4],"15:00","16:30","Control prenatal",3,G],["Lun",[4],"16:30","17:00","Administrativo",0,G],
+    ["Mar",[1,2,3],"08:00","09:00","Control prenatal",3,T],["Mar",[1,2,3],"09:00","09:30","Lactancia seguimiento",1,T,1],["Mar",[1,2,3],"09:30","10:00","Preconcepcional",1,T],["Mar",[1,2,3],"10:00","10:20","Pausa saludable",0,T],
+    ["Mar",[1,2,3],"10:20","10:50","Díada",1,T],["Mar",[1,2,3],"10:50","11:20","Preconcepcional",1,T,1],["Mar",[1,2,3],"11:20","11:50","Lactancia seguimiento",1,T],["Mar",[1,2,3],"11:50","12:50","Ingreso prenatal",1,T],["Mar",[1,2,3],"12:50","13:00","Limpieza de box",0,T],
+    ["Mar",[1,2,3],"14:00","17:00","Lactancia ingreso",3,T,0,"dupla nutricionista"],
+    ["Mar",[4],"08:00","09:00","Confección de ruta",0,T],["Mar",[4],"09:00","13:00","VD Chile Crece Más",5,T],["Mar",[4],"14:00","16:00","VD Chile Crece Más",2,T,1],["Mar",[4],"16:00","17:00","Cierre de fichas",0,T],
+    ["Mié",ALL,"08:00","09:30","Control prenatal",4,T],["Mié",ALL,"09:30","10:00","Preconcepcional",1,T,1],["Mié",ALL,"10:00","10:20","Pausa saludable",0,T],["Mié",ALL,"10:20","11:20","Control prenatal",3,T],
+    ["Mié",ALL,"11:20","11:50","Lactancia seguimiento",1,T,1],["Mié",ALL,"11:50","12:50","Ingreso prenatal",1,T],["Mié",ALL,"12:50","13:00","Limpieza de box",0,T],
+    ["Mié",ALL,"14:00","15:00","Díada",1,T],["Mié",ALL,"15:00","16:30","Control prenatal",3,T],["Mié",ALL,"16:30","17:00","Administrativo",0,T],
+    ["Vie",[1,3],"08:00","09:00","Control prenatal",2,T,1],["Vie",[1,3],"09:00","10:00","Ingreso prenatal",1,T],["Vie",[1,3],"10:00","10:20","Pausa saludable",0,T],["Vie",[1,3],"10:20","12:20","VD en dupla",2,T,0,"con trabajador social"],["Vie",[1,3],"14:00","15:00","Díada",1,T],
+    ["Vie",[2,4],"08:00","09:00","Control prenatal",3,T],["Vie",[2,4],"09:30","10:00","Preconcepcional",1,T],["Vie",[2,4],"10:00","10:20","Pausa saludable",0,T],["Vie",[2,4],"10:20","11:20","Morbilidad obstétrica",2,T,1],
+    ["Vie",[2,4],"11:20","11:50","Lactancia seguimiento",1,T],["Vie",[2,4],"11:50","12:50","Ingreso prenatal",1,T],["Vie",[2,4],"12:50","13:00","Limpieza de box",0,T],
+    ["Vie",[2],"14:00","15:00","Taller de gestantes",1,T,1],["Vie",[4],"14:00","15:00","Taller de gestantes",1,T],
+    ["Vie",[1,2,3],"15:00","15:30","Rescate de inasistentes",1,T],["Vie",[4],"15:00","15:30","Rescate de inasistentes",1,T,1],["Vie",ALL,"15:30","16:00","Administrativo",0,T]
+  ];
+  const DAYS=[["Lun","Lunes","PSR Guanaqueros"],["Mar","Martes","Tongoy · Container 3"],["Mié","Miércoles","CESFAM Tongoy"],["Jue","Jueves","Apoyo comunal"],["Vie","Viernes","CESFAM Tongoy"]];
+  const m=s=>{const [a,b]=s.split(":");return +a*60+ +b};
+  const C0=480,C1=1020,PX=1.25; // 08:00–17:00
+  const cv=k=>`--c:var(--k-${k});--cb:var(--k-${k}-bg)`;
+  const lab=(r)=>r[4]+(r[5]?` (${r[5]})`:"");
+
+  // leyenda
+  document.getElementById("legend").innerHTML=Object.entries(CAT).map(([k,v])=>`<span><i style="border-color:var(--k-${k});background:var(--k-${k}-bg)"></i>${v}</span>`).join("");
+
+  function render(w){
+    const H=(C1-C0)*PX;
+    let g=`<div></div>`+DAYS.map(d=>`<div class="cal-head">${d[1]}<small>${d[2]}</small></div>`).join("");
+    let times=`<div class="cal-times" style="--h:${H}px">`;
+    for(let t=C0;t<=C1;t+=60) times+=`<span style="top:${(t-C0)*PX}px">${String(t/60).padStart(2,"0")}:00</span>`;
+    g+=times+`</div>`;
+    let list="";
+    DAYS.forEach(d=>{
+      let col=`<div class="cal-col" style="--h:${H}px">`;
+      for(let t=C0+60;t<C1;t+=60) col+=`<div class="hline" style="top:${(t-C0)*PX}px"></div>`;
+      col+=`<div class="lunch" style="top:${(780-C0)*PX}px;height:${60*PX}px">Colación</div>`;
+      const rows=A.filter(r=>r[0]===d[0]&&r[1].includes(w)).sort((a,b)=>m(a[2])-m(b[2]));
+      if(d[0]==="Jue"){ col+=`<div class="tbd">Apoyo a la producción de otro CESFAM de la comuna<br>(solicitud de la referente comunal · ≈8 h)</div>`; }
+      rows.forEach(r=>{
+        const k=P[r[4]][0], y=(m(r[2])-C0)*PX, h=(m(r[3])-m(r[2]))*PX;
+        col+=`<div class="blk ${r[7]?"adj":""} ${h<30?"tiny":""}" style="${cv(k)};top:${y+1}px;height:${h-2}px" title="${r[2]}–${r[3]} · ${lab(r)}${r[8]?" · "+r[8]:""}"><b>${lab(r)}</b><span>${r[2]}–${r[3]}${r[8]?" · "+r[8]:""}</span></div>`;
+      });
+      g+=col+`</div>`;
+      list+=`<div class="day"><h3>${d[1]}<small>${d[2]}</small></h3>`+(d[0]==="Jue"?`<p class="small">Apoyo a la producción de otro CESFAM de la comuna, a solicitud de la referente comunal (≈8 h semanales).</p>`:
+        rows.map(r=>`<div class="li ${r[7]?"adj":""}" style="${cv(P[r[4]][0])}"><span class="t">${r[2]}–${r[3]}</span><span><b>${lab(r)}</b>${r[8]?` · ${r[8]}`:""}</span></div>`).join(""))+`</div>`;
+    });
+    document.getElementById("calgrid").innerHTML=g;
+    document.getElementById("callist").innerHTML=list;
+  }
+  document.querySelectorAll("[data-w]").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("[data-w]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); render(+b.dataset.w);
+  }));
+  render(1);
+
+  // conteos mensuales calculados desde la agenda
+  const cnt={}; let direct=0;
+  A.forEach(r=>{ r[1].forEach(()=>{ const key=r[6]+"|"+r[4]; cnt[key]=(cnt[key]||0)+r[5]; if(P[r[4]][1]&&r[4]!=="Rescate de inasistentes") direct+=m(r[3])-m(r[2]); }); });
+  const c=(s,p)=>cnt[s+"|"+p]||0;
+  document.getElementById("hdir").textContent=Math.round(direct/4/60);
+  const metas=[["Ingreso prenatal",12,4],["Control prenatal",49,12],["Díada",9,4],["Preconcepcional",12,4],["Morbilidad obstétrica",4,8],["Lactancia ingreso",12,0],["Lactancia seguimiento",12,4],["Taller de gestantes",2,1],["VD Chile Crece Más",7,null],["VD en dupla",4,null],["VD gestantes",null,null]];
+  const cell=(meta,val)=>{ if(meta==null&&!val) return `<td class="n">—</td>`; const ok=meta==null||val>=meta; return `<td class="n"><span>${val}${meta!=null?` <span class="chip ${ok?"c-ok":"c-warn"}">${ok?"meta":"−"+(meta-val)}</span>`:""}</span></td>`; };
+  document.querySelector("#tmetas tbody").innerHTML=metas.map(([p,mt,mg])=>`<tr><td>${p}</td><td class="n">${mt??"—"}</td>${cell(mt,c(T,p))}<td class="n">${mg??"—"}</td>${p.startsWith("VD Chile")||p==="VD en dupla"?`<td class="n">—</td>`:cell(mg,c(G,p))}</tr>`).join("");
+  const tot=p=>c(T,p)+c(G,p);
+  const lact=tot("Lactancia ingreso")+tot("Lactancia seguimiento"), vd=tot("VD Chile Crece Más")+tot("VD en dupla")+tot("VD gestantes");
+  const k=[[tot("Control prenatal"),"cupos de control prenatal",`${c(T,"Control prenatal")} en Tongoy · ${c(G,"Control prenatal")} en Guanaqueros`],
+    [lact,"cupos de lactancia",`${tot("Lactancia ingreso")} ingresos · ${tot("Lactancia seguimiento")} seguimientos`],
+    [tot("Preconcepcional"),"cupos preconcepcionales","Tongoy y Guanaqueros"],
+    [tot("Ingreso prenatal")+" · "+tot("Díada"),"ingresos · díadas","cupos al mes"],
+    [vd,"visitas domiciliarias","7 Chile Crece Más · 4 en dupla · 2 gestantes"],
+    [tot("Taller de gestantes")+" · "+tot("Rescate de inasistentes"),"talleres · bloques de rescate","al mes"]];
+  document.getElementById("kpis").innerHTML=k.map(x=>`<div class="kpi"><span class="n">${x[0]}</span><span class="l">${x[1]}</span><span class="s">${x[2]}</span></div>`).join("");
+
+  // gráfico de pesas
+  const rows=[["Lactancia materna",7.0,lact],["Control preconcepcional",5.7,tot("Preconcepcional")],["Morbilidad obstétrica",3.6,tot("Morbilidad obstétrica")],["Ingreso prenatal",7.7,tot("Ingreso prenatal")],["Control prenatal",59.2,tot("Control prenatal")],["Visita domiciliaria",9.8,vd],["Díada",14.8,tot("Díada")]];
+  function drawChart(){
+    const svg=document.getElementById("dumbbell"), W=svg.parentNode.clientWidth-36, narrow=W<560;
+    const L=narrow?122:210, R=W-40, y0=narrow?94:80, step=narrow?40:44, H=y0+rows.length*step+30, max=80, x=v=>L+v/max*(R-L);
+    svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const tt="La agenda 2027 multiplica la oferta de lactancia, preconcepcional y morbilidad";
+    let s=narrow?`<text x="0" y="18" font-family="Libre Franklin, Segoe UI, Arial" font-weight="700" font-size="14" fill="var(--ink)"><tspan x="0">La agenda 2027 multiplica la oferta de</tspan><tspan x="0" dy="18">lactancia, preconcepcional y morbilidad</tspan></text>`:`<text x="0" y="22" font-family="Libre Franklin, Segoe UI, Arial" font-weight="700" font-size="16" fill="var(--ink)">${tt}</text>`;
+    s+=`<text x="0" y="${narrow?58:44}" font-size="12.5" fill="var(--muted)">${narrow?"Gris: atendido 2026 · Rojo: cupos 2027 (al mes)":"Gris: atenciones al mes en 2026 · Rojo: cupos al mes en 2027"}</text>`;
+    [0,20,40,60,80].forEach(t=>{s+=`<line x1="${x(t)}" x2="${x(t)}" y1="${y0-16}" y2="${H-24}" stroke="var(--line)"/><text x="${x(t)}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${t}</text>`});
+    rows.forEach((r,i)=>{const yy=y0+i*step, up=r[2]>=r[1];
+      s+=`<text x="${L-(narrow?30:12)}" y="${yy+4}" text-anchor="end" font-size="${narrow?11.5:13}" fill="var(--ink)">${narrow?r[0].replace("Control preconcepcional","Preconcepcional").replace("Morbilidad obstétrica","Morbilidad obst.").replace("Visita domiciliaria","Visitas dom.").replace("Lactancia materna","Lactancia"):r[0]}</text>`;
+      s+=`<line x1="${x(r[1])}" x2="${x(r[2])}" y1="${yy}" y2="${yy}" stroke="var(--arcilla)" stroke-width="3"/>`;
+      s+=`<circle cx="${x(r[1])}" cy="${yy}" r="6" fill="var(--grey)"><title>${r[0]}: ${String(r[1]).replace(".",",")} atenciones al mes en 2026</title></circle>`;
+      s+=`<circle cx="${x(r[2])}" cy="${yy}" r="6" fill="var(--vino)"><title>${r[0]}: ${r[2]} cupos al mes en 2027</title></circle>`;
+      s+=`<text x="${up?x(r[1])-10:x(r[1])+10}" y="${yy+4}" text-anchor="${up?"end":"start"}" font-size="11.5" fill="var(--muted)">${String(r[1]).replace(".",",")}</text>`;
+      s+=`<text x="${up?x(r[2])+10:x(r[2])-10}" y="${yy+4}" text-anchor="${up?"start":"end"}" font-size="12.5" font-weight="700" fill="var(--ink)">${r[2]}</text>`;});
+    svg.innerHTML=s;
+  }
+  drawChart(); let rt; window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(drawChart,120)});
+
+  // tablas apilables en móvil
+  document.querySelectorAll("table.stack").forEach(tb=>{const hs=[...tb.tHead.rows[0].cells].map(c=>c.textContent.trim());
+    tb.querySelectorAll("tbody tr").forEach(tr=>[...tr.cells].forEach((td,i)=>td.setAttribute("data-label",hs[i]||"")));});
+})();
+</script>
