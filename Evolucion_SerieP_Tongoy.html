@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evolución Serie P · CESFAM Tongoy</title>
+<meta name="description" content="Evolución interanual de la población bajo control (Serie P REM) 2022–2026, CESFAM Tongoy y PSR Guanaqueros, con interpretación salubrista APS.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f5f6f4;--surf:#fff;--ink:#16202b;--ink2:#48576a;--mut:#7d8a99;--line:#e2e6ea;--navy:#163a5f;--acc:#2a6fd6;--teal:#15a08a;--green:#1b8a4b;--amber:#c07a00;--red:#cf3b3b;--violet:#6b57c7;
+--s1:#2a6fd6;--s2:#e07a2e;--s3:#15a08a;--goodbg:#e7f3ec;--warnbg:#fbf1dc;--critbg:#f8e4e4;}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-size:15px;line-height:1.6;letter-spacing:-.004em}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+.cover{background:radial-gradient(1100px 600px at 80% -10%,#1e4e7e,var(--navy) 60%);color:#eaf1f8;padding:54px 0 44px;margin-bottom:10px}
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:12px}
+.cover h1{font-family:"Space Grotesk";font-size:clamp(25px,4vw,40px);line-height:1.08;font-weight:700;margin:0 0 12px}
+.cover .sub{font-size:16px;color:#c7d6e7;max-width:68ch;line-height:1.5}
+.cover .meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:20px;font-size:13px;color:#aec6e0}.cover .meta b{color:#fff}
+section{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:24px 28px;margin:16px 0}
+h2.sec{font-family:"Space Grotesk";font-size:21px;font-weight:700;color:var(--navy);margin:0 0 3px;display:flex;align-items:center;gap:10px}
+.sec-lead{color:var(--mut);font-size:13px;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+h3{font-family:"Space Grotesk";font-size:16px;font-weight:700;margin:20px 0 6px}
+p{margin:0 0 10px}b{font-weight:600}
+.cal{border-radius:11px;padding:11px 15px;margin:11px 0;font-size:13.5px;line-height:1.55;border-left:4px solid}
+.cal .h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.dato{background:#eef4fb;border-color:var(--acc)}.dato .h{color:var(--acc)}
+.lect{background:#f3f0fb;border-color:var(--violet)}.lect .h{color:var(--violet)}
+.reco{background:var(--goodbg);border-color:var(--green)}.reco .h{color:var(--green)}
+.lim{background:var(--warnbg);border-color:var(--amber)}.lim .h{color:var(--amber)}
+.chart-box{position:relative;height:280px;margin:10px 0}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+@media(max-width:700px){.kgrid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.kpi .v{font-family:"Space Grotesk";font-size:24px;font-weight:700;color:var(--navy);line-height:1}
+.kpi .l{font-size:11px;color:var(--ink2);margin-top:5px}
+.kpi .d{font-size:11px;font-weight:700;margin-top:4px}.up{color:var(--green)}.dn{color:var(--red)}.fl{color:var(--amber)}
+.prog{border-top:3px solid var(--acc);border-radius:14px}
+.tbl-wrap{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:center}th{background:var(--navy);color:#fff;font-size:11.5px}td:first-child,th:first-child{text-align:left}
+tbody tr:nth-child(even){background:#f8faf9}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:24px 0 46px}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.bg-good{background:var(--goodbg);color:var(--green)}.bg-warn{background:var(--warnbg);color:var(--amber)}.bg-crit{background:var(--critbg);color:var(--red)}
+@media print{body{background:#fff}section{break-inside:avoid;border:none}.cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<div class="cover"><div class="wrap">
+<div class="kicker">Análisis de población bajo control · Serie P (REM / DEIS–MINSAL)</div>
+<h1>Evolución interanual de la Serie P 2022–2026</h1>
+<div class="sub">Trayectoria de la población bajo control de cada programa, por hoja REM-P, en la red APS de Tongoy. Lectura salubrista orientada a la planificación local.</div>
+<div class="meta"><div>Establecimientos: <b>CESFAM Tongoy (105321) + PSR Guanaqueros (105405)</b></div><div>Cortes: <b>dic 2022–2025 + jun 2026</b></div></div>
+</div></div>
+<div class="wrap">
+<section>
+<h2 class="sec">Cómo leer este informe</h2>
+<div class="sec-lead">Metodología, cortes y advertencias de comparabilidad.</div>
+<p>La <b>Serie P</b> del REM informa la <b>población bajo control</b> de cada programa a una fecha de corte (no se acumula ni se suma entre cortes). Se usa el <b>corte de diciembre</b> (P12) como foto de cierre anual 2022, 2023, 2024 y 2025, y el <b>corte de junio</b> (P06) para 2026, que es una foto de mitad de año. Cada hoja REM-P corresponde a un programa: P1 Mujer, P2 Infancia, P4 Cardiovascular, P5 Personas Mayores, P6 Salud Mental, P9 Adolescente, P13 Mejor Niñez.</p>
+<div class="cal lim"><div class="h">Advertencias de comparabilidad</div>El corte de <b>junio 2026 es de mitad de año</b> y no es estrictamente comparable con los cortes de diciembre. Los años <b>2022–2023 usan una versión anterior del formulario</b>, por lo que algunos programas aparecen en cero por no estar aún implementados o registrados con ese formato (p. ej. Personas Mayores en 2022). La tendencia confiable es <b>2024→2026</b>; 2022–2023 se muestran como contexto histórico. Datos extraídos por anclaje de etiqueta directamente de las planillas oficiales.</p></div>
+</section>
+<section>
+<h2 class="sec">Síntesis: hacia dónde crece la carga de la red</h2>
+<div class="sec-lead">Variación de la población bajo control, consolidado, dic-2024 → jun-2026.</div>
+<div class="kgrid">
+<div class="kpi"><div class="v">+65%</div><div class="l">Salud Mental</div><div class="d up">839 → 1.386</div></div>
+<div class="kpi"><div class="v">+33%</div><div class="l">Personas Mayores</div><div class="d up">768 → 1.020</div></div>
+<div class="kpi"><div class="v">+24%</div><div class="l">Adolescente</div><div class="d up">320 → 397</div></div>
+<div class="kpi"><div class="v">−7%</div><div class="l">Cardiovascular (corte jun parcial)</div><div class="d fl">2.046 → 1.906</div></div>
+</div>
+<div class="cal lect"><div class="h">Lectura global</div>La carga crónica de la red <b>crece y se transforma</b>: Salud Mental y Personas Mayores son los programas de expansión más rápida, mientras el Cardiovascular —el de mayor volumen absoluto— se mantiene en torno a 2.000 personas. Es un perfil típico de <b>envejecimiento poblacional y mayor demanda de salud mental</b>, que exige redistribuir horas y capacidad instalada hacia esos dos frentes.</div>
+</section>
+<div id="progs"></div>
+<section>
+<h2 class="sec">Conclusión salubrista</h2>
+<div class="sec-lead">Síntesis para la planificación local 2027.</div>
+<p>La Serie P muestra una red APS cuya población bajo control <b>crece y envejece</b>. Los programas de <b>Salud Mental</b> y <b>Personas Mayores</b> concentran el crecimiento y deben ser la prioridad de dotación y continuidad para 2027; el <b>Cardiovascular</b> exige sostener la compensación en una base amplia; <b>Infancia</b> y <b>Adolescente</b> requieren fortalecer la captación en un contexto de natalidad decreciente. En un territorio costero-rural y disperso, cada persona bajo control implica continuidad en el tiempo: el desafío no es solo captar, sino <b>no perder el seguimiento</b> mediante rescate activo, telesalud y rondas a la posta.</p>
+</section>
+</div>
+<footer>Evolución Serie P · CESFAM Tongoy + PSR Guanaqueros · REM Serie P (DEIS–MINSAL) · Cortes dic 2022–2025 + jun 2026</footer>
+<script>
+const D={"mujer": {"label": "Salud de la Mujer (regulación fertilidad)", "cons": [709, 776, 773, 873, 830], "cesfam": [485, 539, 531, 623, 565], "psr": [224, 237, 242, 250, 265]}, "infancia": {"label": "Infancia (niños/as bajo control)", "cons": [597, 567, 530, 697, 496], "cesfam": [451, 449, 391, 574, 384], "psr": [146, 118, 139, 123, 112]}, "pscv": {"label": "Cardiovascular (PSCV)", "cons": [1385, 1716, 2046, 2071, 1906], "cesfam": [1015, 1207, 1503, 1467, 1335], "psr": [370, 509, 543, 604, 571]}, "pmayor": {"label": "Personas Mayores", "cons": [0, 472, 768, 738, 1020], "cesfam": [0, 289, 493, 486, 683], "psr": [0, 183, 275, 252, 337]}, "salud_mental": {"label": "Salud Mental", "cons": [670, 739, 839, 859, 1386], "cesfam": [478, 551, 578, 669, 1143], "psr": [192, 188, 261, 190, 243]}, "adol": {"label": "Adolescente", "cons": [214, 224, 320, 285, 397], "cesfam": [133, 129, 211, 240, 333], "psr": [81, 95, 109, 45, 64]}, "mejorninez": {"label": "Mejor Niñez (vulneración de derechos)", "cons": [23, 40, 32, 142, 34], "cesfam": [16, 30, 21, 87, 31], "psr": [7, 10, 11, 55, 3]}, "pscv_sub": {"hta": [704, 761, 767, 1058, 848], "dm2": [233, 242, 317, 432, 273], "rcv": [1154, 1283, 1458, 1786, 1603]}, "pm_sub": {"efam": [0, 401, 627, 669, 879], "barthel": [0, 71, 141, 69, 141]}, "inf_sub": {"obeso": [null, null, null, null, null], "sobrepeso": [null, null, null, null, null]}};
+const CORTES=['dic-22','dic-23','dic-24','dic-25','jun-26'];
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+Chart.defaults.font.family="Inter,system-ui,sans-serif";Chart.defaults.color=css('--ink2');Chart.defaults.font.size=11.5;
+const INTERP={
+ mujer:["Programa consolidado y estable, con leve alza (de ~709 a 873 bajo control en los cortes de diciembre). La regulación de fertilidad es una prestación de base del CESFAM.","Mantener la cobertura de métodos y el control de salud sexual; vigilar la continuidad en Guanaqueros, donde la base es menor."],
+ infancia:["La población infantil bajo control fluctúa según corte y muestra una tendencia suave a la baja en los cierres de diciembre, coherente con la caída de la natalidad. El corte de junio siempre es menor por el ciclo del control del niño sano.","Reforzar la captación temprana del niño/a sano y la continuidad del control, especialmente de los más dispersos, para no perder cobertura en una cohorte que se achica."],
+ pscv:["Es el programa crónico de mayor volumen: creció con fuerza 2022→2025 (de ~1.385 a 2.071 personas, +49%) y se mantiene cerca de 1.900 al corte de junio 2026. Refleja envejecimiento y pesquisa activa de hipertensión y diabetes.","Sostener la compensación sobre una base amplia es el reto: priorizar a los descompensados de mayor riesgo, asegurar HbA1c y fármacos, y usar el telemonitoreo donde la distancia lo exija."],
+ pmayor:["Programa que se instala y formaliza desde 2023 (de 472 a 1.020 bajo control), el crecimiento más estructural de la red. Refleja el envejecimiento local y la clasificación funcional (EFAM/Barthel) cada vez más completa.","Anticipar la demanda de cuidado del adulto mayor: EMPAM vigente, manejo de dependencia, cuidado domiciliario y apoyo al cuidador. Es el frente que más crecerá en la próxima década."],
+ salud_mental:["El alza más marcada de toda la Serie P: la población bajo control más que se duplicó (de 670 en 2022 a 1.386 al corte de junio 2026, +107%). Es la señal más fuerte de cambio en el perfil de demanda de la red.","Exige capacidad instalada proporcional: horas de la dupla, teleconsultoría y consultoría de especialidad, y estrategias de continuidad. Sin dotación acorde, el crecimiento tensiona la calidad del seguimiento."],
+ adol:["Crecimiento sostenido (de 214 a 397, +86% en el periodo), coherente con la consolidación del control integral del adolescente y del Espacio Amigable.","Fortalecer el Espacio Amigable como puerta de entrada confidencial y la articulación con los establecimientos educacionales para sostener la captación."],
+ mejorninez:["Muy sensible al corte (el valor de diciembre y el de junio difieren mucho), por lo que no debe leerse como tendencia limpia sino como el stock vigente a cada fecha. Es un programa de protección especial de volumen bajo pero alta complejidad.","Asegurar el seguimiento intersectorial (protección, educación, justicia) de cada NNAJ con vulneración de derechos, más allá del número puntual del corte."]
+};
+function mkProg(key,title){
+ const p=D[key];const cons=p.cons,ce=p.cesfam,ps=p.psr;
+ const last=cons[4],d24=cons[2];const dv=d24?Math.round((last-d24)/d24*100):null;
+ const dvtxt=dv==null?'—':(dv>=0?'+':'')+dv+'%';const dvcls=dv==null?'fl':(dv>=0?'up':'dn');
+ const first=cons.find(x=>x);const vfull=first?Math.round((cons[3]-first)/first*100):null; // 2022->2025 o primer válido
+ const sec=document.createElement('section');sec.className='prog';
+ sec.innerHTML=`<h2 class="sec">${title}</h2><div class="sec-lead">Población bajo control · evolución 2022–2026 (hoja REM-P).</div>
+  <div class="kgrid">
+   <div class="kpi"><div class="v">${(last??'—').toLocaleString?last.toLocaleString('es-CL'):last}</div><div class="l">bajo control · corte jun-2026</div></div>
+   <div class="kpi"><div class="v ${dvcls}">${dvtxt}</div><div class="l">variación dic-2024 → jun-2026</div></div>
+   <div class="kpi"><div class="v">${(ce[4]??'—')}</div><div class="l">CESFAM Tongoy (jun-2026)</div></div>
+   <div class="kpi"><div class="v">${(ps[4]??'—')}</div><div class="l">PSR Guanaqueros (jun-2026)</div></div>
+  </div>
+  <div class="chart-box"><canvas></canvas></div>
+  <div class="cal dato"><div class="h">Dato observado</div>Consolidado: ${cons.map((v,i)=>CORTES[i]+' '+(v??'s/i')).join(' · ')}.</div>
+  <div class="cal lect"><div class="h">Lectura salubrista</div>${INTERP[key][0]}</div>
+  <div class="cal reco"><div class="h">Recomendación</div>${INTERP[key][1]}</div>`;
+ document.getElementById('progs').appendChild(sec);
+ const ctx=sec.querySelector('canvas');
+ new Chart(ctx,{type:'line',data:{labels:CORTES,datasets:[
+   {label:'Consolidado',data:cons,borderColor:css('--navy'),backgroundColor:'rgba(22,58,95,.08)',borderWidth:3,tension:.25,pointRadius:4,fill:true},
+   {label:'CESFAM Tongoy',data:ce,borderColor:css('--s1'),backgroundColor:'transparent',borderWidth:2,tension:.25,pointRadius:3,borderDash:[5,3]},
+   {label:'PSR Guanaqueros',data:ps,borderColor:css('--s3'),backgroundColor:'transparent',borderWidth:2,tension:.25,pointRadius:3,borderDash:[5,3]}]},
+   options:{responsive:true,maintainAspectRatio:false,spanGaps:true,
+    plugins:{legend:{labels:{boxWidth:11,color:css('--ink2')}}},
+    scales:{x:{grid:{display:false},ticks:{color:css('--mut')}},y:{beginAtZero:true,grid:{color:css('--line')},ticks:{color:css('--mut'),precision:0}}}}});
+}
+mkProg('salud_mental','Salud Mental');
+mkProg('pscv','Cardiovascular (PSCV)');
+mkProg('pmayor','Personas Mayores');
+mkProg('adol','Adolescente');
+mkProg('infancia','Infancia');
+mkProg('mujer','Salud de la Mujer');
+mkProg('mejorninez','Mejor Niñez (vulneración de derechos)');
+</script></body></html>
