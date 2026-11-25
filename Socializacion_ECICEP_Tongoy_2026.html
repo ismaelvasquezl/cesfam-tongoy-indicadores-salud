@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1330, initial-scale=1">
+<title>Socialización ECICEP Tongoy 2026</title>
+<style>
+:root{
+  --primary:#1B6E6A;
+  --primaryLight:#3B8F8A;
+  --primarySoft:#D5E7E5;
+  --secondary:#E88B6A;
+  --accent:#F2C57C;
+  --success:#6BA368;
+  --alert:#C25B56;
+  --ink:#2E3A3F;
+  --inkLight:#5E6A70;
+  --bg:#FFFFFF;
+  --bgSoft:#F5F1EA;
+  --divider:#E8ECEE;
+  --sectorAzul:#2E5A8C;
+  --sectorRojo:#C25B56;
+  --sectorVerde:#6BA368;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#1a1a1a;font-family:'Calibri','Segoe UI',Arial,sans-serif;color:var(--ink);overflow:hidden}
+
+/* Deck container */
+.deck{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.stage{
+  width:1330px;height:750px;
+  position:relative;
+  background:var(--bg);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  overflow:hidden;
+  transform-origin:center center;
+}
+/* Escalar responsivamente */
+@media (max-width:1400px), (max-height:820px){
+  .deck{padding:10px}
+  .stage{transform:scale(var(--scale,1))}
+}
+
+/* Slides */
+.slide{
+  position:absolute;inset:0;
+  padding:0;
+  display:none;
+  animation:fadeIn .35s ease-out;
+}
+.slide.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Tipografías */
+.serif{font-family:'Cambria','Georgia',serif}
+.sans{font-family:'Calibri','Segoe UI',Arial,sans-serif}
+
+/* Encabezado y pie estándar de slide de contenido */
+.slide-header{
+  position:absolute;top:40px;left:60px;right:60px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tag{
+  font-size:12px;color:var(--primary);font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+}
+.pageno{font-size:11px;color:var(--inkLight)}
+.slide-title{
+  position:absolute;top:80px;left:60px;right:60px;
+  font-family:'Cambria','Georgia',serif;
+  font-size:36px;font-weight:700;color:var(--ink);
+  line-height:1.15;
+}
+.slide-footer{
+  position:absolute;bottom:20px;left:60px;right:60px;
+  font-size:10px;color:var(--inkLight);font-style:italic;
+}
+
+/* Iconos: círculos con SVG */
+.icon-circle{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:50%;color:#fff;flex-shrink:0;
+}
+.icon-circle svg{width:55%;height:55%;fill:#fff}
+
+/* Cards */
+.card{
+  background:#fff;border:1px solid var(--divider);
+  border-radius:12px;padding:20px;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+}
+.card.soft{background:var(--primarySoft);border:none;box-shadow:none}
+.card.filled-primary{background:var(--primary);color:#fff;border:none;box-shadow:none}
+
+/* Utilidades */
+.grid{display:grid;gap:16px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.flex{display:flex;gap:16px;align-items:center}
+.center{text-align:center}
+h2.section-subtitle{
+  font-family:'Cambria','Georgia',serif;
+  font-size:20px;color:var(--primary);
+  margin-bottom:8px;
+}
+ul.clean{list-style:none;padding:0}
+ul.clean li{position:relative;padding-left:20px;margin-bottom:8px;font-size:15px;line-height:1.45}
+ul.clean li:before{
+  content:"";position:absolute;left:0;top:9px;
+  width:6px;height:6px;border-radius:50%;background:var(--primary);
+}
+
+/* ========== SLIDE 1: PORTADA ========== */
+.s1{background:var(--primary);color:#fff}
+.s1 .deco1,.s1 .deco2{position:absolute;border-radius:50%}
+.s1 .deco1{width:500px;height:500px;background:var(--primaryLight);opacity:.4;top:-150px;right:-150px}
+.s1 .deco2{width:400px;height:400px;background:var(--accent);opacity:.3;bottom:-100px;right:-50px}
+.s1 .content{position:relative;padding:100px 80px;z-index:2}
+.s1 .kicker{font-size:14px;color:var(--accent);font-weight:700;letter-spacing:6px;margin-bottom:30px}
+.s1 .maintitle{font-family:'Cambria','Georgia',serif;font-size:78px;font-weight:700;margin-bottom:10px;line-height:1}
+.s1 .subtitle{font-family:'Cambria','Georgia',serif;font-size:32px;font-style:italic;margin-bottom:60px}
+.s1 .desc{font-size:22px;line-height:1.5;max-width:800px;margin-bottom:80px}
+.s1 .desc em{color:var(--primarySoft);font-style:italic}
+.s1 .bottom{font-size:13px;color:var(--accent);font-weight:700;margin-bottom:6px}
+.s1 .bottom2{font-size:11px;font-style:italic;opacity:.85}
+
+/* ========== SLIDE 2: OBJETIVO Y AGENDA ========== */
+.s2 .body{position:absolute;top:180px;left:60px;right:60px;bottom:80px;display:flex;gap:24px}
+.s2 .obj-card{
+  flex:1;background:var(--primarySoft);border-radius:12px;padding:30px;
+  display:flex;flex-direction:column;
+}
+.s2 .obj-label{font-size:11px;color:var(--primary);font-weight:700;letter-spacing:4px;margin-bottom:16px}
+.s2 .obj-text{font-family:'Cambria','Georgia',serif;font-size:26px;font-weight:700;line-height:1.35;color:var(--ink)}
+.s2 .agenda{flex:1}
+.s2 .agenda-title{font-size:14px;color:var(--inkLight);font-weight:700;margin-bottom:18px}
+.s2 .agenda-item{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.s2 .agenda-item .icon-circle{width:44px;height:44px}
+.s2 .agenda-item .time{font-size:11px;font-weight:700;text-transform:uppercase}
+.s2 .agenda-item .txt{font-size:14px;color:var(--ink)}
+.s2 .rule{
+  position:absolute;left:60px;right:60px;bottom:20px;
+  background:rgba(242,197,124,.55);border-radius:8px;
+  padding:12px 20px;display:flex;align-items:center;gap:14px;
+}
+.s2 .rule .icon-circle{width:36px;height:36px;background:var(--secondary)}
+.s2 .rule .txt{font-size:15px;font-weight:700}
+
+/* ========== SLIDE 3 ========== */
+.s3 .stat{
+  position:absolute;top:180px;left:60px;right:60px;
+  font-family:'Cambria','Georgia',serif;font-size:32px;line-height:1.4;
+}
+.s3 .stat strong{color:var(--secondary);font-weight:700}
+.s3 .stat .sub{font-family:'Calibri',Arial,sans-serif;font-size:17px;color:var(--inkLight);font-style:italic;margin-top:14px;display:block}
+.s3 .reasons{position:absolute;top:390px;left:60px;right:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.s3 .reason{background:#fff;border:1px solid var(--divider);border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(0,0,0,.06);height:270px}
+.s3 .reason .head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.s3 .reason .head .icon-circle{width:50px;height:50px}
+.s3 .reason h3{font-family:'Cambria','Georgia',serif;font-size:20px}
+.s3 .reason p{font-size:14px;line-height:1.45}
+
+/* ========== SLIDE 4: ECICEP EN SIMPLE ========== */
+.s4 .letters{position:absolute;top:180px;left:60px;right:60px;display:flex;justify-content:space-between}
+.s4 .letter-box{text-align:center;width:150px}
+.s4 .letter-circle{
+  width:130px;height:130px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:64px;font-weight:700;color:#fff;
+  margin:0 auto 12px;
+}
+.s4 .letter-box p{font-size:15px;font-weight:700}
+.s4 .explanation{
+  position:absolute;top:400px;left:60px;right:60px;
+  background:var(--primarySoft);border-radius:12px;padding:24px;
+}
+.s4 .explanation .label{font-size:12px;color:var(--primary);font-weight:700;letter-spacing:4px;margin-bottom:14px}
+.s4 .explanation .txt{font-family:'Cambria','Georgia',serif;font-size:20px;line-height:1.5;color:var(--ink)}
+.s4 .explanation .txt b{font-weight:700}
+
+/* ========== SLIDE 5: ANTES vs AHORA ========== */
+.s5 .body{position:absolute;top:180px;left:60px;right:60px;bottom:80px;display:flex;gap:24px}
+.s5 .col{flex:1;border-radius:12px;padding:32px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.s5 .col.antes{background:#fff;border:1px solid var(--divider)}
+.s5 .col.ahora{background:var(--primarySoft)}
+.s5 .col .label{font-size:11px;font-weight:700;letter-spacing:4px;margin-bottom:12px}
+.s5 .col.antes .label{color:var(--alert)}
+.s5 .col.ahora .label{color:var(--primary)}
+.s5 .col h3{font-family:'Cambria','Georgia',serif;font-size:24px;margin-bottom:24px}
+.s5 .col.ahora h3{color:var(--primary)}
+.s5 .col ul li{font-size:15px;margin-bottom:12px;line-height:1.45}
+
+/* ========== SLIDE 6: G1/G2/G3 ========== */
+.s6 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s6 .levels{position:absolute;top:230px;left:60px;right:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.s6 .level{border-radius:12px;padding:24px;height:410px}
+.s6 .g1{background:#E8F1E5}
+.s6 .g2{background:#FBF0DC}
+.s6 .g3{background:#F6DAD8}
+.s6 .level .head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.s6 .level .code{
+  width:66px;height:66px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:26px;font-weight:700;color:#fff;
+}
+.s6 .g1 .code{background:var(--success)}
+.s6 .g2 .code{background:var(--accent);color:var(--ink)}
+.s6 .g3 .code{background:var(--alert)}
+.s6 .level h3{font-family:'Cambria','Georgia',serif;font-size:16px;line-height:1.2}
+.s6 .desc{font-size:13px;font-style:italic;margin-bottom:16px}
+.s6 .ritmo-label{font-size:10px;font-weight:700;letter-spacing:3px;margin-bottom:4px}
+.s6 .g1 .ritmo-label{color:var(--success)}
+.s6 .g2 .ritmo-label{color:#B7891E}
+.s6 .g3 .ritmo-label{color:var(--alert)}
+.s6 .ritmo{font-size:14px;font-weight:700;margin-bottom:16px;line-height:1.4}
+.s6 .analogia{font-size:12px;font-style:italic;color:var(--inkLight);line-height:1.4}
+.s6 .analogia b{color:var(--ink)}
+
+/* ========== SLIDE 7: ROLES ========== */
+.s7 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s7 .roles{position:absolute;top:220px;left:60px;right:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.s7 .role{
+  background:#fff;border:1px solid var(--divider);border-radius:12px;
+  padding:18px;height:180px;box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+.s7 .role .head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.s7 .role .head .icon-circle{width:46px;height:46px}
+.s7 .role h3{font-family:'Cambria','Georgia',serif;font-size:16px}
+.s7 .role p{font-size:12px;line-height:1.45}
+
+/* ========== SLIDE 8: FLUJO ========== */
+.s8 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s8 .flow{position:absolute;top:250px;left:60px;right:60px;display:flex;gap:8px;justify-content:center}
+.s8 .step{
+  background:#fff;border:1px solid var(--divider);border-radius:12px;
+  padding:16px;width:230px;height:340px;box-shadow:0 3px 10px rgba(0,0,0,.06);
+  position:relative;margin-top:35px;
+}
+.s8 .num{
+  position:absolute;top:-35px;left:50%;transform:translateX(-50%);
+  width:70px;height:70px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:32px;font-weight:700;color:#fff;
+  border:4px solid #fff;
+}
+.s8 .step h3{font-family:'Cambria','Georgia',serif;font-size:16px;text-align:center;margin-top:45px;line-height:1.2}
+.s8 .step p{font-size:12px;text-align:center;margin-top:14px;line-height:1.4}
+.s8 .arrow{align-self:center;color:var(--inkLight);font-size:22px;margin-top:35px}
+
+/* ========== SLIDE 9: PCIC ========== */
+.s9 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s9 .fields{position:absolute;top:220px;left:60px;right:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.s9 .field{background:var(--primarySoft);border-radius:12px;padding:18px;height:170px}
+.s9 .field .head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.s9 .field .num{
+  width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:22px;font-weight:700;
+}
+.s9 .field h3{font-family:'Cambria','Georgia',serif;font-size:16px;color:var(--primary)}
+.s9 .field p{font-size:12px;font-style:italic;line-height:1.4}
+.s9 .note{
+  position:absolute;bottom:50px;left:60px;right:60px;
+  background:rgba(242,197,124,.6);border-radius:8px;padding:12px;text-align:center;
+  font-size:14px;font-weight:700;
+}
+
+/* ========== SLIDE 10: ERRORES ========== */
+.s10 .body{position:absolute;top:180px;left:60px;right:60px;bottom:80px}
+.s10 .row{display:grid;grid-template-columns:60px 1fr 30px 1fr;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--divider)}
+.s10 .row:last-child{border-bottom:none}
+.s10 .row .icon-circle{width:44px;height:44px;background:var(--alert)}
+.s10 .row .err{font-size:14px;font-weight:700;color:var(--alert)}
+.s10 .row .arrow{font-size:18px;color:var(--success);font-weight:700;text-align:center}
+.s10 .row .fix{font-size:13px;line-height:1.4}
+
+/* ========== SLIDE 11: SECTORES ========== */
+.s11 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s11 .sectors{position:absolute;top:220px;left:60px;right:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.s11 .sector{
+  background:#fff;border-radius:12px;padding:20px;height:400px;
+}
+.s11 .sector.azul{border:2px solid var(--sectorAzul)}
+.s11 .sector.rojo{border:2px solid var(--sectorRojo)}
+.s11 .sector.verde{border:2px solid var(--sectorVerde)}
+.s11 .sector .head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.s11 .sector .icon-circle{width:50px;height:50px}
+.s11 .sector.azul .icon-circle{background:var(--sectorAzul)}
+.s11 .sector.rojo .icon-circle{background:var(--sectorRojo)}
+.s11 .sector.verde .icon-circle{background:var(--sectorVerde)}
+.s11 .sector h3{font-family:'Cambria','Georgia',serif;font-size:15px;font-weight:700;letter-spacing:2px}
+.s11 .sector.azul h3{color:var(--sectorAzul)}
+.s11 .sector.rojo h3{color:var(--sectorRojo)}
+.s11 .sector.verde h3{color:var(--sectorVerde)}
+.s11 .sector .foco{
+  border-radius:8px;padding:10px;text-align:center;margin-bottom:16px;
+  font-size:12px;font-weight:700;
+}
+.s11 .sector.azul .foco{background:rgba(46,90,140,.12);color:var(--sectorAzul)}
+.s11 .sector.rojo .foco{background:rgba(194,91,86,.12);color:var(--sectorRojo)}
+.s11 .sector.verde .foco{background:rgba(107,163,104,.15);color:var(--sectorVerde)}
+.s11 .sector .actions-label{font-size:10px;color:var(--inkLight);font-weight:700;letter-spacing:3px;margin-bottom:10px}
+.s11 .sector ul li{font-size:13px;margin-bottom:8px;line-height:1.4}
+
+/* ========== SLIDE 12: COMPROMISO ========== */
+.s12 .body{position:absolute;top:180px;left:60px;right:60px;bottom:80px;display:flex;gap:24px}
+.s12 .banner{
+  flex:1;background:var(--primary);color:#fff;border-radius:15px;padding:40px;
+  display:flex;flex-direction:column;justify-content:center;position:relative;
+}
+.s12 .banner .icon-circle{width:70px;height:70px;background:var(--accent);margin-bottom:24px}
+.s12 .banner .icon-circle svg{fill:var(--secondary)}
+.s12 .banner h2{font-family:'Cambria','Georgia',serif;font-size:44px;line-height:1.15;font-weight:700}
+.s12 .banner p{font-size:14px;color:var(--primarySoft);font-style:italic;margin-top:20px}
+.s12 .form{flex:1;padding-top:10px}
+.s12 .form-label{font-size:13px;font-weight:700;color:var(--inkLight);letter-spacing:3px;margin-bottom:20px}
+.s12 .form-q{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;margin-top:22px}
+.s12 .form-line{border-bottom:1px dashed var(--inkLight);height:20px}
+.s12 .form-q:first-of-type{margin-top:0}
+
+/* ========== SLIDE 13: EVALUACIÓN ========== */
+.s13 .intro{position:absolute;top:180px;left:60px;right:60px;font-size:15px;color:var(--inkLight);font-style:italic}
+.s13 .quiz{position:absolute;top:220px;left:60px;right:60px;display:grid;gap:14px}
+.s13 .q{display:grid;grid-template-columns:60px 1fr 1fr;gap:16px;align-items:center}
+.s13 .q .n{
+  width:44px;height:44px;border-radius:50%;background:var(--secondary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:22px;font-weight:700;
+}
+.s13 .q .qtext{font-size:14px;font-weight:700}
+.s13 .q .ans{background:rgba(107,163,104,.16);border-radius:8px;padding:10px 14px;font-size:12px}
+.s13 .q .ans b{color:var(--success)}
+
+/* ========== SLIDE 14: CIERRE ========== */
+.s14{background:var(--primary);color:#fff}
+.s14 .deco1{position:absolute;width:500px;height:500px;border-radius:50%;background:var(--primaryLight);opacity:.35;left:-100px;bottom:-150px}
+.s14 .deco2{position:absolute;width:380px;height:380px;border-radius:50%;background:var(--accent);opacity:.3;right:-80px;top:-80px}
+.s14 .kicker{position:absolute;top:60px;left:60px;font-size:13px;color:var(--accent);font-weight:700;letter-spacing:6px}
+.s14 .title{position:absolute;top:100px;left:60px;font-family:'Cambria','Georgia',serif;font-size:56px;font-weight:700;line-height:1}
+.s14 .ideas{position:absolute;top:220px;left:60px;right:60px;display:flex;flex-direction:column;gap:20px}
+.s14 .idea{display:flex;align-items:center;gap:24px}
+.s14 .idea .n{
+  width:80px;height:80px;border-radius:50%;background:var(--accent);
+  color:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cambria','Georgia',serif;font-size:44px;font-weight:700;flex-shrink:0;
+}
+.s14 .idea .text .t{font-family:'Cambria','Georgia',serif;font-size:26px;font-weight:700}
+.s14 .idea .text .s{font-size:15px;color:var(--primarySoft);font-style:italic;margin-top:4px}
+.s14 .thanks{position:absolute;bottom:40px;left:60px;right:60px;text-align:center;font-size:13px;color:var(--accent);font-style:italic}
+
+/* ========== CONTROLES ========== */
+.controls{
+  position:fixed;bottom:15px;left:50%;transform:translateX(-50%);
+  background:rgba(30,30,30,.9);color:#fff;
+  border-radius:24px;padding:8px 16px;display:flex;align-items:center;gap:12px;
+  font-family:'Calibri',Arial,sans-serif;font-size:13px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);z-index:100;
+  transition:opacity .3s;
+}
+.controls button{
+  background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);
+  border-radius:16px;padding:5px 10px;cursor:pointer;font-size:12px;
+  transition:background .2s;
+}
+.controls button:hover{background:rgba(255,255,255,.15)}
+.controls .counter{min-width:60px;text-align:center;color:#ccc}
+.controls.hidden{opacity:0;pointer-events:none}
+
+.help-hint{
+  position:fixed;top:15px;right:15px;color:#888;font-size:11px;
+  font-family:Calibri,Arial,sans-serif;background:rgba(30,30,30,.7);
+  padding:6px 12px;border-radius:12px;z-index:100;
+  transition:opacity .3s;
+}
+.help-hint.hidden{opacity:0}
+
+/* Panel de notas del relator */
+.notes-panel{
+  position:fixed;right:0;top:0;bottom:0;width:400px;
+  background:#2a2a2a;color:#e5e5e5;padding:24px;
+  overflow-y:auto;transform:translateX(100%);
+  transition:transform .3s;z-index:150;
+  box-shadow:-4px 0 20px rgba(0,0,0,.4);
+  font-family:'Calibri',Arial,sans-serif;
+}
+.notes-panel.open{transform:translateX(0)}
+.notes-panel h3{color:var(--accent);margin-bottom:14px;font-family:'Cambria',serif;font-size:18px}
+.notes-panel .slide-tag{font-size:11px;color:#888;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.notes-panel p{font-size:14px;line-height:1.55}
+.notes-panel .close-btn{
+  position:absolute;top:16px;right:16px;background:transparent;color:#aaa;
+  border:none;font-size:22px;cursor:pointer;
+}
+
+/* Impresión */
+@media print{
+  body{background:white;overflow:visible}
+  .deck{position:static;padding:0}
+  .stage{width:100%;height:auto;min-height:100vh;box-shadow:none;page-break-after:always}
+  .slide{position:relative;display:block !important;height:750px}
+  .controls,.help-hint,.notes-panel{display:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+<div class="stage" id="stage">
+
+<!-- ========== SLIDE 1: PORTADA ========== -->
+<section class="slide s1 active" data-slide="1">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <div class="content">
+    <div class="kicker">SOCIALIZACIÓN INTERNA | MAYO 2026</div>
+    <div class="maintitle">Protocolo ECICEP</div>
+    <div class="subtitle">CESFAM Tongoy | Edición 2026</div>
+    <div class="desc">
+      Una hora para entender el nuevo protocolo,<br>
+      <em>aplicarlo desde mañana y hacer que ECICEP sea real en Tongoy.</em>
+    </div>
+    <div class="bottom">Dirigido a funcionarios y funcionarias de los sectores Azul, Rojo y Verde</div>
+    <div class="bottom2">Elaborado por la Unidad de Bioestadística y Calidad del Dato</div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 2: OBJETIVO Y AGENDA ========== -->
+<section class="slide s2" data-slide="2">
+  <div class="slide-header">
+    <div class="tag">APERTURA</div>
+    <div class="pageno">2/14</div>
+  </div>
+  <h1 class="slide-title">Qué vamos a lograr en esta hora</h1>
+  <div class="body">
+    <div class="obj-card">
+      <div class="obj-label">OBJETIVO</div>
+      <div class="obj-text">Que cada persona presente sepa qué hacer mañana en su puesto con las personas ECICEP.</div>
+    </div>
+    <div class="agenda">
+      <div class="agenda-title">Cómo lo vamos a hacer</div>
+      <div class="agenda-item">
+        <div class="icon-circle" style="background:var(--primary)">
+          <svg viewBox="0 0 24 24"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.09 1.02 3.99 2.66 5.4L4 21l4.87-1.62C10.02 19.78 11 20 12 20c5.52 0 10-3.58 10-9s-4.48-8-10-8z"/></svg>
+        </div>
+        <div>
+          <div class="time" style="color:var(--primary)">0-5 MIN</div>
+          <div class="txt">Bienvenida y por qué este cambio</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="icon-circle" style="background:var(--secondary)">
+          <svg viewBox="0 0 24 24"><path d="M4 3h16v18H4V3zm2 2v14h12V5H6zm2 3h8v1H8V8zm0 3h8v1H8v-1zm0 3h8v1H8v-1z"/></svg>
+        </div>
+        <div>
+          <div class="time" style="color:var(--secondary)">5-20 MIN</div>
+          <div class="txt">ECICEP en simple + los 3 niveles</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="icon-circle" style="background:var(--accent)">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm.5-13H11v6l5 3 .8-1.3-4.3-2.5V7z"/></svg>
+        </div>
+        <div>
+          <div class="time" style="color:#B7891E">20-25 MIN</div>
+          <div class="txt">Pausa de 5 minutos</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="icon-circle" style="background:var(--success)">
+          <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        </div>
+        <div>
+          <div class="time" style="color:var(--success)">25-45 MIN</div>
+          <div class="txt">Roles, flujo, PCIC, errores frecuentes</div>
+        </div>
+      </div>
+      <div class="agenda-item">
+        <div class="icon-circle" style="background:var(--primary)">
+          <svg viewBox="0 0 24 24"><path d="M20 4h-4V2H8v2H4v2h1v14a2 2 0 002 2h10a2 2 0 002-2V6h1V4zM7 20V6h10v14H7z"/></svg>
+        </div>
+        <div>
+          <div class="time" style="color:var(--primary)">45-60 MIN</div>
+          <div class="txt">Caso, compromiso por sector, cierre</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rule">
+    <div class="icon-circle">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 3 2 5 3 7v2h8v-2c1-2 3-4 3-7 0-4-3-7-7-7zm-2 20h4v-1h-4v1z"/></svg>
+    </div>
+    <div class="txt">Regla de la jornada: si algo no queda claro, se pregunta. No hay pregunta tonta.</div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 3: POR QUÉ IMPORTA ========== -->
+<section class="slide s3" data-slide="3">
+  <div class="slide-header">
+    <div class="tag">APERTURA</div>
+    <div class="pageno">3/14</div>
+  </div>
+  <h1 class="slide-title">Por qué este protocolo importa</h1>
+  <div class="stat">
+    Atendemos <strong>22.000 personas</strong> con un percápita FONASA de <strong>menos de 15.000</strong>.
+    <span class="sub">El protocolo ECICEP nos ordena para trabajar mejor con esa realidad.</span>
+  </div>
+  <div class="reasons">
+    <div class="reason">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--primary);width:50px;height:50px">
+          <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-8 8c0-4 4-6 8-6s8 2 8 6v1H4v-1z"/></svg>
+        </div>
+        <h3 style="color:var(--primary)">Para las personas</h3>
+      </div>
+      <p>Menos vueltas, cuidado planificado, atención que ve a la persona completa y no solo la enfermedad.</p>
+    </div>
+    <div class="reason">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--secondary);width:50px;height:50px">
+          <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-8 8c0-4 4-6 8-6s8 2 8 6v1H4v-1z"/></svg>
+        </div>
+        <h3 style="color:var(--secondary)">Para el equipo</h3>
+      </div>
+      <p>Roles claros, menos duplicidad, decisiones compartidas entre estamentos, mejor uso del tiempo.</p>
+    </div>
+    <div class="reason">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--success);width:50px;height:50px">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 7L2 14l10 5 10-5-10-5z"/></svg>
+        </div>
+        <h3 style="color:var(--success)">Para el centro</h3>
+      </div>
+      <p>Cumplimos la auditoría del Servicio de Salud, aprovechamos mejor los recursos y podemos defender la carga real.</p>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 4: ECICEP EN SIMPLE ========== -->
+<section class="slide s4" data-slide="4">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">4/14</div>
+  </div>
+  <h1 class="slide-title">ECICEP en palabras simples</h1>
+  <div class="letters">
+    <div class="letter-box"><div class="letter-circle" style="background:var(--primary)">E</div><p>Estrategia</p></div>
+    <div class="letter-box"><div class="letter-circle" style="background:var(--secondary)">C</div><p>de Cuidado</p></div>
+    <div class="letter-box"><div class="letter-circle" style="background:var(--primary)">I</div><p>Integral</p></div>
+    <div class="letter-box"><div class="letter-circle" style="background:var(--secondary)">C</div><p>Centrado</p></div>
+    <div class="letter-box"><div class="letter-circle" style="background:var(--primary)">E</div><p>en la</p></div>
+    <div class="letter-box"><div class="letter-circle" style="background:var(--secondary)">P</div><p>Persona</p></div>
+  </div>
+  <div class="explanation">
+    <div class="label">CÓMO SE TRADUCE EN EL DÍA A DÍA</div>
+    <div class="txt"><b>No es un formulario más.</b> Es acordar con la persona: "esto es lo que te pasa, estas son las opciones, ¿qué quieres hacer?, quién te acompaña y cuándo nos vemos otra vez". Todo el equipo trabajando por la misma persona.</div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 5: ANTES vs AHORA ========== -->
+<section class="slide s5" data-slide="5">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">5/14</div>
+  </div>
+  <h1 class="slide-title">Qué cambia respecto de cómo veníamos trabajando</h1>
+  <div class="body">
+    <div class="col antes">
+      <div class="label">ANTES</div>
+      <h3>Modelo curativo y reactivo</h3>
+      <ul class="clean">
+        <li>La persona viene cuando está mal.</li>
+        <li>Cada profesional pide sus exámenes por su lado.</li>
+        <li>El médico decide, la persona escucha.</li>
+        <li>Papeles sueltos en distintas carpetas.</li>
+        <li>Enfoque en la enfermedad, no en la vida.</li>
+      </ul>
+    </div>
+    <div class="col ahora">
+      <div class="label">AHORA CON ECICEP</div>
+      <h3>Cuidado anticipado y compartido</h3>
+      <ul class="clean">
+        <li>Sabemos cuándo le toca antes de que se descompense.</li>
+        <li>Todo el equipo mira la misma ficha ECICEP.</li>
+        <li>La persona elige entre opciones, hay decisión compartida.</li>
+        <li>Un solo Plan de Cuidado (PCIC) firmado por todos.</li>
+        <li>Enfoque en la persona completa y su comunidad.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 6: G1/G2/G3 ========== -->
+<section class="slide s6" data-slide="6">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">6/14</div>
+  </div>
+  <h1 class="slide-title">Los tres niveles: G1, G2, G3</h1>
+  <div class="intro">Todas las personas ECICEP se estratifican en tres grupos según su riesgo. Cada grupo tiene un ritmo distinto.</div>
+  <div class="levels">
+    <div class="level g1">
+      <div class="head"><div class="code">G1</div><h3>Autocuidado apoyado</h3></div>
+      <div class="desc">Personas estables, con enfermedades controladas.</div>
+      <div class="ritmo-label">RITMO</div>
+      <div class="ritmo">1 control al año, 1 seguimiento cada 6 meses.</div>
+      <div class="analogia"><b>Analogía:</b> Como un auto que solo necesita revisión anual.</div>
+    </div>
+    <div class="level g2">
+      <div class="head"><div class="code">G2</div><h3>Manejo de enfermedad</h3></div>
+      <div class="desc">Con enfermedades activas que requieren ajuste.</div>
+      <div class="ritmo-label">RITMO</div>
+      <div class="ritmo">1 control cada 6 meses, seguimiento cada 3.</div>
+      <div class="analogia"><b>Analogía:</b> Como un auto que necesita mantención regular.</div>
+    </div>
+    <div class="level g3">
+      <div class="head"><div class="code">G3</div><h3>Gestión de caso</h3></div>
+      <div class="desc">Múltiples problemas, riesgo alto de descompensación.</div>
+      <div class="ritmo-label">RITMO</div>
+      <div class="ritmo">1 control cada 3 meses, seguimiento cada 2, gestor asignado.</div>
+      <div class="analogia"><b>Analogía:</b> Como un auto que necesita taller frecuente y monitoreo.</div>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 7: ROLES ========== -->
+<section class="slide s7" data-slide="7">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">7/14</div>
+  </div>
+  <h1 class="slide-title">Quién hace qué en el equipo</h1>
+  <div class="intro">ECICEP es multidisciplinario por diseño. Ningún rol trabaja solo.</div>
+  <div class="roles">
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--primary)"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 00-2 2v3a4 4 0 003 3.87V16a3 3 0 106 0v-1.05a3 3 0 10-2 0V16a1 1 0 11-2 0V10.87A4 4 0 0016 7V4a2 2 0 00-2-2h-2z"/></svg></div>
+        <h3 style="color:var(--primary)">Médico/a</h3>
+      </div>
+      <p>Ingreso integral, control clínico, revisión farmacológica, PCIC firmado.</p>
+    </div>
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--secondary)"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5-8-11a5 5 0 019-3 5 5 0 019 3c0 6-8 11-8 11h-2z"/></svg></div>
+        <h3 style="color:var(--secondary)">Enfermería</h3>
+      </div>
+      <p>Seguimiento a distancia, educación, control de estables, VDI.</p>
+    </div>
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--success)"><svg viewBox="0 0 24 24"><path d="M12 4c-4 0-8 4-8 8s4 8 8 8 8-4 8-8-4-8-8-8zm4 12H8v-2h8v2zm0-3H8v-2h8v2zm-2-3H8V8h6v2z"/></svg></div>
+        <h3 style="color:var(--success)">Gestor/a Acompañamiento</h3>
+      </div>
+      <p>Continuidad entre controles, articulación social, no perder a la persona.</p>
+    </div>
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 3 2 5 3 7v2h8v-2c1-2 3-4 3-7 0-4-3-7-7-7z"/></svg></div>
+        <h3 style="color:#B7891E">Salud mental</h3>
+      </div>
+      <p>Aplicar PHQ-9, GAD-7 y AUDIT, intervención breve, coordinar derivación.</p>
+    </div>
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--alert)"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-8 8c0-4 4-6 8-6s8 2 8 6v1H4v-1z"/></svg></div>
+        <h3 style="color:var(--alert)">Nutrición / Kine / QF</h3>
+      </div>
+      <p>Aportar mirada específica al PCIC. Se firma en conjunto, no en paralelo.</p>
+    </div>
+    <div class="role">
+      <div class="head">
+        <div class="icon-circle" style="background:var(--primary)"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M8 16l4-4 3 3 5-5"/></svg></div>
+        <h3 style="color:var(--primary)">TENS y administrativos</h3>
+      </div>
+      <p>Registro correcto en Avislatam, agendamiento con iconografía, primer contacto.</p>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 8: FLUJO ========== -->
+<section class="slide s8" data-slide="8">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">8/14</div>
+  </div>
+  <h1 class="slide-title">El flujo en 5 pasos</h1>
+  <div class="intro">De la primera puerta a la continuidad del cuidado.</div>
+  <div class="flow">
+    <div class="step">
+      <div class="num" style="background:var(--primary)">1</div>
+      <h3 style="color:var(--primary)">Contacto inicial</h3>
+      <p>TENS o admin identifica a la persona en ventanilla o VDI. Sin REM.</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num" style="background:var(--secondary)">2</div>
+      <h3 style="color:var(--secondary)">Ingreso integral</h3>
+      <p>Médico + otro estamento aplican anamnesis en 5 dimensiones MAIS.</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num" style="background:var(--accent);color:var(--ink)">3</div>
+      <h3 style="color:#B7891E">PCIC compartido</h3>
+      <p>Se acuerda el plan con la persona. Los 6 campos obligatorios.</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num" style="background:var(--success)">4</div>
+      <h3 style="color:var(--success)">Controles y seguimientos</h3>
+      <p>Según estratificación. Enfermería y equipo aportan.</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="num" style="background:var(--alert)">5</div>
+      <h3 style="color:var(--alert)">Gestión de acompañamiento</h3>
+      <p>El/la gestor/a asegura que la persona no se pierda.</p>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 9: PCIC ========== -->
+<section class="slide s9" data-slide="9">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">9/14</div>
+  </div>
+  <h1 class="slide-title">El corazón de ECICEP: el PCIC</h1>
+  <div class="intro">Plan de Cuidado Integral Compartido. Sin estos 6 campos, la auditoría dice que no existe.</div>
+  <div class="fields">
+    <div class="field"><div class="head"><div class="num">1</div><h3>Problema priorizado</h3></div><p>Ej: DM2 con mal control glicémico.</p></div>
+    <div class="field"><div class="head"><div class="num">2</div><h3>Objetivo SMART</h3></div><p>Ej: HbA1c menor a 8% en 3 meses.</p></div>
+    <div class="field"><div class="head"><div class="num">3</div><h3>Opciones ofrecidas</h3></div><p>Ej: ajuste farmacológico o taller nutricional.</p></div>
+    <div class="field"><div class="head"><div class="num">4</div><h3>Decisión compartida</h3></div><p>Ej: la persona eligió empezar por taller.</p></div>
+    <div class="field"><div class="head"><div class="num">5</div><h3>Responsables</h3></div><p>Ej: Enfermera Juana + Nutricionista Carlos.</p></div>
+    <div class="field"><div class="head"><div class="num">6</div><h3>Plazo de revisión</h3></div><p>Ej: control en 6 semanas.</p></div>
+  </div>
+  <div class="note">La firma en el PCIC es de la PERSONA y del equipo. No es solo del médico.</div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 10: ERRORES ========== -->
+<section class="slide s10" data-slide="10">
+  <div class="slide-header">
+    <div class="tag">DESARROLLO</div>
+    <div class="pageno">10/14</div>
+  </div>
+  <h1 class="slide-title">Errores frecuentes y cómo evitarlos</h1>
+  <div class="body">
+    <div class="row">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div>
+      <div class="err">Registrar el contacto inicial como atención clínica</div>
+      <div class="arrow">▸</div>
+      <div class="fix">El primer contacto NO lleva REM. Es identificación, no atención.</div>
+    </div>
+    <div class="row">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1 0-2 1-2 2v16c0 1 1 2 2 2h12c1 0 2-1 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2z"/></svg></div>
+      <div class="err">Escribir el PCIC como texto libre en la ficha</div>
+      <div class="arrow">▸</div>
+      <div class="fix">El PCIC tiene 6 campos separados. Sin ellos, la auditoría lo da por no hecho.</div>
+    </div>
+    <div class="row">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 3 2 5 3 7v2h8v-2c1-2 3-4 3-7 0-4-3-7-7-7z"/></svg></div>
+      <div class="err">Aplicar tamizajes solo cuando la persona "se ve mal"</div>
+      <div class="arrow">▸</div>
+      <div class="fix">PHQ-9, GAD-7 y AUDIT son parte del tamizaje regular, no una excepción.</div>
+    </div>
+    <div class="row">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1 0-2-.2-3-.5a1 1 0 00-1 .2l-2 2a15 15 0 01-7-7l2-2a1 1 0 00.2-1c-.3-1-.5-2-.5-3a1 1 0 00-1-1H4a1 1 0 00-1 1c0 10 7 17 17 17a1 1 0 001-1v-4a1 1 0 00-1-1z"/></svg></div>
+      <div class="err">Perder de vista a la persona entre controles</div>
+      <div class="arrow">▸</div>
+      <div class="fix">Ahí entra el gestor de acompañamiento: seguimiento activo, no espera pasiva.</div>
+    </div>
+    <div class="row">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-8 8c0-4 4-6 8-6s8 2 8 6v1H4v-1z"/></svg></div>
+      <div class="err">Solo el médico firma y decide</div>
+      <div class="arrow">▸</div>
+      <div class="fix">El PCIC se decide con la persona. Al menos otro estamento aporta y firma.</div>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 11: SECTORES ========== -->
+<section class="slide s11" data-slide="11">
+  <div class="slide-header">
+    <div class="tag">APLICACIÓN</div>
+    <div class="pageno">11/14</div>
+  </div>
+  <h1 class="slide-title">Qué debe recordar cada sector</h1>
+  <div class="intro">Tres focos, tres colores. Cada sector con su prioridad de aplicación.</div>
+  <div class="sectors">
+    <div class="sector azul">
+      <div class="head">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 3l-10 8h3v10h5v-6h4v6h5V11h3L12 3z"/></svg></div>
+        <h3>SECTOR AZUL</h3>
+      </div>
+      <div class="foco">FOCO: Estratificación y agendamiento</div>
+      <div class="actions-label">QUÉ HACER MAÑANA</div>
+      <ul class="clean">
+        <li>Revisar y estratificar toda la población bajo control.</li>
+        <li>Instalar la iconografía de agendamiento en ventanilla.</li>
+        <li>Identificar los G3 primero, agendar sus próximos controles.</li>
+      </ul>
+    </div>
+    <div class="sector rojo">
+      <div class="head">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+        <h3>SECTOR ROJO</h3>
+      </div>
+      <div class="foco">FOCO: PCIC y decisión compartida</div>
+      <div class="actions-label">QUÉ HACER MAÑANA</div>
+      <ul class="clean">
+        <li>PCIC con los 6 campos en cada persona G2 y G3.</li>
+        <li>Ensayar la conversación de opciones al menos una vez por semana.</li>
+        <li>Registrar tributación REM A05 sección U correctamente.</li>
+      </ul>
+    </div>
+    <div class="sector verde">
+      <div class="head">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 110-4 2 2 0 010 4z"/></svg></div>
+        <h3>SECTOR VERDE</h3>
+      </div>
+      <div class="foco">FOCO: Gestor de acompañamiento y territorio</div>
+      <div class="actions-label">QUÉ HACER MAÑANA</div>
+      <ul class="clean">
+        <li>Designar quién cumple el rol de gestor/a este mes.</li>
+        <li>Cartografía de activos comunitarios del sector.</li>
+        <li>Seguimiento a distancia semanal a G3 más complejos.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 12: COMPROMISO ========== -->
+<section class="slide s12" data-slide="12">
+  <div class="slide-header">
+    <div class="tag">APLICACIÓN</div>
+    <div class="pageno">12/14</div>
+  </div>
+  <h1 class="slide-title">Compromiso: qué voy a hacer mañana</h1>
+  <div class="body">
+    <div class="banner">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 3 2 5 3 7v2h8v-2c1-2 3-4 3-7 0-4-3-7-7-7zm-2 20h4v-1h-4v1z"/></svg></div>
+      <h2>Una acción.<br>Una semana.<br>Una persona real.</h2>
+      <p>No pedimos mucho. Pedimos algo que se pueda cumplir.</p>
+    </div>
+    <div class="form">
+      <div class="form-label">ESCRÍBELO ANTES DE IRTE:</div>
+      <div class="form-q">1. La acción que voy a probar es:</div>
+      <div class="form-line"></div>
+      <div class="form-q">2. La persona con la que la voy a probar es (iniciales):</div>
+      <div class="form-line"></div>
+      <div class="form-q">3. Voy a pedirle ayuda a:</div>
+      <div class="form-line"></div>
+      <div class="form-q">4. Sabré que resultó cuando:</div>
+      <div class="form-line"></div>
+    </div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 13: EVALUACIÓN ========== -->
+<section class="slide s13" data-slide="13">
+  <div class="slide-header">
+    <div class="tag">CIERRE</div>
+    <div class="pageno">13/14</div>
+  </div>
+  <h1 class="slide-title">Verificación rápida: 5 preguntas</h1>
+  <div class="intro">Levantar la mano al aire o apuntar en papelito. Sin nombre.</div>
+  <div class="quiz">
+    <div class="q"><div class="n">1</div><div class="qtext">¿Cuántos niveles de estratificación tiene ECICEP?</div><div class="ans"><b>Respuesta:</b> 3: G1, G2, G3.</div></div>
+    <div class="q"><div class="n">2</div><div class="qtext">¿Cuántos campos tiene el PCIC?</div><div class="ans"><b>Respuesta:</b> 6 campos obligatorios.</div></div>
+    <div class="q"><div class="n">3</div><div class="qtext">El contacto inicial, ¿lleva REM?</div><div class="ans"><b>Respuesta:</b> No. Es identificación.</div></div>
+    <div class="q"><div class="n">4</div><div class="qtext">¿Quién firma el PCIC?</div><div class="ans"><b>Respuesta:</b> La persona y al menos dos estamentos.</div></div>
+    <div class="q"><div class="n">5</div><div class="qtext">¿Cuál es el rol nuevo del Marco 2025?</div><div class="ans"><b>Respuesta:</b> Gestor/a de acompañamiento.</div></div>
+  </div>
+  <div class="slide-footer">Socialización ECICEP 2026 | CESFAM Tongoy | Sectores Azul, Rojo y Verde</div>
+</section>
+
+<!-- ========== SLIDE 14: CIERRE ========== -->
+<section class="slide s14" data-slide="14">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <div class="kicker">3 IDEAS QUE NO SE OLVIDAN</div>
+  <div class="title">Nos llevamos esto</div>
+  <div class="ideas">
+    <div class="idea">
+      <div class="n">1</div>
+      <div class="text"><div class="t">ECICEP es acuerdo, no formulario.</div><div class="s">Se hace CON la persona, no PARA la persona.</div></div>
+    </div>
+    <div class="idea">
+      <div class="n">2</div>
+      <div class="text"><div class="t">El PCIC tiene 6 campos.</div><div class="s">Sin ellos, para la auditoría no existe.</div></div>
+    </div>
+    <div class="idea">
+      <div class="n">3</div>
+      <div class="text"><div class="t">El equipo se juega por continuidad.</div><div class="s">El gestor de acompañamiento es la clave del cambio.</div></div>
+    </div>
+  </div>
+  <div class="thanks">Gracias por su tiempo. La próxima vez que vean a una persona de ECICEP, ya no serán los mismos.</div>
+</section>
+
+</div>
+</div>
+
+<!-- Controles -->
+<div class="controls" id="controls">
+  <button onclick="goPrev()">◄ Ant</button>
+  <span class="counter" id="counter">1 / 14</span>
+  <button onclick="goNext()">Sig ►</button>
+  <button onclick="toggleFullscreen()">⛶ Pantalla completa</button>
+  <button onclick="toggleNotes()">📝 Notas</button>
+</div>
+
+<div class="help-hint" id="hint">
+  ← → : navegar &nbsp; F : pantalla completa &nbsp; N : notas &nbsp; Esc : salir
+</div>
+
+<!-- Panel de notas del relator -->
+<div class="notes-panel" id="notesPanel">
+  <button class="close-btn" onclick="toggleNotes()">✕</button>
+  <div class="slide-tag" id="notesTag">DIAPOSITIVA 1</div>
+  <h3 id="notesTitle">Notas del relator</h3>
+  <p id="notesBody"></p>
+</div>
+
+<script>
+// ========= NOTAS DEL RELATOR =========
+const notes = {
+  1: { title: "Portada",
+       body: "Recibir a los asistentes con calma. Saludar por sector. Recordar la duración: 60 minutos. Explicar que no habrá evaluación punitiva sino un espacio para entender y aplicar. Bajar la ansiedad técnica de entrada: 'esto es para que trabajemos mejor, no para complicar más'." },
+  2: { title: "Objetivo y agenda",
+       body: "Leer el objetivo en voz alta. Enfatizar 'mañana en tu puesto'. Mostrar la agenda con el dedo, ubicar el break. Dejar la regla del juego escrita en la pizarra si es posible." },
+  3: { title: "Por qué importa",
+       body: "Los números duelen y despiertan: 22.000 con recursos para 15.000. Ese contraste es el motor del cambio. Ir carta por carta: primero la persona (bajar al terreno), después el equipo (dignificar el trabajo), después el centro (seguridad institucional). Preguntar: '¿Cuántos de acá han sentido que ven al mismo paciente tres veces por lo mismo?' — dejar responder." },
+  4: { title: "ECICEP en simple",
+       body: "Ir letra por letra sin apuro. Pedirle a alguien del público que lea una palabra. La idea fuerza es 'plan de trabajo, no formulario'. Comparación: 'Es como un plan de viaje — decides destino, ruta y con quién vas, no llegas a improvisar cada vez'." },
+  5: { title: "Antes vs Ahora",
+       body: "Este es EL slide de gestión del cambio. No leer los bullets: contar historias. '¿Se acuerdan de doña Rosa que venía cada 2 meses por urgencia con la presión alta? Con ECICEP ella sabe cuándo le toca control, la enfermera la llama, y llega a la hora'. Adaptar el ejemplo con nombres genéricos del CESFAM." },
+  6: { title: "Los 3 niveles",
+       body: "Comparación del auto es potente para público con baja alfabetización técnica: todos entienden mantención. Enfatizar: la estratificación NO la decide un solo profesional. La revisa el equipo. Preguntar al azar: 'Si viene una persona con diabetes descompensada, HTA y depresión, ¿en qué grupo está?' — respuesta G3." },
+  7: { title: "Roles",
+       body: "Novedad clave: el/la Gestor/a de Acompañamiento. Explicar bien que este rol NO reemplaza a nadie sino que asegura la continuidad. Puede ser TENS, TS o enfermera según equipo. Definir en la sesión quién va a ser el gestor por sector." },
+  8: { title: "Flujo en 5 pasos",
+       body: "Recorrer paso por paso apuntando con láser. Pausar en el 3: 'El PCIC no es un formulario que llena el médico, es un acuerdo'. Reforzar que el paso 1 no lleva REM: es contacto, no atención clínica. Muchos errores vienen de confundir eso." },
+  9: { title: "PCIC — 6 campos",
+       body: "Este es el slide más importante para auditoría. Explicar que los ítems 18 y 21 de la Pauta 2.0 son críticos y evalúan los campos 3 y 5. Ensayar en voz alta: 'te ofrezco opciones' — repetir. La conducta que hay que instalar es 'siempre ofrecer al menos 2 opciones antes de decidir'." },
+  10: { title: "Errores frecuentes",
+        body: "Este slide se navega rápido pero sin apuro. Cada error suele reconocerse por al menos alguien del público. Preguntar: '¿alguien se ha encontrado con este error?' — sin señalar. Normalizar que es lo que hemos venido haciendo, no es culpa." },
+  11: { title: "Sectores Azul, Rojo, Verde",
+        body: "Asignación funcional, no geográfica cerrada. Si el CESFAM Tongoy define los sectores de otra manera, adaptar los focos. Lo importante es que cada sector se lleve UNA prioridad concreta y no todas a la vez." },
+  12: { title: "Compromiso",
+        body: "Este es el momento de silencio. 3 minutos para escribir. Repartir tarjetas de compromiso impresas. Al final, pedir a 2 o 3 voluntarios que lean su compromiso. Recolectar tarjetas para reforzar en 30 días." },
+  13: { title: "Verificación rápida",
+        body: "Si es posible ocultar la columna 'Respuesta' con papel al proyectar y revelar después. El objetivo NO es evaluar personas sino verificar que el grupo se lleve las ideas clave. Si más de un tercio se equivoca en una pregunta, esa idea hay que reforzar en terreno la semana siguiente." },
+  14: { title: "Cierre — 3 ideas",
+        body: "Cerrar en alto, sin apuro. Agradecer por nombre a la Encargada de MAIS. Anunciar el refuerzo en terreno para las semanas siguientes. Recolectar tarjetas de compromiso." }
+};
+
+let current = 1;
+const total = 14;
+
+function showSlide(n){
+  document.querySelectorAll(".slide").forEach(s => s.classList.remove("active"));
+  const target = document.querySelector('.slide[data-slide="' + n + '"]');
+  if (target) target.classList.add("active");
+  current = n;
+  document.getElementById("counter").textContent = n + " / " + total;
+  updateNotes();
+}
+function goNext(){ if(current < total) showSlide(current + 1); }
+function goPrev(){ if(current > 1) showSlide(current - 1); }
+function updateNotes(){
+  const n = notes[current];
+  if(!n) return;
+  document.getElementById("notesTag").textContent = "DIAPOSITIVA " + current;
+  document.getElementById("notesTitle").textContent = n.title;
+  document.getElementById("notesBody").textContent = n.body;
+}
+function toggleNotes(){
+  document.getElementById("notesPanel").classList.toggle("open");
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// Teclas
+document.addEventListener("keydown", (e) => {
+  if(e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); goNext(); }
+  else if(e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); goPrev(); }
+  else if(e.key === "Home") { showSlide(1); }
+  else if(e.key === "End") { showSlide(total); }
+  else if(e.key.toLowerCase() === "f") { toggleFullscreen(); }
+  else if(e.key.toLowerCase() === "n") { toggleNotes(); }
+  else if(e.key === "Escape") { document.getElementById("notesPanel").classList.remove("open"); }
+});
+
+// Click en el stage para avanzar (excepto en controles/notas)
+document.getElementById("stage").addEventListener("click", (e) => {
+  if(e.target.closest(".controls") || e.target.closest(".notes-panel")) return;
+  goNext();
+});
+
+// Ocultar hint después de 6 segundos
+setTimeout(() => document.getElementById("hint").classList.add("hidden"), 6000);
+
+// Ocultar controles al inactividad
+let hideTimer;
+function showControls(){
+  document.getElementById("controls").classList.remove("hidden");
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => document.getElementById("controls").classList.add("hidden"), 3500);
+}
+document.addEventListener("mousemove", showControls);
+document.addEventListener("touchstart", showControls);
+showControls();
+
+// Escalado responsivo
+function fitStage(){
+  const stage = document.getElementById("stage");
+  const availW = window.innerWidth - 40;
+  const availH = window.innerHeight - 40;
+  const scaleX = availW / 1330;
+  const scaleY = availH / 750;
+  const scale = Math.min(1, scaleX, scaleY);
+  stage.style.setProperty("--scale", scale);
+  stage.style.transform = "scale(" + scale + ")";
+}
+window.addEventListener("resize", fitStage);
+fitStage();
+
+updateNotes();
+</script>
+
+</body>
+</html>
